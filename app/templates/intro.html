@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Intro | Hocine ABED</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            mono: ['Fira Code', 'monospace'],
+          },
+          colors: {
+            primary: '#0f172a',
+            accent: '#38bdf8'
+          },
+          animation: {
+            blink: 'blink 1s step-start infinite'
+          },
+          keyframes: {
+            blink: {
+              '0%, 100%': { borderColor: 'transparent' },
+              '50%': { borderColor: '#38bdf8' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      background: radial-gradient(circle at top left, #0f172a, #0a0e1a);
+    }
+
+    .cursor {
+      border-right: 2px solid #38bdf8;
+      animation: blink 1s step-start infinite;
+    }
+
+    .hidden-button {
+      opacity: 0;
+      transition: opacity 0.5s ease-in;
+    }
+
+    .visible-button {
+      opacity: 1;
+    }
+  </style>
+</head>
+
+<body class="text-white font-mono flex items-center justify-center min-h-screen px-4">
+  <div class="max-w-screen-sm w-full text-center space-y-4" id="text-container">
+    <p class="text-2xl sm:text-4xl"><span id="line1" class="cursor"></span></p>
+    <p class="text-2xl sm:text-4xl"><span id="line2"></span></p>
+    <p class="text-2xl sm:text-4xl"><span id="line3"></span></p>
+  </div>
+
+  <div class="absolute bottom-12">
+    <a id="cta-button" href="/index" aria-label="View my scraping projects"
+      class="hidden-button inline-block bg-accent text-primary font-semibold py-3 px-6 rounded-lg hover:bg-gray-200 transition duration-300">
+      🔍 Scrape My Career
+    </a>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const lines = [
+        { id: 'line1', text: 'I don’t browse websites.' },
+        { id: 'line2', text: 'I read their minds.' },
+        { id: 'line3', text: 'And translate them into meaning.' }
+      ];
+
+      let lineIndex = 0;
+      let charIndex = 0;
+
+      function typeLine() {
+        const currentLine = lines[lineIndex];
+        const element = document.getElementById(currentLine.id);
+        element.textContent += currentLine.text.charAt(charIndex);
+
+        charIndex++;
+
+        if (charIndex < currentLine.text.length) {
+          setTimeout(typeLine, 65); // frappe plus rapide
+        } else {
+          element.classList.remove('cursor');
+          lineIndex++;
+          charIndex = 0;
+
+          if (lineIndex < lines.length) {
+            const nextLine = document.getElementById(lines[lineIndex].id);
+            nextLine.classList.add('cursor');
+            setTimeout(typeLine, 400); // pause réduite entre les lignes
+          } else {
+            setTimeout(() => {
+              const ctaButton = document.getElementById('cta-button');
+              ctaButton.classList.remove('hidden-button');
+              ctaButton.classList.add('visible-button');
+            }, 500); // bouton plus rapide aussi
+          }
+        }
+      }
+
+      setTimeout(typeLine, 600); // début plus fluide
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact | Hocine ABED</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Font Awesome -->
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap"
+    rel="stylesheet" />
+
+  <style>
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    .gradient-text {
+      background: linear-gradient(to right, #6366f1, #3b82f6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  </style>
+</head>
+
+<body class="bg-gradient-to-br from-blue-50 via-purple-50 to-white text-gray-800">
+
+  {% include "partials/navbar.html" %}
+
+  <!-- Main Content -->
+  <main class="max-w-4xl mx-auto px-6 py-20">
+    <section class="bg-white p-10 rounded-2xl shadow-xl">
+      <div class="flex flex-col md:flex-row items-center gap-8 mb-10">
+        <img
+          src="https://media.licdn.com/dms/image/v2/D4E03AQHsoy8Ka5YIng/profile-displayphoto-shrink_200_200/B4EZWjkFfyGgAY-/0/1742205901350?e=2147483647&v=beta&t=gpD57rl_Im2DnjGSpE7SzdLxwTa3pDU6zmBXE9WYhmA"
+          alt="Profile picture of Hocine ABED"
+          class="w-40 h-40 rounded-full object-cover border-4 border-blue-500 shadow-md" />
+        <div>
+          <h1 class="text-3xl font-bold text-gray-900 mb-1">Hocine ABED</h1>
+          <p class="text-lg text-gray-600">Python Developer • Web Scraping & Data Automation</p>
+          <div class="flex gap-4 text-2xl mt-3">
+            <a href="https://www.linkedin.com/in/hocine-abed-33979a27/" target="_blank"
+              class="text-blue-600 hover:text-blue-800 transition">
+              <i class="fab fa-linkedin"></i>
+            </a>
+            <a href="https://github.com/housine35" target="_blank" class="text-gray-800 hover:text-gray-600 transition">
+              <i class="fab fa-github"></i>
+            </a>
+            <a href="mailto:abedhocine.dev@gmail.com" class="text-red-500 hover:text-red-700 transition">
+              <i class="fas fa-envelope"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bio -->
+      <div class="space-y-12">
+        <!-- About -->
+        <section>
+          <h2 class="text-2xl font-semibold text-blue-700 mb-3">About Me</h2>
+          <p class="text-gray-700 leading-relaxed">
+            I specialize in web scraping, automation, and data processing with Python. I build tools that extract,
+            clean, and transform web data into usable insights — from job offers to public policy datasets.
+          </p>
+        </section>
+
+        <!-- Skills -->
+        <section>
+          <h2 class="text-2xl font-semibold text-blue-700 mb-3">Skills & Tools</h2>
+          <ul class="grid md:grid-cols-2 gap-x-6 list-disc list-inside text-gray-700 leading-relaxed">
+            <li>Python (Scrapy, BeautifulSoup, Selenium)</li>
+            <li>Pandas, NumPy, Matplotlib</li>
+            <li>FastAPI, Flask (REST APIs)</li>
+            <li>MongoDB, PostgreSQL</li>
+            <li>Automation (CRON, scripts)</li>
+            <li>Git, Docker, Linux (basics)</li>
+          </ul>
+        </section>
+
+        <!-- Contact -->
+        <section>
+          <h2 class="text-2xl font-semibold text-blue-700 mb-3">Contact Details</h2>
+          <ul class="text-gray-700 space-y-2">
+            <li><strong>📧 Email:</strong> <a href="mailto:abedhocine.dev@gmail.com"
+                class="text-blue-600 hover:underline">abed.hocine@hotmail.com</a></li>
+            <li><strong>📞 Phone:</strong> <a href="tel:+33662404764" class="text-blue-600 hover:underline">(+33) 06 62
+                40 47 64</a></li>
+            <li><strong>🌍 Location:</strong> France — Open to remote work</li>
+          </ul>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-white text-center py-6 mt-20">
+    <p>&copy; 2025 Hocine ABED — All rights reserved.</p>
+  </footer>
+
+</body>
+
+</html>

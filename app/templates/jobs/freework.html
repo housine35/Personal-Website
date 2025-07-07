@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Freework Job Listings | Hocine ABED</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Font Awesome -->
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    }
+
+    .badge {
+      font-size: 0.75rem;
+      font-weight: 500;
+      border-radius: 0.25rem;
+      padding: 0.25rem 0.5rem;
+    }
+
+    .badge-remote {
+      background-color: #e0f2fe;
+      color: #0369a1;
+    }
+
+    .badge-salary {
+      background-color: #dcfce7;
+      color: #166534;
+    }
+
+    .btn-primary {
+      background-color: #2563eb;
+      color: white;
+      transition: all 0.2s ease;
+    }
+
+    .btn-primary:hover {
+      background-color: #1d4ed8;
+      transform: translateY(-1px);
+    }
+
+    .table-container {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 0.75rem;
+      max-height: 70vh;
+      overflow-y: auto;
+    }
+
+    .table-row:hover {
+      background-color: #f1f5f9;
+      transform: translateY(-1px);
+      transition: all 0.2s ease;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .loading-spinner {
+      border: 4px solid rgba(37, 99, 235, 0.1);
+      border-top: 4px solid #2563eb;
+      border-radius: 50%;
+      width: 2.5rem;
+      height: 2.5rem;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    @media (max-width: 768px) {
+
+      th,
+      td {
+        white-space: nowrap;
+        min-width: 120px;
+      }
+
+      .table-container {
+        overflow-x: auto;
+        max-height: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Navbar -->
+  {% include "partials/navbar.html" %}
+
+  <div class="container mx-auto px-4 py-12">
+
+    <!-- Header -->
+    <header class="text-center mb-10">
+      <h1 class="text-4xl font-bold text-gray-900 mb-2">Freework Remote Jobs</h1>
+      <p class="text-gray-600 max-w-xl mx-auto">
+        Find the best remote job opportunities for freelancers, filtered by rate, date, and remote type.
+      </p>
+    </header>
+
+    <!-- Back to LinkedIn Button -->
+    <div class="text-center mb-10">
+      <a href="/jobs/linkedin" class="inline-flex items-center btn-primary px-6 py-3 rounded-lg font-medium">
+        <i class="fas fa-briefcase mr-2"></i> View LinkedIn Jobs
+      </a>
+    </div>
+
+    <!-- Filters -->
+    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100 mb-10 max-w-5xl mx-auto">
+      <form method="get" action="/jobs/freework" id="filter-form" class="grid md:grid-cols-3 gap-4">
+        <!-- Remote Mode -->
+        <div>
+          <label for="remote-mode-filter" class="block text-sm font-medium text-gray-700 mb-1">Remote Mode</label>
+          <select id="remote-mode-filter" name="remote_mode"
+            class="w-full rounded-lg border-gray-200 py-2.5 px-3 focus:ring-blue-200 focus:border-blue-500">
+            <option value="all">All</option>
+            {% for mode in unique_remote_modes %}
+            <option value="{{ mode }}" {% if mode==selected_remote_mode %}selected{% endif %}>
+              {{ mode | capitalize }}
+            </option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <!-- Date -->
+        <div>
+          <label for="date-filter" class="block text-sm font-medium text-gray-700 mb-1">Date Posted</label>
+          <select id="date-filter" name="date"
+            class="w-full rounded-lg border-gray-200 py-2.5 px-3 focus:ring-blue-200 focus:border-blue-500">
+            <option value="all">All Dates</option>
+            {% for date in unique_dates %}
+            <option value="{{ date }}" {% if date==selected_date %}selected{% endif %}>{{ date }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <!-- Per Page -->
+        <div>
+          <label for="per-page" class="block text-sm font-medium text-gray-700 mb-1">Results Per Page</label>
+          <select id="per-page" name="per_page"
+            class="w-full rounded-lg border-gray-200 py-2.5 px-3 focus:ring-blue-200 focus:border-blue-500">
+            <option value="10" {% if per_page==10 %}selected{% endif %}>10</option>
+            <option value="20" {% if per_page==20 %}selected{% endif %}>20</option>
+            <option value="50" {% if per_page==50 %}selected{% endif %}>50</option>
+            <option value="100" {% if per_page==100 %}selected{% endif %}>100</option>
+          </select>
+        </div>
+
+        <input type="hidden" name="page" value="{{ page }}">
+      </form>
+    </div>
+
+    <!-- Job Count -->
+    <div class="mb-4 text-gray-800 font-medium">
+      {% if selected_remote_mode != "all" or selected_date != "all" %}
+      <span class="text-blue-600">{{ filtered_jobs_count }}</span> filtered jobs
+      {% else %}
+      Showing <span class="text-blue-600">{{ filtered_jobs_count }}</span> jobs
+      {% endif %}
+      <span class="text-gray-500 text-sm">(of {{ total_jobs }} total)</span>
+    </div>
+
+    <!-- Job Listings -->
+    <div class="table-container" id="job-table">
+      {% if jobs|length > 0 %}
+      <table class="min-w-full text-sm">
+        <thead>
+          <tr>
+            <th class="px-6 py-4 text-left">Job Title</th>
+            <th class="px-6 py-4 text-left">Company</th>
+            <th class="px-6 py-4 text-left">Info</th>
+            <th class="px-6 py-4 text-right">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for job in jobs %}
+          <tr class="table-row">
+            <td class="px-6 py-4">
+              <div class="font-semibold">{{ job.title }}</div>
+              <div class="flex gap-2 mt-2">
+                <span class="badge badge-remote">{{ job.remote_mode | capitalize }}</span>
+                {% if job.daily_salary %}
+                <span class="badge badge-salary">{{ job.daily_salary }}/day</span>
+                {% endif %}
+              </div>
+            </td>
+            <td class="px-6 py-4">
+              <div class="text-gray-800 font-medium">{{ job.company }}</div>
+              <div class="text-gray-500 text-sm">{{ job.location }}</div>
+            </td>
+            <td class="px-6 py-4 text-gray-600">
+              <div>Published: {{ job.published_at | relative_time }}</div>
+              {% if job.daily_salary %}
+              <div>Rate: <span class="font-semibold text-green-600">{{ job.daily_salary }}</span></div>
+              {% endif %}
+            </td>
+            <td class="px-6 py-4 text-right space-y-2">
+              <a href="/jobs/freework/{{ job.id }}"
+                class="btn-primary px-4 py-2 rounded-lg text-sm inline-flex items-center">
+                <i class="fas fa-info-circle mr-2"></i> Details
+              </a>
+              <a href="{{ job.url }}" target="_blank"
+                class="text-sm inline-flex items-center border border-gray-300 px-4 py-2 rounded-lg hover:bg-gray-100">
+                <i class="fas fa-external-link-alt mr-2"></i> Apply
+              </a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <div class="text-center py-12 text-gray-500">
+        <p class="text-xl font-semibold mb-2">No jobs found</p>
+        <p>Try changing the filters to see results.</p>
+      </div>
+      {% endif %}
+    </div>
+
+    <!-- Pagination -->
+    {% if jobs|length > 0 %}
+    <div class="mt-6 flex justify-between items-center bg-white p-4 border border-gray-200 rounded-lg">
+      <p class="text-sm text-gray-600">
+        Showing <span class="font-medium">{{ ((page - 1) * per_page) + 1 }}</span> to
+        <span class="font-medium">{{ [page * per_page, filtered_jobs_count]|min }}</span> of
+        <span class="font-medium">{{ filtered_jobs_count }}</span> results
+      </p>
+      <div class="flex gap-2">
+        <a href="?remote_mode={{ selected_remote_mode }}&date={{ selected_date }}&page={{ page - 1 if page > 1 else 1 }}&per_page={{ per_page }}"
+          class="px-4 py-2 border rounded text-sm {% if page <= 1 %}text-gray-400 bg-gray-100 cursor-not-allowed{% else %}hover:bg-gray-50{% endif %}">
+          Previous
+        </a>
+        <a href="?remote_mode={{ selected_remote_mode }}&date={{ selected_date }}&page={{ page + 1 if page < total_pages else total_pages }}&per_page={{ per_page }}"
+          class="px-4 py-2 border rounded text-sm {% if page >= total_pages %}text-gray-400 bg-gray-100 cursor-not-allowed{% else %}hover:bg-gray-50{% endif %}">
+          Next
+        </a>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+
+  <!-- Footer -->
+  {% include "partials/footer.html" %}
+
+  <!-- JS for dynamic filter submission -->
+  <script>
+    const debounce = (fn, delay) => {
+      let timeout;
+      return (...args) => {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => fn(...args), delay);
+      };
+    };
+
+    const submitForm = debounce(() => {
+      document.getElementById('filter-form').submit();
+    }, 300);
+
+    ["remote-mode-filter", "date-filter", "per-page"].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.addEventListener('change', () => {
+          if (id === 'per-page') document.querySelector('input[name="page"]').value = 1;
+          submitForm();
+        });
+      }
+    });
+  </script>
+
+</body>
+
+</html>

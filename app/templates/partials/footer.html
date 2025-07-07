@@ -1,0 +1,77 @@
+<footer class="bg-gradient-to-r from-slate-800 to-slate-900 text-white pt-12 pb-8">
+  <div class="max-w-6xl mx-auto px-4">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <!-- Brand Info -->
+      <div class="space-y-4">
+        <div class="flex items-center">
+          <div
+            class="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center text-white mr-3">
+            <i class="fas fa-code text-lg"></i>
+          </div>
+          <h3 class="text-xl font-bold font-heading">Hocine ABED</h3>
+        </div>
+        <p class="text-slate-300">Python Developer & Data Specialist</p>
+        <p class="text-slate-400 text-sm">Creating powerful data solutions through web scraping and backend development.
+        </p>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="space-y-4">
+        <h4 class="text-lg font-semibold text-white">Quick Links</h4>
+        <ul class="space-y-2">
+          <li><a href="#" class="text-slate-400 hover:text-white transition-colors">Home</a></li>
+          <li><a href="#" class="text-slate-400 hover:text-white transition-colors">Projects</a></li>
+          <li><a href="#" class="text-slate-400 hover:text-white transition-colors">Experience</a></li>
+          <li><a href="#" class="text-slate-400 hover:text-white transition-colors">Contact</a></li>
+        </ul>
+      </div>
+
+      <!-- Social & Contact -->
+      <div class="space-y-4">
+        <h4 class="text-lg font-semibold text-white">Connect With Me</h4>
+        <div class="flex space-x-4">
+          <a href="#"
+            class="w-10 h-10 flex items-center justify-center bg-slate-700 hover:bg-blue-600 rounded-full transition-all group">
+            <i class="fab fa-linkedin-in text-white group-hover:scale-110 transition-transform"></i>
+          </a>
+          <a href="#"
+            class="w-10 h-10 flex items-center justify-center bg-slate-700 hover:bg-gray-800 rounded-full transition-all group">
+            <i class="fab fa-github text-white group-hover:scale-110 transition-transform"></i>
+          </a>
+          <a href="#"
+            class="w-10 h-10 flex items-center justify-center bg-slate-700 hover:bg-blue-400 rounded-full transition-all group">
+            <i class="fab fa-twitter text-white group-hover:scale-110 transition-transform"></i>
+          </a>
+          <a href="mailto:abed.hocine@hotmail.com"
+            class="w-10 h-10 flex items-center justify-center bg-slate-700 hover:bg-red-500 rounded-full transition-all group">
+            <i class="fas fa-envelope text-white group-hover:scale-110 transition-transform"></i>
+          </a>
+        </div>
+        <div class="pt-2">
+          <a href="mailto:abed.hocine@hotmail.com"
+            class="text-slate-400 hover:text-white transition-colors text-sm flex items-center">
+            <i class="fas fa-envelope mr-2"></i> abed.hocine@hotmail.com
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Copyright -->
+    <div class="border-t border-slate-700 mt-8 pt-6 text-center">
+      <div class="flex flex-col md:flex-row justify-between items-center">
+        <p class="text-slate-400 text-sm mb-2 md:mb-0">
+          &copy; <span id="current-year">{{ current_year }}</span> Hocine ABED. All rights reserved.
+        </p>
+        <div class="flex space-x-4">
+          <a href="#" class="text-slate-400 hover:text-white text-sm transition-colors">Privacy Policy</a>
+          <a href="#" class="text-slate-400 hover:text-white text-sm transition-colors">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Auto-update copyright year
+  document.getElementById('current-year').textContent = new Date().getFullYear();
+</script>
