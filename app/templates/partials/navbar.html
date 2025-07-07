@@ -1,0 +1,94 @@
+<nav class="bg-white/90 backdrop-blur-md shadow-sm sticky top-0 z-50 border-b border-gray-100">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-16">
+      <!-- Logo/Brand -->
+      <div class="flex-shrink-0 flex items-center">
+        <a href="/" class="flex items-center group">
+          <div
+            class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center mr-2 group-hover:rotate-12 transition-transform">
+            <i class="fas fa-code text-white text-sm"></i>
+          </div>
+          <span
+            class="text-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent font-heading">Hocine
+            ABED</span>
+        </a>
+      </div>
+
+      <!-- Desktop Navigation -->
+      <div class="hidden md:flex items-center space-x-1">
+        <a href="/index"
+          class="px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors relative group">
+          <span>Home</span>
+          <span
+            class="absolute bottom-0 left-1/2 w-0 h-0.5 bg-blue-600 group-hover:w-4/5 group-hover:left-1/10 transition-all duration-300"></span>
+        </a>
+        <a href="/resume"
+          class="px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors relative group">
+          <span>Resume</span>
+          <span
+            class="absolute bottom-0 left-1/2 w-0 h-0.5 bg-blue-600 group-hover:w-4/5 group-hover:left-1/10 transition-all duration-300"></span>
+        </a>
+        <a href="/projects"
+          class="px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors relative group">
+          <span>Projects</span>
+          <span
+            class="absolute bottom-0 left-1/2 w-0 h-0.5 bg-blue-600 group-hover:w-4/5 group-hover:left-1/10 transition-all duration-300"></span>
+        </a>
+        <a href="/contact"
+          class="ml-4 px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-blue-500 to-indigo-600 rounded-md hover:from-blue-600 hover:to-indigo-700 transition-all shadow-sm hover:shadow-md">
+          Contact
+        </a>
+      </div>
+
+      <!-- Mobile menu button -->
+      <div class="md:hidden flex items-center">
+        <button type="button"
+          class="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-blue-600 hover:bg-gray-100 focus:outline-none transition-colors"
+          aria-controls="mobile-menu" aria-expanded="false">
+          <span class="sr-only">Open main menu</span>
+          <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+          <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile menu -->
+  <div class="md:hidden hidden" id="mobile-menu">
+    <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white">
+      <a href="/"
+        class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-white hover:bg-blue-600 transition-colors">Home</a>
+      <a href="/resume"
+        class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-white hover:bg-blue-600 transition-colors">Resume</a>
+      <a href="/projects"
+        class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-white hover:bg-blue-600 transition-colors">Projects</a>
+      <a href="/about"
+        class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-white hover:bg-blue-600 transition-colors">About</a>
+      <a href="/contact"
+        class="block px-3 py-2 rounded-md text-base font-medium text-white bg-gradient-to-r from-blue-500 to-indigo-600 mt-2">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<script>
+  // Mobile menu toggle functionality
+  document.querySelector('[aria-controls="mobile-menu"]').addEventListener('click', function () {
+    const menu = document.getElementById('mobile-menu');
+    const isExpanded = this.getAttribute('aria-expanded') === 'true';
+
+    // Toggle menu visibility
+    menu.classList.toggle('hidden');
+
+    // Toggle hamburger icon
+    this.querySelectorAll('svg').forEach(svg => svg.classList.toggle('hidden'));
+
+    // Update aria-expanded attribute
+    this.setAttribute('aria-expanded', !isExpanded);
+  });
+</script>

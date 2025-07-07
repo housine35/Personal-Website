@@ -1,0 +1,34 @@
+/* Styles de base */
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  line-height: 1.6;
+}
+
+/* Animation pour les cartes de projet */
+.project-card {
+  transition: all 0.3s ease;
+}
+
+/* Styles pour la navigation mobile */
+@media (max-width: 768px) {
+  .mobile-menu {
+    display: none;
+  }
+
+  .mobile-menu.active {
+    display: block;
+  }
+}
+
+/* Styles pour les liens actifs */
+.active-link {
+  color: #2563eb;
+  font-weight: 600;
+}
+
+/* Styles pour les icônes de compétences */
+.skill-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-right: 0.5rem;
+}

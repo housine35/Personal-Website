@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portfolio | Hocine ABED</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            mono: ['Fira Code', 'monospace'],
+          },
+          colors: {
+            primary: '#0f172a',
+            accent: '#38bdf8'
+          },
+          animation: {
+            fadeIn: 'fadeIn 1.5s ease-in-out forwards',
+          },
+          keyframes: {
+            fadeIn: {
+              '0%': { opacity: 0, transform: 'translateY(20px)' },
+              '100%': { opacity: 1, transform: 'translateY(0)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+  <!-- Animate on Scroll -->
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+  <style>
+    .typewriter::after {
+      content: "|";
+      animation: blink 1s infinite;
+    }
+
+    @keyframes blink {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+
+<body class="bg-gray-50 text-gray-800 font-mono scroll-smooth">
+
+  {% include "partials/navbar.html" %}
+
+  <!-- Hero -->
+  <section class="bg-gradient-to-br from-primary to-gray-800 text-white py-24 text-center">
+    <div class="container mx-auto px-6" data-aos="fade-up">
+      <h1 class="text-5xl font-bold mb-4 animate-fadeIn">Welcome, I'm <span class="text-accent">Hocine ABED</span></h1>
+      <p class="text-xl mt-2 text-gray-300 max-w-2xl mx-auto typewriter">
+        Backend developer focused on scalable web scraping, API integration, and AI-powered automation with LangChain, n8n, and
+        custom Python workflows.
+      </p>
+    </div>
+  </section>
+
+  <!-- Summary Section -->
+  <main class="container mx-auto px-6 py-20">
+    <div class="grid md:grid-cols-3 gap-10 text-center">
+      <div class="bg-white/80 backdrop-blur-md p-6 rounded-xl shadow-lg hover:scale-105 transition duration-300"
+        data-aos="fade-up">
+        <i class="fas fa-file-alt text-4xl text-accent mb-4 hover:rotate-6 transition"></i>
+        <h2 class="text-2xl font-bold mb-2">My Resume</h2>
+        <p class="text-gray-600 mb-4">Explore my professional background and skills.</p>
+        <a href="/resume" class="text-accent font-semibold hover:underline">View Resume →</a>
+      </div>
+
+      <div class="bg-white/80 backdrop-blur-md p-6 rounded-xl shadow-lg hover:scale-105 transition duration-300"
+        data-aos="fade-up" data-aos-delay="100">
+        <i class="fas fa-database text-4xl text-accent mb-4 hover:rotate-6 transition"></i>
+        <h2 class="text-2xl font-bold mb-2">Scraping Projects</h2>
+        <p class="text-gray-600 mb-4">Automated data extraction and intelligent analysis.</p>
+        <a href="/projects" class="text-accent font-semibold hover:underline">View Projects →</a>
+      </div>
+
+      <div class="bg-white/80 backdrop-blur-md p-6 rounded-xl shadow-lg hover:scale-105 transition duration-300"
+        data-aos="fade-up" data-aos-delay="200">
+        <i class="fas fa-user-circle text-4xl text-accent mb-4 hover:rotate-6 transition"></i>
+        <h2 class="text-2xl font-bold mb-2">About Me</h2>
+        <p class="text-gray-600 mb-4">Who I am, my passions, and my approach to development.</p>
+        <a href="/contact" class="text-accent font-semibold hover:underline">Learn More →</a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Latest Projects -->
+  <section class="bg-gray-100 py-20">
+    <div class="container mx-auto px-6">
+      <h2 class="text-3xl font-bold text-center mb-12">Latest Projects</h2>
+      <div class="grid md:grid-cols-2 gap-8">
+        <div class="bg-white p-6 rounded-lg shadow-md" data-aos="fade-up">
+          <h3 class="text-xl font-semibold mb-2">LinkedIn Job Analysis</h3>
+          <p class="text-gray-600 mb-3">Scraping, filtering, and visualizing tech job trends.</p>
+          <a href="/jobs/linkedin" class="text-accent font-medium hover:underline">View Project →</a>
+        </div>
+        <!-- Add more projects below -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-primary text-white py-6 mt-16 text-center">
+    <div class="container mx-auto px-4">
+      <p>&copy; {{ current_year }} Hocine ABED - All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- AOS Init -->
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+  <script>
+    AOS.init({
+      duration: 1000,
+      once: true
+    });
+  </script>
+</body>
+
+</html>

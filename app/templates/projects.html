@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projects | Hocine ABED</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Animate.css -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    .gradient-text {
+      background: linear-gradient(to right, #6366f1, #3b82f6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .project-card:hover .project-icon {
+      transform: scale(1.1) rotate(5deg);
+    }
+
+    .section-title {
+      font-size: 2.25rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .section-subtitle {
+      color: #64748b;
+    }
+  </style>
+</head>
+
+<body class="bg-gradient-to-br from-blue-50 via-purple-50 to-white text-gray-800">
+
+  {% include "partials/navbar.html" %}
+
+  <!-- Hero Section -->
+  <section class="bg-gradient-to-r from-indigo-700 to-blue-800 text-white py-20 text-center shadow-lg">
+    <div class="max-w-4xl mx-auto px-4">
+      <h1 class="text-4xl font-bold mb-4">My Web Scraping Projects</h1>
+      <p class="text-lg text-indigo-200">
+        Automating access to structured data for valuable insights and analysis.
+      </p>
+    </div>
+  </section>
+
+  <!-- Project Section -->
+  <section class="container mx-auto px-6 py-24">
+    <div class="text-center mb-16">
+      <h2 class="section-title gradient-text">Recent Projects</h2>
+      <p class="section-subtitle max-w-xl mx-auto">
+        Each project is tailored to extract data efficiently from web platforms and APIs using custom scraping
+        techniques.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-12">
+      <!-- Project Template -->
+      {% set projects = [
+      {
+      "title": "LinkedIn Job scraper",
+      "desc": "A system to extract tech job postings from LinkedIn with filters by country, date, and skills demand
+      analysis.",
+      "tech": ["Python", "BeautifulSoup", "Data Analysis"],
+      "icon": "fab fa-linkedin-in",
+      "color": "blue",
+      "url": "/jobs/linkedin",
+      "date": "2025-06-15"
+      },
+      {
+      "title": "Freework Freelance scraper",
+      "desc": "Scrapes freelance offers, daily rates, remote/hybrid availability, and displays insights in an
+      interactive dashboard.",
+      "tech": ["Scrapy", "Pandas", "Visualization"],
+      "icon": "fas fa-briefcase",
+      "color": "purple",
+      "url": "/jobs/freework",
+      "date": "2025-07-01"
+      },
+      {
+      "title": "Facebook Group Scraping",
+      "desc": "Scrapes posts and metadata from closed Facebook groups using browser authentication techniques.",
+      "tech": ["Selenium", "Cookie Auth"],
+      "icon": "fab fa-facebook-f",
+      "color": "indigo",
+      "url": "/projects/facebook",
+      "date": "2025-01-10"
+      },
+      {
+      "title": "TikTok Data Extraction",
+      "desc": "Extracts post info, comments, follower/following lists from TikTok with API-like flows and rate limit
+      handling.",
+      "tech": ["API Bypass", "Comments", "Followers"],
+      "icon": "fab fa-tiktok",
+      "color": "pink",
+      "url": "/projects/tiktok",
+      "date": "2025-04-22"
+      },
+      {
+      "title": "Gov Data Scraping - Assemblée & Sénat",
+      "desc": "Scrapes legislative data from the Assemblée Nationale and Sénat: bills, votes, profiles, and debates.",
+      "tech": ["Assemblée", "Sénat", "Public API"],
+      "icon": "fas fa-landmark",
+      "color": "yellow",
+      "url": "/projects/gov",
+      "date": "2024-03-12"
+      },
+      {
+      "title": "Sénat Live Subtitle Capture",
+      "desc": "Captures live video subtitles from Sénat de France using OCR and speech recognition tools.",
+      "tech": ["OCR", "Streaming", "Real-time"],
+      "icon": "fas fa-video",
+      "color": "red",
+      "url": "https://github.com/housine35/Aws_Puppeteer",
+      "date": "2025-02-18"
+      }
+      ] %}
+      {% for project in projects %}
+      <div
+        class="project-card bg-white p-8 rounded-2xl shadow-lg border-l-4 border-{{ project.color }}-500 group hover:shadow-xl transition-all duration-300 relative overflow-hidden">
+        <div
+          class="absolute -right-10 -top-10 w-32 h-32 bg-{{ project.color }}-100 rounded-full opacity-20 group-hover:opacity-30 transition-opacity">
+        </div>
+        <div class="flex items-start mb-6">
+          <div
+            class="project-icon bg-{{ project.color }}-100 text-{{ project.color }}-600 p-4 rounded-2xl shadow-sm transition duration-300">
+            <i class="{{ project.icon }} text-2xl"></i>
+          </div>
+          <div class="ml-6">
+            <h3 class="text-2xl font-bold mb-2">{{ project.title }}</h3>
+            <div class="flex flex-wrap gap-2">
+              {% for tech in project.tech %}
+              <span
+                class="px-3 py-1 bg-{{ project.color }}-50 text-{{ project.color }}-600 text-xs font-medium rounded-full">{{
+                tech }}</span>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+        <p class="text-gray-700 mb-6 leading-relaxed">{{ project.desc }}</p>
+        <div class="flex items-center justify-between">
+          <a href="{{ project.url }}"
+            class="inline-flex items-center px-5 py-3 bg-{{ project.color }}-600 text-white rounded-lg hover:bg-{{ project.color }}-700 group-hover:shadow-lg transition">
+            <span>View Project</span>
+            <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+          </a>
+          <div class="text-sm text-gray-500">
+            <i class="fas fa-calendar-alt mr-1"></i> Updated: {{ project.date }}
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="text-center py-12">
+    <h3 class="text-2xl font-semibold mb-4">Need a custom scraping solution?</h3>
+    <a href="/contact"
+      class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-indigo-600 to-blue-600 text-white rounded-full hover:shadow-lg transition-all group">
+      <i class="fas fa-paper-plane mr-2 group-hover:animate-bounce"></i>
+      <span>Get in Touch</span>
+    </a>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-white py-12">
+    <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center">
+      <div class="mb-6 md:mb-0">
+        <h3 class="text-xl font-bold">Hocine ABED</h3>
+        <p class="text-gray-400">Web Scraping & Data Automation Specialist</p>
+      </div>
+      <div class="flex gap-6">
+        <a href="https://www.linkedin.com/in/hocine-abed-33979a27/" target="_blank"
+          class="hover:text-blue-400 transition"><i class="fab fa-linkedin text-lg"></i></a>
+        <a href="https://github.com/housine35" target="_blank" class="hover:text-gray-400 transition"><i
+            class="fab fa-github text-lg"></i></a>
+        <a href="mailto:your@email.com" class="hover:text-red-400 transition">
+          <i class="fas fa-envelope text-lg"></i>
+        </a>
+      </div>
+    </div>
+    <div class="mt-8 text-center text-sm text-gray-500">
+      &copy; 2025 Hocine ABED — All rights reserved.
+    </div>
+  </footer>
+</body>
+
+</html>
