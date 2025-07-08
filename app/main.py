@@ -22,6 +22,7 @@ app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
+
 # Jinja2 custom filters
 def datetimeformat(value, format="%B %d, %Y %I:%M %p"):
     if isinstance(value, dict) and "$date" in value:
@@ -41,6 +42,7 @@ def datetimeformat(value, format="%B %d, %Y %I:%M %p"):
                 return value
     return value.strftime(format)
 
+
 def relative_time(value):
     if not value:
         logger.warning("No value provided to relative_time filter")
@@ -50,7 +52,7 @@ def relative_time(value):
             try:
                 # Try LinkedIn format (YYYY-MM-DD HH:MM:SS, assume CEST)
                 value = datetime.strptime(value, "%Y-%m-%d %H:%M:%S")
-                value = pytz.timezone('Europe/Paris').localize(value)
+                value = pytz.timezone("Europe/Paris").localize(value)
             except ValueError:
                 try:
                     # Try Freework format (YYYY-MM-DDTHH:MM:SS+ZZZZ)
@@ -66,11 +68,13 @@ def relative_time(value):
                 return "Unknown"
         # Ensure timezone-aware in Europe/Paris
         if value.tzinfo is None:
-            logger.warning(f"Timezone-naive date detected: {value}, assuming Europe/Paris")
-            value = pytz.timezone('Europe/Paris').localize(value)
+            logger.warning(
+                f"Timezone-naive date detected: {value}, assuming Europe/Paris"
+            )
+            value = pytz.timezone("Europe/Paris").localize(value)
         else:
-            value = value.astimezone(pytz.timezone('Europe/Paris'))
-        now = datetime.now(pytz.timezone('Europe/Paris'))
+            value = value.astimezone(pytz.timezone("Europe/Paris"))
+        now = datetime.now(pytz.timezone("Europe/Paris"))
         # Cap future dates to now
         if value > now:
             logger.warning(f"Future date detected, capping to now: {value}")
@@ -95,6 +99,7 @@ def relative_time(value):
         logger.error(f"Error parsing date {value}: {str(e)}")
         return "Unknown"
 
+
 templates.env.filters["datetimeformat"] = datetimeformat
 templates.env.filters["relative_time"] = relative_time
 
@@ -108,13 +113,16 @@ if not MONGO_URI:
     raise ValueError("MONGO_URI environment variable is not set")
 
 # Validate MONGO_DB name
-if not MONGO_DB or not re.match(r'^[a-zA-Z0-9_-]+$', MONGO_DB):
-    raise ValueError("MONGO_DB name is invalid; it must contain only letters, numbers, underscores, or hyphens")
+if not MONGO_DB or not re.match(r"^[a-zA-Z0-9_-]+$", MONGO_DB):
+    raise ValueError(
+        "MONGO_DB name is invalid; it must contain only letters, numbers, underscores, or hyphens"
+    )
 
 client = AsyncIOMotorClient(MONGO_URI)
 db = client[MONGO_DB]
 linkedin_collection = db[MONGO_COLLECTION_LINKEDIN]
 freework_collection = db[MONGO_COLLECTION_FREEWORK]
+
 
 class Job(BaseModel):
     url: str
@@ -129,6 +137,7 @@ class Job(BaseModel):
     remote_mode: Optional[str] = None
     daily_salary: Optional[str] = None
 
+
 @app.get("/jobs/linkedin", response_class=HTMLResponse)
 async def read_linkedin_jobs(
     request: Request,
@@ -136,7 +145,7 @@ async def read_linkedin_jobs(
     continent: Optional[str] = None,
     date: Optional[str] = None,
     page: int = 1,
-    per_page: int = 20
+    per_page: int = 20,
 ):
     query = {}
     if country and country != "all":
@@ -153,7 +162,7 @@ async def read_linkedin_jobs(
                 "posting_time_dt": {
                     "$dateFromString": {
                         "dateString": "$posting_time",
-                        "format": "%Y-%m-%d %H:%M:%S"
+                        "format": "%Y-%m-%d %H:%M:%S",
                     }
                 }
             }
@@ -161,7 +170,7 @@ async def read_linkedin_jobs(
         {"$sort": {"posting_time_dt": -1}},
         {"$project": {"posting_time_dt": 0}},
         {"$skip": (page - 1) * per_page},
-        {"$limit": per_page}
+        {"$limit": per_page},
     ]
 
     jobs = [doc async for doc in linkedin_collection.aggregate(pipeline)]
@@ -169,16 +178,25 @@ async def read_linkedin_jobs(
     total_pages = (total_jobs + per_page - 1) // per_page
 
     unique_countries = sorted(
-        {doc["country"] async for doc in linkedin_collection.find({"country": {"$ne": None}})},
-        key=lambda x: x or ""
+        {
+            doc["country"]
+            async for doc in linkedin_collection.find({"country": {"$ne": None}})
+        },
+        key=lambda x: x or "",
     )
     unique_continents = sorted(
-        {doc["continent"] async for doc in linkedin_collection.find({"continent": {"$ne": None}})},
-        key=lambda x: x or ""
+        {
+            doc["continent"]
+            async for doc in linkedin_collection.find({"continent": {"$ne": None}})
+        },
+        key=lambda x: x or "",
     )
     unique_dates = sorted(
-        {doc["posting_time"][:10] async for doc in linkedin_collection.find({"posting_time": {"$ne": None}})},
-        reverse=True
+        {
+            doc["posting_time"][:10]
+            async for doc in linkedin_collection.find({"posting_time": {"$ne": None}})
+        },
+        reverse=True,
     )
 
     return templates.TemplateResponse(
@@ -196,9 +214,10 @@ async def read_linkedin_jobs(
             "filtered_jobs_count": len(jobs),
             "page": page,
             "per_page": per_page,
-            "total_pages": total_pages
-        }
+            "total_pages": total_pages,
+        },
     )
+
 
 @app.get("/jobs/freework", response_class=HTMLResponse)
 async def read_freework_jobs(
@@ -207,7 +226,7 @@ async def read_freework_jobs(
     date: Optional[str] = None,
     type: Optional[str] = None,
     page: int = 1,
-    per_page: int = 20
+    per_page: int = 20,
 ):
     query = {}
     if remote_mode and remote_mode != "all":
@@ -224,7 +243,7 @@ async def read_freework_jobs(
                 "published_at_dt": {
                     "$dateFromString": {
                         "dateString": "$published_at",
-                        "format": "%Y-%m-%dT%H:%M:%S%z"
+                        "format": "%Y-%m-%dT%H:%M:%S%z",
                     }
                 }
             }
@@ -232,7 +251,7 @@ async def read_freework_jobs(
         {"$sort": {"published_at_dt": -1}},
         {"$project": {"published_at_dt": 0}},
         {"$skip": (page - 1) * per_page},
-        {"$limit": per_page}
+        {"$limit": per_page},
     ]
 
     jobs = [doc async for doc in freework_collection.aggregate(pipeline)]
@@ -240,12 +259,18 @@ async def read_freework_jobs(
     total_pages = (total_jobs + per_page - 1) // per_page
 
     unique_remote_modes = sorted(
-        {doc["remote_mode"] async for doc in freework_collection.find({"remote_mode": {"$ne": None}})},
-        key=lambda x: x or ""
+        {
+            doc["remote_mode"]
+            async for doc in freework_collection.find({"remote_mode": {"$ne": None}})
+        },
+        key=lambda x: x or "",
     )
     unique_dates = sorted(
-        {doc["published_at"][:10] async for doc in freework_collection.find({"published_at": {"$ne": None}})},
-        reverse=True
+        {
+            doc["published_at"][:10]
+            async for doc in freework_collection.find({"published_at": {"$ne": None}})
+        },
+        reverse=True,
     )
 
     return templates.TemplateResponse(
@@ -262,9 +287,10 @@ async def read_freework_jobs(
             "filtered_jobs_count": len(jobs),
             "page": page,
             "per_page": per_page,
-            "total_pages": total_pages
-        }
+            "total_pages": total_pages,
+        },
     )
+
 
 @app.get("/jobs/freework/{job_id}", response_class=HTMLResponse)
 async def read_freework_job_detail(request: Request, job_id: str, return_page: int = 1):
@@ -276,10 +302,12 @@ async def read_freework_job_detail(request: Request, job_id: str, return_page: i
     if not job:
         raise HTTPException(status_code=404, detail="Job not found")
 
-    similar_jobs = [doc async for doc in freework_collection.find({
-        "remote_mode": job.get("remote_mode"),
-        "id": {"$ne": job["id"]}
-    }).limit(3)]
+    similar_jobs = [
+        doc
+        async for doc in freework_collection.find(
+            {"remote_mode": job.get("remote_mode"), "id": {"$ne": job["id"]}}
+        ).limit(3)
+    ]
 
     return templates.TemplateResponse(
         "jobs/freework_detail.html",
@@ -287,28 +315,32 @@ async def read_freework_job_detail(request: Request, job_id: str, return_page: i
             "request": request,
             "job": job,
             "similar_jobs": similar_jobs,
-            "return_page": return_page
-        }
+            "return_page": return_page,
+        },
     )
+
 
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
     return templates.TemplateResponse("intro.html", {"request": request})
 
+
 @app.get("/index", response_class=HTMLResponse)
 async def index(request: Request):
-    return templates.TemplateResponse("index.html", {
-        "request": request,
-        "current_year": datetime.now().year
-    })
+    return templates.TemplateResponse(
+        "index.html", {"request": request, "current_year": datetime.now().year}
+    )
+
 
 @app.get("/resume", response_class=HTMLResponse)
 async def resume(request: Request):
     return templates.TemplateResponse("resume.html", {"request": request})
 
+
 @app.get("/contact", response_class=HTMLResponse)
 async def contact(request: Request):
     return templates.TemplateResponse("contact.html", {"request": request})
+
 
 @app.get("/projects", response_class=HTMLResponse)
 async def projects(request: Request):
