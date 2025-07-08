@@ -205,6 +205,7 @@ async def read_freework_jobs(
     request: Request,
     remote_mode: Optional[str] = None,
     date: Optional[str] = None,
+    type: Optional[str] = None,
     page: int = 1,
     per_page: int = 20
 ):
@@ -213,6 +214,8 @@ async def read_freework_jobs(
         query["remote_mode"] = remote_mode
     if date and date != "all":
         query["published_at"] = {"$regex": f"^{date}", "$options": "i"}
+    if type == "scraping":
+        query["scraping"] = True
 
     pipeline = [
         {"$match": query},
@@ -254,6 +257,7 @@ async def read_freework_jobs(
             "unique_dates": unique_dates,
             "selected_remote_mode": remote_mode or "all",
             "selected_date": date or "all",
+            "selected_type": type or "all",
             "total_jobs": total_jobs,
             "filtered_jobs_count": len(jobs),
             "page": page,
