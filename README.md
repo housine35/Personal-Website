@@ -36,8 +36,8 @@ Create a scraping database with linkedin and freework collections.
 Whitelist your IP in Atlas.
 Create .env:MONGO_URI=mongodb+srv://<username>:<password>@cluster0.ypgrqjo.mongodb.net/scraping?retryWrites=true&w=majority
 MONGO_DB=scraping
-MONGO_COLLECTION_LINKEDIN=linkedin
-MONGO_COLLECTION_FREEWORK=freework
+MONGO_COLLECTION_LINKEDIN=
+MONGO_COLLECTION_FREEWORK=
 
 
 
@@ -53,7 +53,7 @@ pip install -r requirements.txt
 Local
 uvicorn app.main:app --host 0.0.0.0 --port 8000
 
-## Visit http://localhost:8000.
+## Visit https://portfolio-hocine-abed.onrender.com/
 Docker
 docker build -t hocine-abed-portfolio .
 docker run --env-file .env -p 8000:8000 hocine-abed-portfolio
@@ -72,25 +72,6 @@ Remove COPY .env . from Dockerfile.
 Deploy.
 
 
-
-Structure
-├── app
-│   ├── main.py
-│   ├── static/css/style.css
-│   ├── templates
-│   │   ├── contact.html
-│   │   ├── index.html
-│   │   ├── intro.html
-│   │   ├── jobs/freework.html
-│   │   ├── jobs/freework_detail.html
-│   │   ├── jobs/linkedin.html
-│   │   ├── partials/footer.html
-│   │   ├── partials/navbar.html
-│   │   ├── projects.html
-│   │   └── resume.html
-├── Dockerfile
-├── requirements.txt
-└── .env
 
 MongoDB Setup
 
