@@ -5,7 +5,7 @@
       <div class="flex-shrink-0 flex items-center">
         <a href="/" class="flex items-center group">
           <div
-            class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center mr-2 group-hover:rotate-12 transition-transform">
+            class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center mr-2 group-hover:rotate-12 transition-transform duration-300">
             <i class="fas fa-code text-white text-sm"></i>
           </div>
           <span
@@ -17,38 +17,62 @@
       <!-- Desktop Navigation -->
       <div class="hidden md:flex items-center space-x-1">
         <a href="/index"
-          class="px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors relative group">
+          class="px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors duration-200 relative group">
           <span>Home</span>
           <span
             class="absolute bottom-0 left-1/2 w-0 h-0.5 bg-blue-600 group-hover:w-4/5 group-hover:left-1/10 transition-all duration-300"></span>
         </a>
         <a href="/resume"
-          class="px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors relative group">
+          class="px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors duration-200 relative group">
           <span>Resume</span>
           <span
             class="absolute bottom-0 left-1/2 w-0 h-0.5 bg-blue-600 group-hover:w-4/5 group-hover:left-1/10 transition-all duration-300"></span>
         </a>
-        <a href="/projects"
-          class="px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors relative group">
-          <span>Projects</span>
-          <span
-            class="absolute bottom-0 left-1/2 w-0 h-0.5 bg-blue-600 group-hover:w-4/5 group-hover:left-1/10 transition-all duration-300"></span>
-        </a>
+        <!-- Projects Dropdown -->
+        <div class="relative group" id="projects-dropdown">
+          <button
+            class="px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors duration-200 flex items-center focus:outline-none"
+            aria-expanded="false" aria-haspopup="true">
+            <span>Projects</span>
+            <svg class="ml-1 w-4 h-4 text-gray-500 group-hover:text-blue-600 transition-transform duration-200"
+              xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          <!-- Dropdown menu -->
+          <div id="projects-menu"
+            class="absolute left-0 hidden mt-2 w-48 bg-white border border-gray-300 rounded-md shadow-lg z-50 group-focus-within:block group-hover:block">
+            <a href="/projects"
+              class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-100 hover:text-blue-700 transition-all duration-150">
+              All Projects
+            </a>
+            <a href="/jobs/linkedin"
+              class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-100 hover:text-blue-700 transition-all duration-150 flex items-center">
+              <img src="https://get-picto.com/wp-content/uploads/2023/02/Linkedin-logo-black.webp" alt="LinkedIn Logo"
+                class="inline-block w-5 h-5 mr-2"> Find Your Job (LinkedIn)
+            </a>
+            <a href="/jobs/freework"
+              class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-100 hover:text-blue-700 transition-all duration-150 flex items-center">
+              <img src="https://www.free-work.com/assets/logos/free-work.png" alt="Freework Logo"
+                class="inline-block w-5 h-5 mr-2"> Find Your Job (Freework)
+            </a>
+            <a href="https://tiktok-scraper-yt8p.onrender.com/"
+              class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-100 hover:text-blue-700 transition-all duration-150 flex items-center">
+              <img src="https://e7.pngegg.com/pngimages/588/462/png-clipart-tiktok-logo-paint-social-media-icons.png"
+                alt="TikTok Logo" class="inline-block w-5 h-5 mr-2"> TikTok Scraper
+            </a>
+          </div>
+        </div>
         <a href="/contact"
-          class="ml-4 px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-blue-500 to-indigo-600 rounded-md hover:from-blue-600 hover:to-indigo-700 transition-all shadow-sm hover:shadow-md">
+          class="ml-4 px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-blue-500 to-indigo-600 rounded-md hover:from-blue-600 hover:to-indigo-700 transition-all duration-200 shadow-sm hover:shadow-md">
           Contact
-        </a>
-        <a href="/jobs/freework"
-          class="ml-2 px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-indigo-700 rounded-md hover:from-blue-700 hover:to-indigo-800 transition-all shadow-sm hover:shadow-md hover:scale-105 flex items-center">
-          <span>Find Your Job</span>
-          <span class="ml-1">🔥</span>
         </a>
       </div>
 
       <!-- Mobile menu button -->
       <div class="md:hidden flex items-center">
         <button type="button"
-          class="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-blue-600 hover:bg-gray-100 focus:outline-none transition-colors"
+          class="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-blue-600 hover:bg-gray-100 focus:outline-none transition-colors duration-200"
           aria-controls="mobile-menu" aria-expanded="false">
           <span class="sr-only">Open main menu</span>
           <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -68,16 +92,43 @@
   <div class="md:hidden hidden" id="mobile-menu">
     <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white">
       <a href="/index"
-        class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-white hover:bg-blue-600 transition-colors">Home</a>
+        class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-white hover:bg-blue-600 transition-colors duration-150">Home</a>
       <a href="/resume"
-        class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-white hover:bg-blue-600 transition-colors">Resume</a>
-      <a href="/projects"
-        class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-white hover:bg-blue-600 transition-colors">Projects</a>
-      <a href="/jobs/freework"
-        class="block px-3 py-2 rounded-md text-base font-medium text-white bg-gradient-to-r from-blue-600 to-indigo-700 mt-2 flex items-center">
-        <span>Find Your Job</span>
-        <span class="ml-1">🔥</span>
-      </a>
+        class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-white hover:bg-blue-600 transition-colors duration-150">Resume</a>
+      <!-- Mobile Projects Dropdown -->
+      <div class="relative">
+        <button
+          class="w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-white hover:bg-blue-600 transition-colors duration-150 flex items-center"
+          aria-controls="mobile-projects-menu" aria-expanded="false">
+          <span>Projects</span>
+          <svg class="ml-1 w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+        <div class="hidden pl-4" id="mobile-projects-menu">
+          <a href="/projects"
+            class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-white hover:bg-blue-600 transition-colors duration-150">All
+            Projects</a>
+          <a href="/jobs/linkedin"
+            class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-white hover:bg-blue-600 transition-colors duration-150 flex items-center">
+            <img src="https://get-picto.com/wp-content/uploads/2023/02/Linkedin-logo-black.webp" alt="LinkedIn Logo"
+              class="inline-block w-5 h-5 mr-2"> Find Your Job (LinkedIn)
+          </a>
+          <a href="/jobs/freework"
+            class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-white hover:bg-blue-600 transition-colors duration-150 flex items-center">
+            <img src="https://www.free-work.com/assets/logos/free-work.png" alt="Freework Logo"
+              class="inline-block w-5 h-5 mr-2"> Find Your Job (Freework)
+          </a>
+          <a href="https://tiktok-scraper-yt8p.onrender.com/"
+            class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-white hover:bg-blue-600 transition-colors duration-150 flex items-center">
+            <img src="https://e7.pngegg.com/pngimages/588/462/png-clipart-tiktok-logo-paint-social-media-icons.png"
+              alt="TikTok Logo" class="inline-block w-5 h-5 mr-2"> TikTok Scraper
+          </a>
+        </div>
+      </div>
+      <a href="/about"
+        class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-white hover:bg-blue-600 transition-colors duration-150">About</a>
       <a href="/contact"
         class="block px-3 py-2 rounded-md text-base font-medium text-white bg-gradient-to-r from-blue-500 to-indigo-600 mt-2">Contact</a>
     </div>
@@ -85,18 +136,46 @@
 </nav>
 
 <script>
-  // Mobile menu toggle functionality
-  document.querySelector('[aria-controls="mobile-menu"]').addEventListener('click', function () {
-    const menu = document.getElementById('mobile-menu');
-    const isExpanded = this.getAttribute('aria-expanded') === 'true';
+  // Mobile menu toggle
+  const mobileMenuButton = document.querySelector('[aria-controls="mobile-menu"]');
+  const mobileMenu = document.getElementById('mobile-menu');
+  mobileMenuButton.addEventListener('click', () => {
+    const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
+    mobileMenu.classList.toggle('hidden');
+    mobileMenuButton.querySelectorAll('svg').forEach(svg => svg.classList.toggle('hidden'));
+    mobileMenuButton.setAttribute('aria-expanded', !isExpanded);
+  });
 
-    // Toggle menu visibility
-    menu.classList.toggle('hidden');
+  // Desktop dropdown toggle
+  const projectsDropdown = document.getElementById('projects-dropdown');
+  const projectsMenu = document.getElementById('projects-menu');
+  projectsDropdown.addEventListener('mouseenter', () => {
+    projectsMenu.classList.remove('hidden');
+    projectsDropdown.querySelector('button').setAttribute('aria-expanded', 'true');
+  });
+  projectsDropdown.addEventListener('mouseleave', () => {
+    projectsMenu.classList.add('hidden');
+    projectsDropdown.querySelector('button').setAttribute('aria-expanded', 'false');
+  });
 
-    // Toggle hamburger icon
-    this.querySelectorAll('svg').forEach(svg => svg.classList.toggle('hidden'));
+  // Mobile projects dropdown toggle
+  const mobileProjectsButton = document.querySelector('[aria-controls="mobile-projects-menu"]');
+  const mobileProjectsMenu = document.getElementById('mobile-projects-menu');
+  mobileProjectsButton.addEventListener('click', () => {
+    const isExpanded = mobileProjectsButton.getAttribute('aria-expanded') === 'true';
+    mobileProjectsMenu.classList.toggle('hidden');
+    mobileProjectsButton.setAttribute('aria-expanded', !isExpanded);
+  });
 
-    // Update aria-expanded attribute
-    this.setAttribute('aria-expanded', !isExpanded);
+  // Close dropdowns when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!projectsDropdown.contains(e.target)) {
+      projectsMenu.classList.add('hidden');
+      projectsDropdown.querySelector('button').setAttribute('aria-expanded', 'false');
+    }
+    if (!mobileProjectsButton.contains(e.target) && !mobileProjectsMenu.contains(e.target)) {
+      mobileProjectsMenu.classList.add('hidden');
+      mobileProjectsButton.setAttribute('aria-expanded', 'false');
+    }
   });
 </script>

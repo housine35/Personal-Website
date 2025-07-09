@@ -63,7 +63,6 @@
 </head>
 
 <body class="bg-gray-50 text-gray-800 font-mono scroll-smooth">
-
   {% include "partials/navbar.html" %}
 
   <!-- Hero -->
@@ -71,7 +70,8 @@
     <div class="container mx-auto px-6" data-aos="fade-up">
       <h1 class="text-5xl font-bold mb-4 animate-fadeIn">Welcome, I'm <span class="text-accent">Hocine ABED</span></h1>
       <p class="text-xl mt-2 text-gray-300 max-w-2xl mx-auto typewriter">
-        Backend developer focused on scalable web scraping, API integration, and AI-powered automation with LangChain, n8n, and
+        Backend developer focused on scalable web scraping, API integration, and AI-powered automation with LangChain,
+        n8n, and
         custom Python workflows.
       </p>
     </div>
@@ -110,13 +110,43 @@
   <section class="bg-gray-100 py-20">
     <div class="container mx-auto px-6">
       <h2 class="text-3xl font-bold text-center mb-12">Latest Projects</h2>
-      <div class="grid md:grid-cols-2 gap-8">
-        <div class="bg-white p-6 rounded-lg shadow-md" data-aos="fade-up">
-          <h3 class="text-xl font-semibold mb-2">LinkedIn Job Analysis</h3>
-          <p class="text-gray-600 mb-3">Scraping, filtering, and visualizing tech job trends.</p>
-          <a href="/jobs/linkedin" class="text-accent font-medium hover:underline">View Project →</a>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg hover:scale-105 transition duration-300"
+          data-aos="fade-up">
+          <h3 class="text-xl font-semibold mb-2 flex items-center">
+            <img src="https://get-picto.com/wp-content/uploads/2023/02/Linkedin-logo-black.webp" alt="LinkedIn Logo"
+              class="w-6 h-6 mr-2">
+            Find Your Job (LinkedIn)
+          </h3>
+          <p class="text-gray-600 mb-4">Scraping, filtering, and visualizing tech job trends from LinkedIn.</p>
+          <a href="/jobs/linkedin" class="text-accent font-medium hover:underline flex items-center">
+            View Project <i class="fas fa-arrow-right ml-2"></i>
+          </a>
         </div>
-        <!-- Add more projects below -->
+        <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg hover:scale-105 transition duration-300"
+          data-aos="fade-up" data-aos-delay="100">
+          <h3 class="text-xl font-semibold mb-2 flex items-center">
+            <img src="https://www.free-work.com/assets/logos/free-work.png" alt="Freework Logo" class="w-6 h-6 mr-2">
+            Find Your Job (Freework)
+          </h3>
+          <p class="text-gray-600 mb-4">Exploring freelance opportunities with Freework job data.</p>
+          <a href="/jobs/freework" class="text-accent font-medium hover:underline flex items-center">
+            View Project <i class="fas fa-arrow-right ml-2"></i>
+          </a>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg hover:scale-105 transition duration-300"
+          data-aos="fade-up" data-aos-delay="200">
+          <h3 class="text-xl font-semibold mb-2 flex items-center">
+            <img src="https://e7.pngegg.com/pngimages/588/462/png-clipart-tiktok-logo-paint-social-media-icons.png"
+              alt="TikTok Logo" class="w-6 h-6 mr-2">
+            TikTok Scraper
+          </h3>
+          <p class="text-gray-600 mb-4">Automated data extraction from TikTok.</p>
+          <a href="https://tiktok-scraper-yt8p.onrender.com/"
+            class="text-accent font-medium hover:underline flex items-center">
+            View Project <i class="fas fa-arrow-right ml-2"></i>
+          </a>
+        </div>
       </div>
     </div>
   </section>
@@ -124,7 +154,7 @@
   <!-- Footer -->
   <footer class="bg-primary text-white py-6 mt-16 text-center">
     <div class="container mx-auto px-4">
-      <p>&copy; {{ current_year }} Hocine ABED - All rights reserved.</p>
+      <p>© {{ current_year }} Hocine ABED - All rights reserved.</p>
     </div>
   </footer>
 

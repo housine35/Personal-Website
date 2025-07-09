@@ -8,19 +8,43 @@
 
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            mono: ['Fira Code', 'monospace'],
+            grotesk: ['Space Grotesk', 'sans-serif']
+          },
+          colors: {
+            primary: '#0f172a',
+            accent: '#38bdf8'
+          },
+          animation: {
+            fadeIn: 'fadeIn 1.5s ease-in-out forwards',
+          },
+          keyframes: {
+            fadeIn: {
+              '0%': { opacity: 0, transform: 'translateY(20px)' },
+              '100%': { opacity: 1, transform: 'translateY(0)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+    rel="stylesheet" />
 
   <!-- Font Awesome -->
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap"
-    rel="stylesheet" />
+  <!-- Animate on Scroll -->
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
 
   <style>
-    body {
-      font-family: 'Space Grotesk', sans-serif;
-    }
-
     .gradient-text {
       background: linear-gradient(to right, #6366f1, #3b82f6);
       -webkit-background-clip: text;
@@ -29,30 +53,31 @@
   </style>
 </head>
 
-<body class="bg-gradient-to-br from-blue-50 via-purple-50 to-white text-gray-800">
-
+<body class="bg-gray-50 text-gray-800 font-grotesk scroll-smooth">
   {% include "partials/navbar.html" %}
 
   <!-- Main Content -->
-  <main class="max-w-4xl mx-auto px-6 py-20">
-    <section class="bg-white p-10 rounded-2xl shadow-xl">
+  <main class="max-w-5xl mx-auto px-6 py-20">
+    <section class="bg-white p-8 sm:p-10 rounded-2xl shadow-xl" data-aos="fade-up">
       <div class="flex flex-col md:flex-row items-center gap-8 mb-10">
         <img
           src="https://media.licdn.com/dms/image/v2/D4E03AQHsoy8Ka5YIng/profile-displayphoto-shrink_200_200/B4EZWjkFfyGgAY-/0/1742205901350?e=2147483647&v=beta&t=gpD57rl_Im2DnjGSpE7SzdLxwTa3pDU6zmBXE9WYhmA"
           alt="Profile picture of Hocine ABED"
-          class="w-40 h-40 rounded-full object-cover border-4 border-blue-500 shadow-md" />
-        <div>
-          <h1 class="text-3xl font-bold text-gray-900 mb-1">Hocine ABED</h1>
-          <p class="text-lg text-gray-600">Python Developer • Web Scraping & Data Automation</p>
-          <div class="flex gap-4 text-2xl mt-3">
+          class="w-32 h-32 sm:w-40 sm:h-40 rounded-full object-cover border-4 border-accent shadow-md hover:scale-105 transition duration-300" />
+        <div class="text-center md:text-left">
+          <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-2 gradient-text">Hocine ABED</h1>
+          <p class="text-lg text-gray-600 mb-4">Python & JavaScript Developer • Web Scraping & Data Automation</p>
+          <div class="flex justify-center md:justify-start gap-6 text-2xl">
             <a href="https://www.linkedin.com/in/hocine-abed-33979a27/" target="_blank"
-              class="text-blue-600 hover:text-blue-800 transition">
+              class="text-accent hover:text-blue-800 transition hover:scale-110">
               <i class="fab fa-linkedin"></i>
             </a>
-            <a href="https://github.com/housine35" target="_blank" class="text-gray-800 hover:text-gray-600 transition">
+            <a href="https://github.com/housine35" target="_blank"
+              class="text-gray-800 hover:text-gray-600 transition hover:scale-110">
               <i class="fab fa-github"></i>
             </a>
-            <a href="mailto:abedhocine.dev@gmail.com" class="text-red-500 hover:text-red-700 transition">
+            <a href="mailto:abedhocine.dev@gmail.com"
+              class="text-red-500 hover:text-red-700 transition hover:scale-110">
               <i class="fas fa-envelope"></i>
             </a>
           </div>
@@ -62,36 +87,56 @@
       <!-- Bio -->
       <div class="space-y-12">
         <!-- About -->
-        <section>
-          <h2 class="text-2xl font-semibold text-blue-700 mb-3">About Me</h2>
-          <p class="text-gray-700 leading-relaxed">
-            I specialize in web scraping, automation, and data processing with Python. I build tools that extract,
-            clean, and transform web data into usable insights — from job offers to public policy datasets.
+        <section data-aos="fade-up" data-aos-delay="100">
+          <h2 class="text-2xl font-semibold text-accent mb-4">About Me</h2>
+          <p class="text-gray-700 leading-relaxed text-base sm:text-lg">
+            I’m a passionate developer specializing in web scraping and data automation, leveraging both Python
+            (Selenium, Playwright, Scrapy, BeautifulSoup) and JavaScript (Node.js, Puppeteer) to build robust, scalable
+            solutions. My projects focus on extracting, cleaning, and transforming web data into actionable insights,
+            from job market trends to social media analytics. Explore my work on <a href="https://github.com/housine35"
+              target="_blank" class="text-accent hover:underline">GitHub</a> to see my latest contributions.
           </p>
         </section>
 
         <!-- Skills -->
-        <section>
-          <h2 class="text-2xl font-semibold text-blue-700 mb-3">Skills & Tools</h2>
-          <ul class="grid md:grid-cols-2 gap-x-6 list-disc list-inside text-gray-700 leading-relaxed">
-            <li>Python (Scrapy, BeautifulSoup, Selenium)</li>
+        <section data-aos="fade-up" data-aos-delay="200">
+          <h2 class="text-2xl font-semibold text-accent mb-4">Skills & Tools</h2>
+          <ul
+            class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 list-disc list-inside text-gray-700 text-base sm:text-lg leading-relaxed">
+            <li>Python (Selenium, Playwright, Scrapy, BeautifulSoup)</li>
+            <li>JavaScript (Node.js, Puppeteer)</li>
             <li>Pandas, NumPy, Matplotlib</li>
             <li>FastAPI, Flask (REST APIs)</li>
             <li>MongoDB, PostgreSQL</li>
             <li>Automation (CRON, scripts)</li>
-            <li>Git, Docker, Linux (basics)</li>
+            <li>Git, GitHub</li>
+            <li>Docker, Linux</li>
           </ul>
         </section>
 
         <!-- Contact -->
-        <section>
-          <h2 class="text-2xl font-semibold text-blue-700 mb-3">Contact Details</h2>
-          <ul class="text-gray-700 space-y-2">
-            <li><strong>📧 Email:</strong> <a href="mailto:abedhocine.dev@gmail.com"
-                class="text-blue-600 hover:underline">abed.hocine@hotmail.com</a></li>
-            <li><strong>📞 Phone:</strong> <a href="tel:+33662404764" class="text-blue-600 hover:underline">(+33) 06 62
-                40 47 64</a></li>
-            <li><strong>🌍 Location:</strong> France — Open to remote work</li>
+        <section data-aos="fade-up" data-aos-delay="300">
+          <h2 class="text-2xl font-semibold text-accent mb-4">Contact Details</h2>
+          <ul class="text-gray-700 space-y-3 text-base sm:text-lg">
+            <li class="flex items-center">
+              <i class="fas fa-envelope text-accent mr-3"></i>
+              <strong>Email:</strong> <a href="mailto:abedhocine.dev@gmail.com"
+                class="text-accent hover:underline ml-2">abed.hocine@hotmail.com</a>
+            </li>
+            <li class="flex items-center">
+              <i class="fas fa-phone text-accent mr-3"></i>
+              <strong>Phone:</strong> <a href="tel:+33662404764" class="text-accent hover:underline ml-2">(+33) 06 62
+                40 47 64</a>
+            </li>
+            <li class="flex items-center">
+              <i class="fas fa-globe text-accent mr-3"></i>
+              <strong>Location:</strong> <span class="ml-2">France — Open to remote work</span>
+            </li>
+            <li class="flex items-center">
+              <i class="fab fa-github text-accent mr-3"></i>
+              <strong>GitHub:</strong> <a href="https://github.com/housine35" target="_blank"
+                class="text-accent hover:underline ml-2">github.com/housine35</a>
+            </li>
           </ul>
         </section>
       </div>
@@ -99,10 +144,20 @@
   </main>
 
   <!-- Footer -->
-  <footer class="bg-gray-900 text-white text-center py-6 mt-20">
-    <p>&copy; 2025 Hocine ABED — All rights reserved.</p>
+  <footer class="bg-primary text-white py-6 mt-16 text-center">
+    <div class="container mx-auto px-4">
+      <p>© {{ current_year }} Hocine ABED — All rights reserved.</p>
+    </div>
   </footer>
 
+  <!-- AOS Init -->
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+  <script>
+    AOS.init({
+      duration: 1000,
+      once: true
+    });
+  </script>
 </body>
 
 </html>
