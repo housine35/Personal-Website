@@ -12,7 +12,7 @@ import re
 import logging
 from dotenv import load_dotenv
 from io import BytesIO
-from .utils.utils import generate_jobs_csv  # Relative import
+from utils.utils import generate_jobs_csv  # Updated import
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
