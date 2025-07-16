@@ -12,7 +12,7 @@ import re
 import logging
 from dotenv import load_dotenv
 from io import BytesIO
-from app.utils.utils import generate_jobs_csv
+from .utils.utils import generate_jobs_csv  # Relative import
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -27,7 +27,6 @@ app.mount("/static", StaticFiles(directory=static_dir), name="static")
 # Use absolute path for templates directory
 templates_dir = os.path.join(os.path.dirname(__file__), "templates")
 templates = Jinja2Templates(directory=templates_dir)
-
 
 # Jinja2 custom filters
 def datetimeformat(value, format="%B %d, %Y %I:%M %p"):
@@ -47,7 +46,6 @@ def datetimeformat(value, format="%B %d, %Y %I:%M %p"):
                 logger.error(f"Invalid date format: {value}")
                 return value
     return value.strftime(format)
-
 
 def relative_time(value):
     if not value:
@@ -105,7 +103,6 @@ def relative_time(value):
         logger.error(f"Error parsing date {value}: {str(e)}")
         return "Unknown"
 
-
 templates.env.filters["datetimeformat"] = datetimeformat
 templates.env.filters["relative_time"] = relative_time
 
@@ -131,7 +128,6 @@ linkedin_collection = db[MONGO_COLLECTION_LINKEDIN]
 freework_collection = db[MONGO_COLLECTION_FREEWORK]
 email_collection = db[MONGO_COLLECTION_EMAIL]
 
-
 class Job(BaseModel):
     url: str
     title: str
@@ -145,10 +141,8 @@ class Job(BaseModel):
     remote_mode: Optional[str] = None
     daily_salary: Optional[str] = None
 
-
 class EmailSubmission(BaseModel):
     email: EmailStr
-
 
 @app.get("/jobs/linkedin", response_class=HTMLResponse)
 async def read_linkedin_jobs(
@@ -230,7 +224,6 @@ async def read_linkedin_jobs(
         },
     )
 
-
 @app.get("/jobs/freework", response_class=HTMLResponse)
 async def read_freework_jobs(
     request: Request,
@@ -303,48 +296,44 @@ async def read_freework_jobs(
         },
     )
 
-
 @app.post("/jobs/freework/download-today-with-email")
 async def download_freework_jobs_today_with_email(email: str = Form(...)):
     # Validate email format
-    email_regex = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+    email_regex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
     if not re.match(email_regex, email):
         raise HTTPException(status_code=400, detail="Invalid email address")
 
     # Save email to MongoDB
     try:
-        await email_collection.insert_one(
-            {
-                "email": email,
-                "timestamp": datetime.now(pytz.timezone("Europe/Paris")).isoformat(),
-            }
-        )
+        await email_collection.insert_one({
+            "email": email,
+            "timestamp": datetime.now(pytz.timezone("Europe/Paris")).isoformat()
+        })
     except Exception as e:
         logger.error(f"Failed to save email to MongoDB: {str(e)}")
         raise HTTPException(status_code=500, detail="Failed to save email")
 
     # Get current date in YYYY-MM-DD format (Europe/Paris timezone)
     today = datetime.now(pytz.timezone("Europe/Paris")).strftime("%Y-%m-%d")
-
+    
     # Query for jobs published today
     query = {"published_at": {"$regex": f"^{today}", "$options": "i"}}
     jobs = [doc async for doc in freework_collection.find(query)]
-
+    
     # Generate CSV content
     csv_content = generate_jobs_csv(jobs)
-
+    
     if not csv_content:
         raise HTTPException(status_code=404, detail="No jobs found for today")
-
+    
     # Prepare response with CSV content
     return StreamingResponse(
-        content=BytesIO(csv_content.encode("utf-8")),
+        content=BytesIO(csv_content.encode('utf-8')),
         media_type="text/csv",
         headers={
             "Content-Disposition": f'attachment; filename="freework_jobs_{today}.csv"'
-        },
+        }
     )
-
 
 @app.get("/jobs/freework/{job_id}", response_class=HTMLResponse)
 async def read_freework_job_detail(request: Request, job_id: str, return_page: int = 1):
@@ -373,11 +362,9 @@ async def read_freework_job_detail(request: Request, job_id: str, return_page: i
         },
     )
 
-
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
     return templates.TemplateResponse("intro.html", {"request": request})
-
 
 @app.get("/index", response_class=HTMLResponse)
 async def index(request: Request):
@@ -385,16 +372,13 @@ async def index(request: Request):
         "index.html", {"request": request, "current_year": datetime.now().year}
     )
 
-
 @app.get("/resume", response_class=HTMLResponse)
 async def resume(request: Request):
     return templates.TemplateResponse("resume.html", {"request": request})
 
-
 @app.get("/contact", response_class=HTMLResponse)
 async def contact(request: Request):
     return templates.TemplateResponse("contact.html", {"request": request})
-
 
 @app.get("/projects", response_class=HTMLResponse)
 async def projects(request: Request):
