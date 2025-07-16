@@ -95,6 +95,21 @@
         max-height: none;
       }
     }
+
+    /* Modal Styles */
+    .modal {
+      transition: opacity 0.3s ease-in-out;
+    }
+
+    .modal-hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .modal-visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
   </style>
 </head>
 
@@ -122,6 +137,35 @@
         class="inline-flex items-center btn-primary px-6 py-3 rounded-lg font-medium">
         <i class="fab fa-github mr-2"></i> View Freework Scraper on GitHub
       </a>
+      <button id="download-btn" class="inline-flex items-center btn-primary px-6 py-3 rounded-lg font-medium">
+        <i class="fas fa-download mr-2"></i> Download Today's Jobs (CSV)
+      </button>
+    </div>
+
+    <!-- Email Modal -->
+    <div id="email-modal"
+      class="modal modal-hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div class="bg-white rounded-lg p-6 w-full max-w-md">
+        <h2 class="text-xl font-bold mb-4">Enter Your Email</h2>
+        <p class="text-gray-600 mb-4">Please provide your email address to download the CSV file.</p>
+        <form id="email-form" action="/jobs/freework/download-today-with-email" method="post">
+          <div class="mb-4">
+            <label for="email-input" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+            <input type="email" id="email-input" name="email" required
+              class="w-full rounded-lg border-gray-200 py-2.5 px-3 focus:ring-blue-200 focus:border-blue-500"
+              placeholder="your.email@example.com">
+            <p id="email-error" class="text-red-500 text-sm mt-1 hidden">Please enter a valid email address.</p>
+          </div>
+          <div class="flex justify-end gap-2">
+            <button type="button" id="cancel-btn" class="px-4 py-2 border rounded-lg text-gray-600 hover:bg-gray-100">
+              Cancel
+            </button>
+            <button type="submit" id="submit-email-btn" class="btn-primary px-4 py-2 rounded-lg">
+              Download
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
 
     <!-- Filters -->
@@ -270,7 +314,7 @@
   <!-- Footer -->
   {% include "partials/footer.html" %}
 
-  <!-- JS for dynamic filter submission -->
+  <!-- JS for dynamic filter submission and modal handling -->
   <script>
     const debounce = (fn, delay) => {
       let timeout;
@@ -280,6 +324,7 @@
       };
     };
 
+    // Filter form submission
     const submitForm = debounce(() => {
       document.getElementById('filter-form').submit();
     }, 300);
@@ -291,6 +336,75 @@
           if (id === 'per-page') document.querySelector('input[name="page"]').value = 1;
           submitForm();
         });
+      }
+    });
+
+    // Modal handling
+    const downloadBtn = document.getElementById('download-btn');
+    const emailModal = document.getElementById('email-modal');
+    const cancelBtn = document.getElementById('cancel-btn');
+    const emailForm = document.getElementById('email-form');
+    const emailInput = document.getElementById('email-input');
+    const emailError = document.getElementById('email-error');
+
+    downloadBtn.addEventListener('click', () => {
+      emailModal.classList.remove('modal-hidden');
+      emailModal.classList.add('modal-visible');
+      emailInput.focus();
+    });
+
+    cancelBtn.addEventListener('click', () => {
+      emailModal.classList.remove('modal-visible');
+      emailModal.classList.add('modal-hidden');
+      emailInput.value = '';
+      emailError.classList.add('hidden');
+    });
+
+    emailForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = emailInput.value.trim();
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+      if (!emailRegex.test(email)) {
+        emailError.classList.remove('hidden');
+        return;
+      }
+
+      emailError.classList.add('hidden');
+
+      try {
+        const formData = new FormData();
+        formData.append('email', email);
+
+        const response = await fetch('/jobs/freework/download-today-with-email', {
+          method: 'POST',
+          body: formData
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          emailError.textContent = errorData.detail || 'Failed to download file';
+          emailError.classList.remove('hidden');
+          return;
+        }
+
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `freework_jobs_${new Date().toISOString().split('T')[0]}.csv`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(url);
+
+        // Close modal
+        emailModal.classList.remove('modal-visible');
+        emailModal.classList.add('modal-hidden');
+        emailInput.value = '';
+      } catch (err) {
+        emailError.textContent = 'An error occurred. Please try again.';
+        emailError.classList.remove('hidden');
       }
     });
   </script>

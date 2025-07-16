@@ -1,9 +1,9 @@
-from fastapi import FastAPI, Request, HTTPException
-from fastapi.responses import HTMLResponse
+from fastapi import FastAPI, Request, HTTPException, Form
+from fastapi.responses import HTMLResponse, StreamingResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from motor.motor_asyncio import AsyncIOMotorClient
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 from typing import Optional, List
 from datetime import datetime
 import pytz
@@ -11,6 +11,8 @@ import os
 import re
 import logging
 from dotenv import load_dotenv
+from io import BytesIO
+from app.utils.utils import generate_jobs_csv
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -19,8 +21,12 @@ logger = logging.getLogger(__name__)
 load_dotenv()
 
 app = FastAPI()
-app.mount("/static", StaticFiles(directory="static"), name="static")
-templates = Jinja2Templates(directory="templates")
+# Use absolute path for static directory
+static_dir = os.path.join(os.path.dirname(__file__), "static")
+app.mount("/static", StaticFiles(directory=static_dir), name="static")
+# Use absolute path for templates directory
+templates_dir = os.path.join(os.path.dirname(__file__), "templates")
+templates = Jinja2Templates(directory=templates_dir)
 
 
 # Jinja2 custom filters
@@ -108,6 +114,7 @@ MONGO_URI = os.getenv("MONGO_URI")
 MONGO_DB = os.getenv("MONGO_DB", "scraping")
 MONGO_COLLECTION_LINKEDIN = os.getenv("MONGO_COLLECTION_LINKEDIN", "linkedin")
 MONGO_COLLECTION_FREEWORK = os.getenv("MONGO_COLLECTION_FREEWORK", "freework")
+MONGO_COLLECTION_EMAIL = os.getenv("MONGO_COLLECTION_EMAIL", "emails")
 
 if not MONGO_URI:
     raise ValueError("MONGO_URI environment variable is not set")
@@ -122,6 +129,7 @@ client = AsyncIOMotorClient(MONGO_URI)
 db = client[MONGO_DB]
 linkedin_collection = db[MONGO_COLLECTION_LINKEDIN]
 freework_collection = db[MONGO_COLLECTION_FREEWORK]
+email_collection = db[MONGO_COLLECTION_EMAIL]
 
 
 class Job(BaseModel):
@@ -136,6 +144,10 @@ class Job(BaseModel):
     continent: Optional[str] = None
     remote_mode: Optional[str] = None
     daily_salary: Optional[str] = None
+
+
+class EmailSubmission(BaseModel):
+    email: EmailStr
 
 
 @app.get("/jobs/linkedin", response_class=HTMLResponse)
@@ -288,6 +300,48 @@ async def read_freework_jobs(
             "page": page,
             "per_page": per_page,
             "total_pages": total_pages,
+        },
+    )
+
+
+@app.post("/jobs/freework/download-today-with-email")
+async def download_freework_jobs_today_with_email(email: str = Form(...)):
+    # Validate email format
+    email_regex = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+    if not re.match(email_regex, email):
+        raise HTTPException(status_code=400, detail="Invalid email address")
+
+    # Save email to MongoDB
+    try:
+        await email_collection.insert_one(
+            {
+                "email": email,
+                "timestamp": datetime.now(pytz.timezone("Europe/Paris")).isoformat(),
+            }
+        )
+    except Exception as e:
+        logger.error(f"Failed to save email to MongoDB: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to save email")
+
+    # Get current date in YYYY-MM-DD format (Europe/Paris timezone)
+    today = datetime.now(pytz.timezone("Europe/Paris")).strftime("%Y-%m-%d")
+
+    # Query for jobs published today
+    query = {"published_at": {"$regex": f"^{today}", "$options": "i"}}
+    jobs = [doc async for doc in freework_collection.find(query)]
+
+    # Generate CSV content
+    csv_content = generate_jobs_csv(jobs)
+
+    if not csv_content:
+        raise HTTPException(status_code=404, detail="No jobs found for today")
+
+    # Prepare response with CSV content
+    return StreamingResponse(
+        content=BytesIO(csv_content.encode("utf-8")),
+        media_type="text/csv",
+        headers={
+            "Content-Disposition": f'attachment; filename="freework_jobs_{today}.csv"'
         },
     )
 
