@@ -12,7 +12,7 @@ import re
 import logging
 from dotenv import load_dotenv
 from io import BytesIO
-from utils.utils import generate_jobs_csv  # Updated import
+from utils.utils import generate_jobs_csv
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -144,6 +144,7 @@ class Job(BaseModel):
     continent: Optional[str] = None
     remote_mode: Optional[str] = None
     daily_salary: Optional[str] = None
+    source: Optional[str] = None  # Added source field
 
 
 class EmailSubmission(BaseModel):
@@ -156,6 +157,7 @@ async def read_linkedin_jobs(
     country: Optional[str] = None,
     continent: Optional[str] = None,
     date: Optional[str] = None,
+    source: Optional[str] = None,  # Added source parameter
     page: int = 1,
     per_page: int = 20,
 ):
@@ -166,6 +168,8 @@ async def read_linkedin_jobs(
         query["continent"] = continent
     if date and date != "all":
         query["posting_time"] = {"$regex": f"^{date}", "$options": "i"}
+    if source and source != "all":  # Apply source filter
+        query["source"] = source
 
     pipeline = [
         {"$match": query},
@@ -210,6 +214,13 @@ async def read_linkedin_jobs(
         },
         reverse=True,
     )
+    unique_sources = sorted(
+        {
+            doc["source"]
+            async for doc in linkedin_collection.find({"source": {"$ne": None}})
+        },
+        key=lambda x: x or "",
+    )
 
     return templates.TemplateResponse(
         "jobs/linkedin.html",
@@ -219,9 +230,11 @@ async def read_linkedin_jobs(
             "unique_countries": unique_countries,
             "unique_continents": unique_continents,
             "unique_dates": unique_dates,
+            "unique_sources": unique_sources,  # Pass unique sources
             "selected_country": country or "all",
             "selected_continent": continent or "all",
             "selected_date": date or "all",
+            "selected_source": source or "all",  # Pass selected source
             "total_jobs": total_jobs,
             "filtered_jobs_count": len(jobs),
             "page": page,
@@ -231,6 +244,8 @@ async def read_linkedin_jobs(
     )
 
 
+# The rest of your app.py remains unchanged
+# Including other routes like /jobs/freework, /jobs/freework/download-today-with-email, etc.
 @app.get("/jobs/freework", response_class=HTMLResponse)
 async def read_freework_jobs(
     request: Request,
