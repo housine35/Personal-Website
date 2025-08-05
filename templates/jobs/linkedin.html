@@ -95,7 +95,7 @@
 
     <!-- Filters -->
     <div class="filter-container mb-10 bg-white rounded-xl shadow-sm p-6 max-w-6xl mx-auto border border-gray-100">
-      <form method="get" action="/jobs/linkedin" id="filter-form" class="grid md:grid-cols-4 gap-4">
+      <form method="get" action="/jobs/linkedin" id="filter-form" class="grid md:grid-cols-5 gap-4">
 
         <!-- Country Filter -->
         <div>
@@ -134,6 +134,18 @@
           </select>
         </div>
 
+        <!-- Source Filter -->
+        <div>
+          <label for="source-filter" class="block text-sm font-medium text-gray-700 mb-2">Source</label>
+          <select id="source-filter" name="source"
+            class="w-full border-gray-200 rounded-lg py-2.5 px-3 bg-white focus:ring-2 focus:ring-blue-200">
+            <option value="all">All Sources</option>
+            {% for source in unique_sources %}
+            <option value="{{ source }}" {% if source==selected_source %}selected{% endif %}>{{ source }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
         <!-- Results Per Page -->
         <div>
           <label for="per-page" class="block text-sm font-medium text-gray-700 mb-2">Results Per Page</label>
@@ -155,7 +167,8 @@
     <div class="flex justify-between items-center mb-4 flex-wrap gap-4">
       <div>
         <h2 class="text-lg font-semibold text-gray-800">
-          {% if selected_country != "all" or selected_continent != "all" or selected_date != "all" %}
+          {% if selected_country != "all" or selected_continent != "all" or selected_date != "all" or selected_source !=
+          "all" %}
           <span class="text-blue-600">{{ filtered_jobs_count }}</span> filtered jobs
           {% else %}
           Showing <span class="text-blue-600">{{ filtered_jobs_count }}</span> jobs
@@ -174,6 +187,7 @@
             <th class="px-6 py-4 text-left">Job Title</th>
             <th class="px-6 py-4 text-left">Company</th>
             <th class="px-6 py-4 text-left">Location</th>
+            <th class="px-6 py-4 text-left">Source</th>
             <th class="px-6 py-4 text-left">Date Posted</th>
             <th class="px-6 py-4 text-right">Action</th>
           </tr>
@@ -190,6 +204,7 @@
             </td>
             <td class="px-6 py-4">{{ job.company }}</td>
             <td class="px-6 py-4 text-gray-600">{{ job.location }}</td>
+            <td class="px-6 py-4 text-gray-600">{{ job.source | default('Unknown') }}</td>
             <td class="px-6 py-4 text-gray-500">{{ job.posting_time | relative_time }}</td>
             <td class="px-6 py-4 text-right">
               <a href="{{ job.url }}" target="_blank"
@@ -218,11 +233,11 @@
         <span class="font-semibold">{{ filtered_jobs_count }}</span> results
       </p>
       <div class="flex gap-2">
-        <a href="?country={{ selected_country }}&continent={{ selected_continent }}&date={{ selected_date }}&page={{ page - 1 if page > 1 else 1 }}&per_page={{ per_page }}"
+        <a href="?country={{ selected_country }}&continent={{ selected_continent }}&date={{ selected_date }}&source={{ selected_source }}&page={{ page - 1 if page > 1 else 1 }}&per_page={{ per_page }}"
           class="px-4 py-2 border rounded-md text-sm {% if page <= 1 %}bg-gray-100 text-gray-400 cursor-not-allowed{% else %}bg-white text-gray-700 hover:bg-gray-50{% endif %}">
           Previous
         </a>
-        <a href="?country={{ selected_country }}&continent={{ selected_continent }}&date={{ selected_date }}&page={{ page + 1 if page < total_pages else total_pages }}&per_page={{ per_page }}"
+        <a href="?country={{ selected_country }}&continent={{ selected_continent }}&date={{ selected_date }}&source={{ selected_source }}&page={{ page + 1 if page < total_pages else total_pages }}&per_page={{ per_page }}"
           class="px-4 py-2 border rounded-md text-sm {% if page >= total_pages %}bg-gray-100 text-gray-400 cursor-not-allowed{% else %}bg-white text-gray-700 hover:bg-gray-50{% endif %}">
           Next
         </a>
@@ -252,6 +267,7 @@
     document.getElementById('country-filter')?.addEventListener('change', submitForm);
     document.getElementById('continent-filter')?.addEventListener('change', submitForm);
     document.getElementById('date-filter')?.addEventListener('change', submitForm);
+    document.getElementById('source-filter')?.addEventListener('change', submitForm);
     document.getElementById('per-page')?.addEventListener('change', () => {
       document.querySelector('input[name="page"]').value = 1;
       submitForm();
