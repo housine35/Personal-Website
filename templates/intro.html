@@ -6,110 +6,88 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Intro | Hocine ABED</title>
 
-  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       theme: {
         extend: {
           fontFamily: {
-            mono: ['Fira Code', 'monospace'],
-          },
-          colors: {
-            primary: '#0f172a',
-            accent: '#38bdf8'
-          },
-          animation: {
-            blink: 'blink 1s step-start infinite'
+            display: ['Sora', 'sans-serif'],
+            code: ['IBM Plex Mono', 'monospace']
           },
           keyframes: {
-            blink: {
-              '0%, 100%': { borderColor: 'transparent' },
-              '50%': { borderColor: '#38bdf8' },
+            rise: {
+              '0%': { opacity: 0, transform: 'translateY(16px)' },
+              '100%': { opacity: 1, transform: 'translateY(0)' }
+            },
+            drift: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-10px)' }
             }
+          },
+          animation: {
+            rise: 'rise .8s ease forwards',
+            drift: 'drift 6s ease-in-out infinite'
           }
         }
       }
     }
   </script>
 
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
   <style>
     body {
-      background: radial-gradient(circle at top left, #0f172a, #0a0e1a);
+      background:
+        radial-gradient(circle at 10% 15%, rgba(14, 165, 233, 0.25), transparent 40%),
+        radial-gradient(circle at 80% 0%, rgba(249, 115, 22, 0.18), transparent 35%),
+        linear-gradient(160deg, #020617 0%, #0f172a 45%, #111827 100%);
     }
 
-    .cursor {
-      border-right: 2px solid #38bdf8;
-      animation: blink 1s step-start infinite;
-    }
-
-    .hidden-button {
-      opacity: 0;
-      transition: opacity 0.5s ease-in;
-    }
-
-    .visible-button {
-      opacity: 1;
+    .grid-overlay {
+      background-image: linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: radial-gradient(circle at center, black 35%, transparent 85%);
+      -webkit-mask-image: radial-gradient(circle at center, black 35%, transparent 85%);
     }
   </style>
 </head>
 
-<body class="text-white font-mono flex items-center justify-center min-h-screen px-4">
-  <div class="max-w-screen-sm w-full text-center space-y-4" id="text-container">
-    <p class="text-2xl sm:text-4xl"><span id="line1" class="cursor"></span></p>
-    <p class="text-2xl sm:text-4xl"><span id="line2"></span></p>
-  </div>
+<body class="relative min-h-screen overflow-hidden text-slate-100">
+  <div class="grid-overlay pointer-events-none absolute inset-0"></div>
+  <div class="pointer-events-none absolute -left-24 top-24 h-72 w-72 rounded-full bg-cyan-500/20 blur-3xl"></div>
+  <div class="pointer-events-none absolute -right-24 bottom-24 h-80 w-80 rounded-full bg-orange-500/20 blur-3xl"></div>
 
-  <div class="absolute bottom-12">
-    <a id="cta-button" href="/index" aria-label="View my scraping projects"
-      class="hidden-button inline-block bg-accent text-primary font-semibold py-3 px-6 rounded-lg hover:bg-gray-200 transition duration-300">
-      🔍 Scrape My Career
-    </a>
-  </div>
+  <main class="relative mx-auto flex min-h-screen w-full max-w-6xl items-center px-6 py-16">
+    <div class="w-full rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-xl sm:p-12">
+      <p class="font-code text-xs uppercase tracking-[0.25em] text-cyan-300/90 [animation-delay:.05s] animate-rise">Web Scraper Portfolio</p>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const lines = [
-        { id: 'line1', text: 'I don’t browse websites.' },
-        { id: 'line2', text: 'I read their minds.' },
-      ];
+      <h1 class="mt-5 max-w-3xl font-display text-4xl font-extrabold leading-tight text-white [animation-delay:.2s] animate-rise sm:text-6xl">
+        I build scrapers that turn noisy pages into clean data products.
+      </h1>
 
-      let lineIndex = 0;
-      let charIndex = 0;
+      <p class="mt-6 max-w-2xl text-base leading-relaxed text-slate-300 [animation-delay:.35s] animate-rise sm:text-lg">
+        Fast extraction, resilient parsing, automation pipelines, and API-ready output for jobs, social media, and public data.
+      </p>
 
-      function typeLine() {
-        const currentLine = lines[lineIndex];
-        const element = document.getElementById(currentLine.id);
-        element.textContent += currentLine.text.charAt(charIndex);
+      <div class="mt-8 flex flex-wrap items-center gap-3 [animation-delay:.5s] animate-rise">
+        <span class="inline-flex animate-drift items-center rounded-full border border-cyan-300/30 bg-cyan-300/10 px-3 py-1 text-xs text-cyan-200">Python + Playwright</span>
+        <span class="inline-flex animate-drift items-center rounded-full border border-orange-300/30 bg-orange-300/10 px-3 py-1 text-xs text-orange-200 [animation-delay:.4s]">FastAPI + MongoDB</span>
+        <span class="inline-flex animate-drift items-center rounded-full border border-slate-300/30 bg-slate-300/10 px-3 py-1 text-xs text-slate-200 [animation-delay:.8s]">ETL + Scheduling</span>
+      </div>
 
-        charIndex++;
-
-        if (charIndex < currentLine.text.length) {
-          setTimeout(typeLine, 65); // frappe plus rapide
-        } else {
-          element.classList.remove('cursor');
-          lineIndex++;
-          charIndex = 0;
-
-          if (lineIndex < lines.length) {
-            const nextLine = document.getElementById(lines[lineIndex].id);
-            nextLine.classList.add('cursor');
-            setTimeout(typeLine, 400); // pause réduite entre les lignes
-          } else {
-            setTimeout(() => {
-              const ctaButton = document.getElementById('cta-button');
-              ctaButton.classList.remove('hidden-button');
-              ctaButton.classList.add('visible-button');
-            }, 500); // bouton plus rapide aussi
-          }
-        }
-      }
-
-      setTimeout(typeLine, 600); // début plus fluide
-    });
-  </script>
+      <div class="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center [animation-delay:.65s] animate-rise">
+        <a href="/index" class="inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-cyan-400 to-blue-600 px-6 py-3 font-display text-sm font-semibold text-slate-950 transition hover:scale-[1.02] hover:shadow-lg hover:shadow-cyan-500/30">
+          Enter Portfolio
+          <i class="fas fa-arrow-right ml-2"></i>
+        </a>
+        <a href="/projects" class="inline-flex items-center justify-center rounded-xl border border-white/20 px-6 py-3 font-display text-sm font-semibold text-white transition hover:bg-white/10">
+          Browse Projects
+        </a>
+      </div>
+    </div>
+  </main>
 </body>
 
 </html>

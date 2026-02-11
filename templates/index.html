@@ -6,178 +6,139 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Portfolio | Hocine ABED</title>
 
-  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       theme: {
         extend: {
           fontFamily: {
-            mono: ['Fira Code', 'monospace'],
-          },
-          colors: {
-            primary: '#0f172a',
-            accent: '#38bdf8'
-          },
-          animation: {
-            fadeIn: 'fadeIn 1.5s ease-in-out forwards',
+            display: ['Sora', 'sans-serif'],
+            body: ['Plus Jakarta Sans', 'sans-serif']
           },
           keyframes: {
-            fadeIn: {
-              '0%': { opacity: 0, transform: 'translateY(20px)' },
-              '100%': { opacity: 1, transform: 'translateY(0)' },
+            reveal: {
+              '0%': { opacity: 0, transform: 'translateY(18px)' },
+              '100%': { opacity: 1, transform: 'translateY(0)' }
             }
+          },
+          animation: {
+            reveal: 'reveal .7s ease forwards'
           }
         }
       }
     }
   </script>
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet">
-
-  <!-- Font Awesome -->
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-
-  <!-- Animate on Scroll -->
-  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
   <style>
-    .typewriter::after {
-      content: "|";
-      animation: blink 1s infinite;
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background:
+        radial-gradient(circle at 15% 0%, rgba(14, 165, 233, 0.12), transparent 38%),
+        radial-gradient(circle at 90% 20%, rgba(249, 115, 22, 0.1), transparent 36%),
+        #f8fafc;
     }
 
-    @keyframes blink {
+    .hero-mesh {
+      background-image: linear-gradient(rgba(15, 23, 42, 0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(15, 23, 42, 0.06) 1px, transparent 1px);
+      background-size: 42px 42px;
+    }
 
-      0%,
-      100% {
-        opacity: 1;
-      }
-
-      50% {
-        opacity: 0;
-      }
+    .fade-step {
+      animation: reveal .7s ease forwards;
     }
   </style>
 </head>
 
-<body class="bg-gray-50 text-gray-800 font-mono scroll-smooth">
+<body class="text-slate-800">
   {% include "partials/navbar.html" %}
 
-  <!-- Hero -->
-  <section class="bg-gradient-to-br from-primary to-gray-800 text-white py-24 text-center">
-    <div class="container mx-auto px-6" data-aos="fade-up">
-      <h1 class="text-5xl font-bold mb-4 animate-fadeIn">Welcome, I'm <span class="text-accent">Hocine ABED</span></h1>
-      <p class="text-xl mt-2 text-gray-300 max-w-2xl mx-auto typewriter">
-        Backend developer focused on scalable web scraping, API integration, and AI-powered automation with LangChain,
-        n8n, and
-        custom Python workflows.
-      </p>
+  <section class="relative overflow-hidden border-b border-slate-200 bg-white/70">
+    <div class="hero-mesh absolute inset-0 opacity-30"></div>
+    <div class="relative mx-auto max-w-7xl px-6 py-20 sm:py-24">
+      <div class="grid items-center gap-10 lg:grid-cols-[1.3fr_1fr]">
+        <div>
+          <p class="fade-step text-xs font-semibold uppercase tracking-[0.24em] text-cyan-700" style="animation-delay:.05s">Data Extraction Specialist</p>
+          <h1 class="fade-step mt-4 max-w-3xl font-display text-4xl font-extrabold leading-tight text-slate-900 sm:text-6xl" style="animation-delay:.15s">
+            Building resilient web scrapers and automation systems.
+          </h1>
+          <p class="fade-step mt-6 max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg" style="animation-delay:.3s">
+            I design pipelines that collect data from complex websites, normalize it, and deliver business-ready output through APIs and dashboards.
+          </p>
+
+          <div class="fade-step mt-8 flex flex-wrap gap-3" style="animation-delay:.45s">
+            <a href="/projects" class="inline-flex items-center rounded-xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-700">
+              Explore Projects
+              <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+            <a href="/resume" class="inline-flex items-center rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition hover:border-cyan-500 hover:text-cyan-700">
+              View Resume
+            </a>
+          </div>
+        </div>
+
+        <aside class="fade-step rounded-2xl border border-slate-200 bg-white p-6 shadow-sm" style="animation-delay:.55s">
+          <p class="text-sm font-semibold uppercase tracking-wider text-slate-500">Core Stack</p>
+          <div class="mt-4 grid grid-cols-2 gap-3 text-sm">
+            <div class="rounded-lg bg-slate-50 px-3 py-2">Python</div>
+            <div class="rounded-lg bg-slate-50 px-3 py-2">Playwright</div>
+            <div class="rounded-lg bg-slate-50 px-3 py-2">Scrapy</div>
+            <div class="rounded-lg bg-slate-50 px-3 py-2">FastAPI</div>
+            <div class="rounded-lg bg-slate-50 px-3 py-2">MongoDB</div>
+            <div class="rounded-lg bg-slate-50 px-3 py-2">Docker</div>
+          </div>
+          <div class="mt-6 rounded-xl border border-cyan-100 bg-cyan-50 p-4">
+            <p class="text-sm text-cyan-900">
+              Focus areas: anti-bot handling, pagination at scale, change-tolerant parsers, scheduled ETL jobs.
+            </p>
+          </div>
+        </aside>
+      </div>
     </div>
   </section>
 
-  <!-- Summary Section -->
-  <main class="container mx-auto px-6 py-20">
-    <div class="grid md:grid-cols-3 gap-10 text-center">
-      <div class="bg-white/80 backdrop-blur-md p-6 rounded-xl shadow-lg hover:scale-105 transition duration-300"
-        data-aos="fade-up">
-        <i class="fas fa-file-alt text-4xl text-accent mb-4 hover:rotate-6 transition"></i>
-        <h2 class="text-2xl font-bold mb-2">My Resume</h2>
-        <p class="text-gray-600 mb-4">Explore my professional background and skills.</p>
-        <a href="/resume" class="text-accent font-semibold hover:underline">View Resume →</a>
-      </div>
+  <main class="mx-auto max-w-7xl px-6 py-16">
+    <section class="grid gap-5 md:grid-cols-3">
+      <a href="/jobs/linkedin" class="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md">
+        <div class="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-cyan-100 text-cyan-700"><i class="fab fa-linkedin-in"></i></div>
+        <h2 class="mt-4 font-display text-xl font-bold text-slate-900">LinkedIn Job Finder</h2>
+        <p class="mt-2 text-sm leading-relaxed text-slate-600">Filter jobs by country, date, and source with fast lookup and pagination.</p>
+        <span class="mt-4 inline-flex items-center text-sm font-semibold text-cyan-700">Open <i class="fas fa-arrow-right ml-2 text-xs"></i></span>
+      </a>
 
-      <div class="bg-white/80 backdrop-blur-md p-6 rounded-xl shadow-lg hover:scale-105 transition duration-300"
-        data-aos="fade-up" data-aos-delay="100">
-        <i class="fas fa-database text-4xl text-accent mb-4 hover:rotate-6 transition"></i>
-        <h2 class="text-2xl font-bold mb-2">Scraping Projects</h2>
-        <p class="text-gray-600 mb-4">Automated data extraction and intelligent analysis.</p>
-        <a href="/projects" class="text-accent font-semibold hover:underline">View Projects →</a>
-      </div>
+      <a href="/jobs/freework" class="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md">
+        <div class="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700"><i class="fas fa-briefcase"></i></div>
+        <h2 class="mt-4 font-display text-xl font-bold text-slate-900">Freework Explorer</h2>
+        <p class="mt-2 text-sm leading-relaxed text-slate-600">Track freelance opportunities and download daily snapshots as CSV.</p>
+        <span class="mt-4 inline-flex items-center text-sm font-semibold text-emerald-700">Open <i class="fas fa-arrow-right ml-2 text-xs"></i></span>
+      </a>
 
-      <div class="bg-white/80 backdrop-blur-md p-6 rounded-xl shadow-lg hover:scale-105 transition duration-300"
-        data-aos="fade-up" data-aos-delay="200">
-        <i class="fas fa-user-circle text-4xl text-accent mb-4 hover:rotate-6 transition"></i>
-        <h2 class="text-2xl font-bold mb-2">About Me</h2>
-        <p class="text-gray-600 mb-4">Who I am, my passions, and my approach to development.</p>
-        <a href="/contact" class="text-accent font-semibold hover:underline">Learn More →</a>
+      <a href="/projects" class="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md">
+        <div class="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-amber-100 text-amber-700"><i class="fas fa-layer-group"></i></div>
+        <h2 class="mt-4 font-display text-xl font-bold text-slate-900">Project Collection</h2>
+        <p class="mt-2 text-sm leading-relaxed text-slate-600">Review scraping systems across social platforms, jobs, and public data sources.</p>
+        <span class="mt-4 inline-flex items-center text-sm font-semibold text-amber-700">Open <i class="fas fa-arrow-right ml-2 text-xs"></i></span>
+      </a>
+    </section>
+
+    <section class="mt-16 rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
+      <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">Contact</p>
+          <h3 class="mt-2 font-display text-2xl font-bold text-slate-900">Need data from a hard-to-scrape website?</h3>
+          <p class="mt-2 text-sm text-slate-600">I can help you architect and ship stable scraping pipelines quickly.</p>
+        </div>
+        <a href="/contact" class="inline-flex items-center rounded-xl bg-gradient-to-r from-cyan-500 to-blue-700 px-5 py-3 text-sm font-semibold text-white transition hover:brightness-110">
+          Start a conversation
+          <i class="fas fa-paper-plane ml-2"></i>
+        </a>
       </div>
-    </div>
+    </section>
   </main>
 
-  <!-- Latest Projects -->
-  <section class="bg-gray-100 py-20">
-    <div class="container mx-auto px-6">
-      <h2 class="text-3xl font-bold text-center mb-12">Latest Projects</h2>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg hover:scale-105 transition duration-300"
-          data-aos="fade-up">
-          <h3 class="text-xl font-semibold mb-2 flex items-center">
-            <img src="https://get-picto.com/wp-content/uploads/2023/02/Linkedin-logo-black.webp" alt="LinkedIn Logo"
-              class="w-6 h-6 mr-2">
-            Find Your Job (LinkedIn)
-          </h3>
-          <p class="text-gray-600 mb-4">Scraping, filtering, and visualizing tech job trends from LinkedIn.</p>
-          <a href="/jobs/linkedin" class="text-accent font-medium hover:underline flex items-center">
-            View Project <i class="fas fa-arrow-right ml-2"></i>
-          </a>
-        </div>
-        <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg hover:scale-105 transition duration-300"
-          data-aos="fade-up" data-aos-delay="100">
-          <h3 class="text-xl font-semibold mb-2 flex items-center">
-            <img src="https://www.free-work.com/assets/logos/free-work.png" alt="Freework Logo" class="w-6 h-6 mr-2">
-            Find Your Job (Freework)
-          </h3>
-          <p class="text-gray-600 mb-4">Exploring freelance opportunities with Freework job data.</p>
-          <a href="/jobs/freework" class="text-accent font-medium hover:underline flex items-center">
-            View Project <i class="fas fa-arrow-right ml-2"></i>
-          </a>
-        </div>
-        <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg hover:scale-105 transition duration-300"
-          data-aos="fade-up" data-aos-delay="200">
-          <h3 class="text-xl font-semibold mb-2 flex items-center">
-            <img src="https://e7.pngegg.com/pngimages/588/462/png-clipart-tiktok-logo-paint-social-media-icons.png"
-              alt="TikTok Logo" class="w-6 h-6 mr-2">
-            TikTok Scraper
-          </h3>
-          <p class="text-gray-600 mb-4">Automated data extraction from TikTok.</p>
-          <a href="https://tiktok-scraper-yt8p.onrender.com/"
-            class="text-accent font-medium hover:underline flex items-center">
-            View Project <i class="fas fa-arrow-right ml-2"></i>
-          </a>
-        </div>
-        <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg hover:scale-105 transition duration-300"
-          data-aos="fade-up" data-aos-delay="200">
-          <h3 class="text-xl font-semibold mb-2 flex items-center">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/c/cd/Facebook_logo_%28square%29.png"
-              alt="TikTok Logo" class="w-6 h-6 mr-2">
-            Facebook scraper
-          </h3>
-          <p class="text-gray-600 mb-4">Automated data extraction from any Facebook post. get all information and comment of the post</p>
-          <a href="https://facebook-scraper-q8aa.onrender.com/" class="text-accent font-medium hover:underline flex items-center">
-            View Project <i class="fas fa-arrow-right ml-2"></i>
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer class="bg-primary text-white py-6 mt-16 text-center">
-    <div class="container mx-auto px-4">
-      <p>© {{ current_year }} Hocine ABED - All rights reserved.</p>
-    </div>
-  </footer>
-
-  <!-- AOS Init -->
-  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
-  <script>
-    AOS.init({
-      duration: 1000,
-      once: true
-    });
-  </script>
+  {% include "partials/footer.html" %}
 </body>
 
 </html>
