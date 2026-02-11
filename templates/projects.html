@@ -6,200 +6,145 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Projects | Hocine ABED</title>
 
-  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['Sora', 'sans-serif'],
+            body: ['Plus Jakarta Sans', 'sans-serif']
+          },
+          keyframes: {
+            reveal: {
+              '0%': { opacity: 0, transform: 'translateY(16px)' },
+              '100%': { opacity: 1, transform: 'translateY(0)' }
+            }
+          },
+          animation: {
+            reveal: 'reveal .65s ease forwards'
+          }
+        }
+      }
+    }
+  </script>
 
-  <!-- Animate.css -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
-
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap"
-    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
   <style>
     body {
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background:
+        radial-gradient(circle at 20% 0%, rgba(14, 165, 233, 0.12), transparent 40%),
+        radial-gradient(circle at 100% 20%, rgba(249, 115, 22, 0.1), transparent 35%),
+        #f8fafc;
     }
 
-    .gradient-text {
-      background: linear-gradient(to right, #6366f1, #3b82f6);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .project-card:hover .project-icon {
-      transform: scale(1.1) rotate(5deg);
-    }
-
-    .section-title {
-      font-size: 2.25rem;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
-    }
-
-    .section-subtitle {
-      color: #64748b;
+    .fade-step {
+      animation: reveal .65s ease forwards;
     }
   </style>
 </head>
 
-<body class="bg-gradient-to-br from-blue-50 via-purple-50 to-white text-gray-800">
-
+<body class="text-slate-800">
   {% include "partials/navbar.html" %}
 
-  <!-- Hero Section -->
-  <section class="bg-gradient-to-r from-indigo-700 to-blue-800 text-white py-20 text-center shadow-lg">
-    <div class="max-w-4xl mx-auto px-4">
-      <h1 class="text-4xl font-bold mb-4">My Web Scraping Projects</h1>
-      <p class="text-lg text-indigo-200">
-        Automating access to structured data for valuable insights and analysis.
-      </p>
+  <section class="border-b border-slate-200 bg-white/80">
+    <div class="mx-auto max-w-7xl px-6 py-16 sm:py-20">
+      <p class="fade-step text-xs font-semibold uppercase tracking-[0.24em] text-cyan-700" style="animation-delay:.05s">Selected Work</p>
+      <h1 class="fade-step mt-4 max-w-3xl font-display text-4xl font-extrabold leading-tight text-slate-900 sm:text-5xl" style="animation-delay:.15s">Scraping projects built for speed, resilience, and clean output.</h1>
+      <p class="fade-step mt-5 max-w-2xl text-slate-600" style="animation-delay:.3s">From jobs platforms to social networks, each project is designed to survive layout changes and deliver consistent structured data.</p>
     </div>
   </section>
 
-  <!-- Project Section -->
-  <section class="container mx-auto px-6 py-24">
-    <div class="text-center mb-16">
-      <h2 class="section-title gradient-text">Recent Projects</h2>
-      <p class="section-subtitle max-w-xl mx-auto">
-        Each project is tailored to extract data efficiently from web platforms and APIs using custom scraping
-        techniques.
-      </p>
-    </div>
-
-    <div class="grid md:grid-cols-2 gap-12">
-      <!-- Project Template -->
-      {% set projects = [
+  <main class="mx-auto max-w-7xl px-6 py-14">
+    {% set projects = [
       {
-      "title": "LinkedIn Job scraper",
-      "desc": "A system to extract tech job postings from LinkedIn with filters by country, date, and skills demand
-      analysis.",
-      "tech": ["Python", "BeautifulSoup", "Data Analysis"],
-      "icon": "fab fa-linkedin-in",
-      "color": "blue",
-      "url": "/jobs/linkedin",
-      "date": "2025-06-15"
+        "title": "LinkedIn Job Scraper",
+        "desc": "Extracts tech jobs with filters by source, country, and date, then serves them through a searchable interface.",
+        "tech": ["Python", "Playwright", "FastAPI", "MongoDB"],
+        "icon": "fab fa-linkedin-in",
+        "color": "cyan",
+        "url": "/jobs/linkedin",
+        "date": "2025-06-15"
       },
       {
-      "title": "Freework Freelance scraper",
-      "desc": "Scrapes freelance offers, daily rates, remote/hybrid availability, and displays insights in an
-      interactive dashboard.",
-      "tech": ["Scrapy", "Pandas", "Visualization"],
-      "icon": "fas fa-briefcase",
-      "color": "purple",
-      "url": "/jobs/freework",
-      "date": "2025-07-01"
+        "title": "Freework Freelance Scraper",
+        "desc": "Collects freelance opportunities, remote modes, and daily rates for real-time job exploration.",
+        "tech": ["Scrapy", "FastAPI", "ETL"],
+        "icon": "fas fa-briefcase",
+        "color": "emerald",
+        "url": "/jobs/freework",
+        "date": "2025-07-01"
       },
       {
-      "title": "Facebook posts data Scraping",
-      "desc": "Scrapes posts and metadata from  Facebook post using browser authentication techniques.",
-      "tech": ["playwright", "Cookie Auth","Data Extraction","reverse engineering"],
-      "icon": "fab fa-facebook-f",
-      "color": "indigo",
-      "url": "https://facebook-scraper-q8aa.onrender.com/",
-      "date": "2025-01-10"
+        "title": "Facebook Data Extractor",
+        "desc": "Captures post details and comments using authenticated browser automation and robust parsers.",
+        "tech": ["Playwright", "Reverse Engineering", "API Analysis"],
+        "icon": "fab fa-facebook-f",
+        "color": "blue",
+        "url": "https://facebook-scraper-q8aa.onrender.com/",
+        "date": "2025-01-10"
       },
       {
-      "title": "TikTok Data Extraction",
-      "desc": "Extracts post info, follower/following lists from TikTok with API-like flows and rate limit
-      handling.",
-      "tech": ["API Bypass", "crypthographie", "X-Gorgon","X-Khronos","reverse engineering"],
-      "icon": "fab fa-tiktok",
-      "color": "pink",
-      "url": "https://tiktok-scraper-yt8p.onrender.com/",
-      "date": "2025-04-22"
+        "title": "TikTok Extraction Engine",
+        "desc": "Retrieves post metadata and user graph data with anti-rate-limit handling and custom request signatures.",
+        "tech": ["Automation", "Signature Logic", "Data Pipelines"],
+        "icon": "fab fa-tiktok",
+        "color": "amber",
+        "url": "https://tiktok-scraper-yt8p.onrender.com/",
+        "date": "2025-04-22"
       },
       {
-      "title": "Gov Data Scraping - Assemblée & Sénat",
-      "desc": "Scrapes legislative data from the Assemblée Nationale and Sénat: bills, votes, profiles, and debates.",
-      "tech": ["Assemblée", "Sénat", "Public API"],
-      "icon": "fas fa-landmark",
-      "color": "yellow",
-      "url": "/projects/gov",
-      "date": "2024-03-12"
+        "title": "French Assembly and Senate Data",
+        "desc": "Scrapes legislative records including bills, votes, and profiles from parliamentary sources.",
+        "tech": ["Public Data", "Parsing", "Normalization"],
+        "icon": "fas fa-landmark",
+        "color": "violet",
+        "url": "/projects/gov",
+        "date": "2024-03-12"
       },
       {
-      "title": "Sénat Live Subtitle Capture",
-      "desc": "Captures live video subtitles from Sénat de France using OCR and speech recognition tools.",
-      "tech": ["OCR", "Streaming", "Real-time"],
-      "icon": "fas fa-video",
-      "color": "red",
-      "url": "https://github.com/housine35/Aws_Puppeteer",
-      "date": "2025-02-18"
+        "title": "Live Subtitle Capture",
+        "desc": "Captures live subtitles from video streams with OCR and near real-time text processing.",
+        "tech": ["OCR", "Streaming", "Speech Processing"],
+        "icon": "fas fa-video",
+        "color": "rose",
+        "url": "https://github.com/housine35/Aws_Puppeteer",
+        "date": "2025-02-18"
       }
-      ] %}
+    ] %}
+
+    <section class="grid gap-6 md:grid-cols-2">
       {% for project in projects %}
-      <div
-        class="project-card bg-white p-8 rounded-2xl shadow-lg border-l-4 border-{{ project.color }}-500 group hover:shadow-xl transition-all duration-300 relative overflow-hidden">
-        <div
-          class="absolute -right-10 -top-10 w-32 h-32 bg-{{ project.color }}-100 rounded-full opacity-20 group-hover:opacity-30 transition-opacity">
-        </div>
-        <div class="flex items-start mb-6">
-          <div
-            class="project-icon bg-{{ project.color }}-100 text-{{ project.color }}-600 p-4 rounded-2xl shadow-sm transition duration-300">
-            <i class="{{ project.icon }} text-2xl"></i>
+      <article class="fade-step group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md" style="animation-delay: {{ 0.05 + (loop.index0 * 0.06) }}s;">
+        <div class="flex items-start justify-between gap-4">
+          <div class="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-{{ project.color }}-100 text-{{ project.color }}-700">
+            <i class="{{ project.icon }}"></i>
           </div>
-          <div class="ml-6">
-            <h3 class="text-2xl font-bold mb-2">{{ project.title }}</h3>
-            <div class="flex flex-wrap gap-2">
-              {% for tech in project.tech %}
-              <span
-                class="px-3 py-1 bg-{{ project.color }}-50 text-{{ project.color }}-600 text-xs font-medium rounded-full">{{
-                tech }}</span>
-              {% endfor %}
-            </div>
-          </div>
+          <p class="text-xs font-medium text-slate-500">Updated {{ project.date }}</p>
         </div>
-        <p class="text-gray-700 mb-6 leading-relaxed">{{ project.desc }}</p>
-        <div class="flex items-center justify-between">
-          <a href="{{ project.url }}"
-            class="inline-flex items-center px-5 py-3 bg-{{ project.color }}-600 text-white rounded-lg hover:bg-{{ project.color }}-700 group-hover:shadow-lg transition">
-            <span>View Project</span>
-            <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
-          </a>
-          <div class="text-sm text-gray-500">
-            <i class="fas fa-calendar-alt mr-1"></i> Updated: {{ project.date }}
-          </div>
-        </div>
-      </div>
-      {% endfor %}
-    </div>
-  </section>
 
-  <!-- CTA -->
-  <div class="text-center py-12">
-    <h3 class="text-2xl font-semibold mb-4">Need a custom scraping solution?</h3>
-    <a href="/contact"
-      class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-indigo-600 to-blue-600 text-white rounded-full hover:shadow-lg transition-all group">
-      <i class="fas fa-paper-plane mr-2 group-hover:animate-bounce"></i>
-      <span>Get in Touch</span>
-    </a>
-  </div>
+        <h2 class="mt-4 font-display text-xl font-bold text-slate-900">{{ project.title }}</h2>
+        <p class="mt-2 text-sm leading-relaxed text-slate-600">{{ project.desc }}</p>
 
-  <!-- Footer -->
-  <footer class="bg-gray-900 text-white py-12">
-    <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center">
-      <div class="mb-6 md:mb-0">
-        <h3 class="text-xl font-bold">Hocine ABED</h3>
-        <p class="text-gray-400">Web Scraping & Data Automation Specialist</p>
-      </div>
-      <div class="flex gap-6">
-        <a href="https://www.linkedin.com/in/hocine-abed-33979a27/" target="_blank"
-          class="hover:text-blue-400 transition"><i class="fab fa-linkedin text-lg"></i></a>
-        <a href="https://github.com/housine35" target="_blank" class="hover:text-gray-400 transition"><i
-            class="fab fa-github text-lg"></i></a>
-        <a href="mailto:your@email.com" class="hover:text-red-400 transition">
-          <i class="fas fa-envelope text-lg"></i>
+        <div class="mt-4 flex flex-wrap gap-2">
+          {% for tech in project.tech %}
+          <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700">{{ tech }}</span>
+          {% endfor %}
+        </div>
+
+        <a href="{{ project.url }}" class="mt-6 inline-flex items-center text-sm font-semibold text-cyan-700 transition hover:text-cyan-900">
+          View Project
+          <i class="fas fa-arrow-right ml-2 text-xs"></i>
         </a>
-      </div>
-    </div>
-    <div class="mt-8 text-center text-sm text-gray-500">
-      &copy; 2025 Hocine ABED — All rights reserved.
-    </div>
-  </footer>
+      </article>
+      {% endfor %}
+    </section>
+  </main>
+
+  {% include "partials/footer.html" %}
 </body>
 
 </html>

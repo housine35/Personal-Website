@@ -68,7 +68,7 @@
     }
 
     .gradient-text {
-      background: linear-gradient(90deg, #7c3aed, #0ea5e9);
+      background: linear-gradient(90deg, #0891b2, #2563eb);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
@@ -106,8 +106,8 @@
     body {
       background-color: #f8fafc;
       background-image:
-        radial-gradient(at 10% 20%, rgba(124, 58, 237, 0.05) 0px, transparent 50%),
-        radial-gradient(at 90% 80%, rgba(14, 165, 233, 0.05) 0px, transparent 50%);
+        radial-gradient(at 10% 20%, rgba(8, 145, 178, 0.07) 0px, transparent 50%),
+        radial-gradient(at 90% 80%, rgba(37, 99, 235, 0.06) 0px, transparent 50%);
     }
 
     .glass-panel {
@@ -145,7 +145,7 @@
             <div
               class="w-40 h-40 rounded-full bg-gradient-to-br from-primary-400 to-accent shadow-lg flex items-center justify-center overflow-hidden">
               <img
-                src="https://media.licdn.com/dms/image/v2/D4E03AQHsoy8Ka5YIng/profile-displayphoto-shrink_200_200/B4EZWjkFfyGgAY-/0/1742205901350?e=2147483647&v=beta&t=gpD57rl_Im2DnjGSpE7SzdLxwTa3pDU6zmBXE9WYhmA"
+                src="https://media.licdn.com/dms/image/v2/D4E03AQF3y-mQnpF4AQ/profile-displayphoto-scale_200_200/B4EZniGEFOHgAc-/0/1760434868480?e=1772668800&v=beta&t=QFPCx9XBvms2LVCZ0Bq-HydIpX24qUGmfOslKKAk-DI"
                 alt="Profile picture of Hocine ABED">
             </div>
           </div>
@@ -482,12 +482,7 @@
     </div>
   </main>
 
-  <footer class="bg-gradient-to-r from-slate-800 to-slate-900 text-white py-8">
-    <div class="max-w-6xl mx-auto px-4 text-center">
-      <p class="mb-4 text-slate-300">Available for interesting backend development and web scraping projects</p>
-      <p class="text-slate-400">&copy; {{ current_year }} Hocine ABED - All rights reserved</p>
-    </div>
-  </footer>
+  {% include "partials/footer.html" %}
 </body>
 
 </html>

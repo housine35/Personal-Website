@@ -1,89 +1,79 @@
-## Hocine Abed Portfolio
-A personal portfolio showcasing a job listing app that scrapes LinkedIn and Freework job postings, built with FastAPI and MongoDB. The app displays jobs with filters and relative time in French (e.g., "il y a 44 minutes") using the Europe/Paris timezone.
-Features
+# Hocine Abed Portfolio
 
-LinkedIn Jobs: Filter by country, continent, and date; view title, company, location, and posting time.
-Freework Jobs: Filter by remote mode and date; includes job details and similar jobs.
-UI: Responsive design with Tailwind CSS, Google Fonts (Inter), and Font Awesome.
-Timezone: Displays LinkedIn job times relative to Europe/Paris (CEST).
-Docker: Containerized for easy deployment.
+Portfolio personnel orienté **web scraping** et **backend FastAPI**, avec visualisation d'offres d'emploi (LinkedIn + Freework) stockées dans MongoDB.
 
-## Technologies
+## Points clés
+- FastAPI + Jinja2 + MongoDB (Motor async)
+- Pages jobs avec filtres, pagination et affichage de date relative (`Europe/Paris`)
+- Design unifié (navbar/footer/pages)
+- Optimisations de performance sur `/jobs/linkedin` et `/jobs/freework`
+  - requêtes allégées
+  - tri optimisé
+  - filtres mis en cache en mémoire
 
-Backend: FastAPI, Python 3.10
-Frontend: Jinja2, Tailwind CSS
-Database: MongoDB Atlas
-Dependencies: fastapi, uvicorn, motor, python-dotenv, jinja2
-Deployment: Docker, Render
+## Routes principales
+- `/` : page d'accueil
+- `/intro` : intro landing page
+- `/projects` : projets scraping
+- `/resume` : CV
+- `/contact` : contact
+- `/jobs/linkedin` : offres LinkedIn
+- `/jobs/freework` : offres Freework
+- `/jobs/freework/{job_id}` : détail d'une offre Freework
 
-## Prerequisites
+## Stack
+- Python 3.10+
+- FastAPI, Uvicorn
+- Motor (MongoDB async)
+- Jinja2, Tailwind CSS
 
-Python 3.10+
-Docker
-MongoDB Atlas account
-Git
-
-## Setup
-
-Clone Repository:
-git clone https://github.com/your-username/hocine-abed-portfolio.git
-cd hocine-abed-portfolio
-
-
-## Set Up MongoDB Atlas:
-
-Create a scraping database with linkedin and freework collections.
-Whitelist your IP in Atlas.
-Create .env:MONGO_URI=mongodb+srv://<username>:<password>@cluster0.ypgrqjo.mongodb.net/scraping?retryWrites=true&w=majority
-MONGO_DB=scraping
-MONGO_COLLECTION_LINKEDIN=
-MONGO_COLLECTION_FREEWORK=
-
-
-
-
-Install Dependencies (local):
+## Installation
+```bash
+git clone <your-repo-url>
+cd Personal-Website
 python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
+# Windows
+venv\Scripts\activate
+# Linux/macOS
+# source venv/bin/activate
 pip install -r requirements.txt
+```
 
+## Variables d'environnement
+Créer un fichier `.env` à la racine:
 
+```env
+MONGO_URI=mongodb+srv://<username>:<password>@<cluster>/<db>?retryWrites=true&w=majority
+MONGO_DB=scraping
+MONGO_COLLECTION_LINKEDIN=linkedin
+MONGO_COLLECTION_FREEWORK=freework
+MONGO_COLLECTION_EMAIL=emails
 
-## Running
-Local
-uvicorn app.main:app --host 0.0.0.0 --port 8000
+# optionnel (cache filtres jobs, en secondes)
+LINKEDIN_FILTER_CACHE_TTL_SECONDS=300
+FREEWORK_FILTER_CACHE_TTL_SECONDS=300
+```
 
-## Visit https://portfolio-hocine-abed.onrender.com/
-Docker
+## Lancement local
+```bash
+uvicorn main:app --host 127.0.0.1 --port 8000 --reload
+```
+
+Puis ouvrir:
+- http://127.0.0.1:8000/
+
+## Index MongoDB recommandés
+```js
+db.linkedin.createIndex({ country: 1, continent: 1, source: 1, posting_time: -1 })
+db.freework.createIndex({ remote_mode: 1, published_at: -1, id: 1 })
+```
+
+## Déploiement (Docker)
+```bash
 docker build -t hocine-abed-portfolio .
 docker run --env-file .env -p 8000:8000 hocine-abed-portfolio
+```
 
-##Deployment (Render)
-
-Push to GitHub:git add .
-git commit -m "Initial commit"
-git push origin main
-
-
-In Render:
-Select repo, choose Docker runtime.
-Add .env variables in dashboard.
-Remove COPY .env . from Dockerfile.
-Deploy.
-
-
-
-MongoDB Setup
-
-Collections: linkedin (posting_time: YYYY-MM-DD HH:MM:SS), freework (published_at: YYYY-MM-DDTHH:MM:SS+ZZZZ).
-Indexes:db.linkedin.createIndex({ country: 1, continent: 1, posting_time: 1 });
-db.freework.createIndex({ remote_mode: 1, published_at: 1, id: 1 });
-
-
-
-Troubleshooting
-
-Time Issues: Check posting_time:db.linkedin.find({}, { posting_time: 1, title: 1, _id: 0 }).sort({ posting_time: -1 }).limit(10);
-
-
-Connection Errors: Verify MONGO_URI and Atlas IP
+## Notes
+- Les données jobs sont supposées déjà collectées dans MongoDB (ce repo affiche/filtre ces données).
+- Le style est responsive desktop/mobile.

@@ -5,11 +5,14 @@ from fastapi.staticfiles import StaticFiles
 from motor.motor_asyncio import AsyncIOMotorClient
 from pydantic import BaseModel, EmailStr
 from typing import Optional, List
-from datetime import datetime
+from datetime import datetime, timedelta
+import asyncio
 import pytz
 import os
 import re
 import logging
+import time
+import unicodedata
 from dotenv import load_dotenv
 from io import BytesIO
 from utils.utils import generate_jobs_csv
@@ -131,6 +134,16 @@ linkedin_collection = db[MONGO_COLLECTION_LINKEDIN]
 freework_collection = db[MONGO_COLLECTION_FREEWORK]
 email_collection = db[MONGO_COLLECTION_EMAIL]
 
+# Small in-memory cache for LinkedIn filter dropdowns.
+LINKEDIN_FILTER_CACHE_TTL_SECONDS = int(
+    os.getenv("LINKEDIN_FILTER_CACHE_TTL_SECONDS", "300")
+)
+_linkedin_filter_cache = {"expires_at": 0.0, "data": None}
+FREEWORK_FILTER_CACHE_TTL_SECONDS = int(
+    os.getenv("FREEWORK_FILTER_CACHE_TTL_SECONDS", "300")
+)
+_freework_filter_cache = {"expires_at": 0.0, "data": None}
+
 
 class Job(BaseModel):
     url: str
@@ -151,6 +164,122 @@ class EmailSubmission(BaseModel):
     email: EmailStr
 
 
+def normalize_location_value(value: Optional[str]) -> Optional[str]:
+    if not value or not isinstance(value, str):
+        return None
+    normalized = unicodedata.normalize("NFKD", value).encode("ascii", "ignore").decode("ascii")
+    normalized = re.sub(r"\s+", " ", normalized.replace("\n", " ").strip())
+    return normalized if normalized else None
+
+
+def extract_city_department_from_location(location: Optional[str]):
+    normalized = normalize_location_value(location)
+    if not normalized:
+        return None, None
+    parts = [part.strip() for part in normalized.split(",") if part.strip()]
+    if len(parts) >= 2:
+        return parts[0], parts[1]
+    return parts[0], None
+
+
+async def get_linkedin_filter_options():
+    now = time.monotonic()
+    cached_data = _linkedin_filter_cache["data"]
+    if cached_data and now < _linkedin_filter_cache["expires_at"]:
+        return cached_data
+
+    countries_task = linkedin_collection.distinct(
+        "country", {"country": {"$nin": [None, ""]}}
+    )
+    continents_task = linkedin_collection.distinct(
+        "continent", {"continent": {"$nin": [None, ""]}}
+    )
+    sources_task = linkedin_collection.distinct("source", {"source": {"$nin": [None, ""]}})
+    date_cursor = linkedin_collection.aggregate(
+        [
+            {"$match": {"posting_time": {"$type": "string", "$nin": [""]}}},
+            {"$project": {"date": {"$substrBytes": ["$posting_time", 0, 10]}}},
+            {"$match": {"date": {"$regex": r"^\d{4}-\d{2}-\d{2}$"}}},
+            {"$group": {"_id": "$date"}},
+            {"$sort": {"_id": -1}},
+        ]
+    )
+
+    countries, continents, sources, date_docs = await asyncio.gather(
+        countries_task, continents_task, sources_task, date_cursor.to_list(length=None)
+    )
+    unique_dates = [doc["_id"] for doc in date_docs if doc.get("_id")]
+
+    filter_options = {
+        "unique_countries": sorted(countries, key=lambda x: x or ""),
+        "unique_continents": sorted(continents, key=lambda x: x or ""),
+        "unique_sources": sorted(sources, key=lambda x: x or ""),
+        "unique_dates": unique_dates,
+    }
+
+    _linkedin_filter_cache["data"] = filter_options
+    _linkedin_filter_cache["expires_at"] = now + LINKEDIN_FILTER_CACHE_TTL_SECONDS
+    return filter_options
+
+
+async def get_freework_filter_options():
+    now = time.monotonic()
+    cached_data = _freework_filter_cache["data"]
+    if cached_data and now < _freework_filter_cache["expires_at"]:
+        return cached_data
+
+    remote_modes_task = freework_collection.distinct(
+        "remote_mode", {"remote_mode": {"$nin": [None, ""]}}
+    )
+    departments_task = freework_collection.distinct(
+        "department", {"department": {"$nin": [None, ""]}}
+    )
+    cities_task = freework_collection.distinct("city", {"city": {"$nin": [None, ""]}})
+    date_cursor = freework_collection.aggregate(
+        [
+            {"$match": {"published_at": {"$type": "string", "$nin": [""]}}},
+            {"$project": {"date": {"$substrBytes": ["$published_at", 0, 10]}}},
+            {"$match": {"date": {"$regex": r"^\d{4}-\d{2}-\d{2}$"}}},
+            {"$group": {"_id": "$date"}},
+            {"$sort": {"_id": -1}},
+        ]
+    )
+    remote_modes, departments, cities, date_docs = await asyncio.gather(
+        remote_modes_task,
+        departments_task,
+        cities_task,
+        date_cursor.to_list(length=None),
+    )
+    unique_dates = [doc["_id"] for doc in date_docs if doc.get("_id")]
+    cleaned_departments = sorted(
+        {
+            normalize_location_value(department)
+            for department in departments
+            if normalize_location_value(department)
+        },
+        key=lambda x: x.lower(),
+    )
+    cleaned_cities = sorted(
+        {
+            normalize_location_value(city)
+            for city in cities
+            if normalize_location_value(city)
+        },
+        key=lambda x: x.lower(),
+    )
+
+    filter_options = {
+        "unique_remote_modes": sorted(remote_modes, key=lambda x: x or ""),
+        "unique_dates": unique_dates,
+        "unique_departments": cleaned_departments,
+        "unique_cities": cleaned_cities,
+    }
+
+    _freework_filter_cache["data"] = filter_options
+    _freework_filter_cache["expires_at"] = now + FREEWORK_FILTER_CACHE_TTL_SECONDS
+    return filter_options
+
+
 @app.get("/jobs/linkedin", response_class=HTMLResponse)
 async def read_linkedin_jobs(
     request: Request,
@@ -161,65 +290,51 @@ async def read_linkedin_jobs(
     page: int = 1,
     per_page: int = 20,
 ):
+    page = max(page, 1)
+    per_page = max(min(per_page, 100), 1)
+
     query = {}
     if country and country != "all":
         query["country"] = country
     if continent and continent != "all":
         query["continent"] = continent
     if date and date != "all":
-        query["posting_time"] = {"$regex": f"^{date}", "$options": "i"}
+        try:
+            date_start = datetime.strptime(date, "%Y-%m-%d")
+            date_end = date_start + timedelta(days=1)
+            query["posting_time"] = {
+                "$gte": f"{date_start.strftime('%Y-%m-%d')} 00:00:00",
+                "$lt": f"{date_end.strftime('%Y-%m-%d')} 00:00:00",
+            }
+        except ValueError:
+            logger.warning(f"Invalid date filter format: {date}")
+            query["posting_time"] = {"$regex": f"^{date}", "$options": "i"}
     if source and source != "all":  # Apply source filter
         query["source"] = source
 
-    pipeline = [
-        {"$match": query},
-        {
-            "$addFields": {
-                "posting_time_dt": {
-                    "$dateFromString": {
-                        "dateString": "$posting_time",
-                        "format": "%Y-%m-%d %H:%M:%S",
-                    }
-                }
-            }
-        },
-        {"$sort": {"posting_time_dt": -1}},
-        {"$project": {"posting_time_dt": 0}},
-        {"$skip": (page - 1) * per_page},
-        {"$limit": per_page},
-    ]
+    projection = {
+        "_id": 0,
+        "url": 1,
+        "title": 1,
+        "company": 1,
+        "location": 1,
+        "posting_time": 1,
+        "country": 1,
+        "continent": 1,
+        "source": 1,
+    }
+    total_jobs_task = linkedin_collection.count_documents(query)
+    filters_task = get_linkedin_filter_options()
+    total_jobs, filters = await asyncio.gather(total_jobs_task, filters_task)
+    total_pages = max((total_jobs + per_page - 1) // per_page, 1)
+    page = min(page, total_pages)
 
-    jobs = [doc async for doc in linkedin_collection.aggregate(pipeline)]
-    total_jobs = await linkedin_collection.count_documents(query)
-    total_pages = (total_jobs + per_page - 1) // per_page
-
-    unique_countries = sorted(
-        {
-            doc["country"]
-            async for doc in linkedin_collection.find({"country": {"$ne": None}})
-        },
-        key=lambda x: x or "",
-    )
-    unique_continents = sorted(
-        {
-            doc["continent"]
-            async for doc in linkedin_collection.find({"continent": {"$ne": None}})
-        },
-        key=lambda x: x or "",
-    )
-    unique_dates = sorted(
-        {
-            doc["posting_time"][:10]
-            async for doc in linkedin_collection.find({"posting_time": {"$ne": None}})
-        },
-        reverse=True,
-    )
-    unique_sources = sorted(
-        {
-            doc["source"]
-            async for doc in linkedin_collection.find({"source": {"$ne": None}})
-        },
-        key=lambda x: x or "",
+    jobs = await (
+        linkedin_collection.find(query, projection)
+        .sort("posting_time", -1)
+        .skip((page - 1) * per_page)
+        .limit(per_page)
+        .to_list(length=per_page)
     )
 
     return templates.TemplateResponse(
@@ -227,16 +342,16 @@ async def read_linkedin_jobs(
         {
             "request": request,
             "jobs": jobs,
-            "unique_countries": unique_countries,
-            "unique_continents": unique_continents,
-            "unique_dates": unique_dates,
-            "unique_sources": unique_sources,  # Pass unique sources
+            "unique_countries": filters["unique_countries"],
+            "unique_continents": filters["unique_continents"],
+            "unique_dates": filters["unique_dates"],
+            "unique_sources": filters["unique_sources"],  # Pass unique sources
             "selected_country": country or "all",
             "selected_continent": continent or "all",
             "selected_date": date or "all",
             "selected_source": source or "all",  # Pass selected source
             "total_jobs": total_jobs,
-            "filtered_jobs_count": len(jobs),
+            "filtered_jobs_count": total_jobs,
             "page": page,
             "per_page": per_page,
             "total_pages": total_pages,
@@ -252,66 +367,79 @@ async def read_freework_jobs(
     remote_mode: Optional[str] = None,
     date: Optional[str] = None,
     type: Optional[str] = None,
+    department: Optional[str] = None,
+    city: Optional[str] = None,
     page: int = 1,
     per_page: int = 20,
 ):
+    page = max(page, 1)
+    per_page = max(min(per_page, 100), 1)
+
     query = {}
     if remote_mode and remote_mode != "all":
         query["remote_mode"] = remote_mode
     if date and date != "all":
-        query["published_at"] = {"$regex": f"^{date}", "$options": "i"}
+        query["published_at"] = {"$regex": f"^{date}"}
     if type == "scraping":
         query["scraping"] = True
+    if department and department != "all":
+        normalized_department = normalize_location_value(department)
+        if normalized_department:
+            query["department"] = {"$regex": f"^{re.escape(normalized_department)}$", "$options": "i"}
+    if city and city != "all":
+        normalized_city = normalize_location_value(city)
+        if normalized_city:
+            query["city"] = {"$regex": f"^{re.escape(normalized_city)}$", "$options": "i"}
 
-    pipeline = [
-        {"$match": query},
-        {
-            "$addFields": {
-                "published_at_dt": {
-                    "$dateFromString": {
-                        "dateString": "$published_at",
-                        "format": "%Y-%m-%dT%H:%M:%S%z",
-                    }
-                }
-            }
-        },
-        {"$sort": {"published_at_dt": -1}},
-        {"$project": {"published_at_dt": 0}},
-        {"$skip": (page - 1) * per_page},
-        {"$limit": per_page},
-    ]
+    projection = {
+        "_id": 0,
+        "id": 1,
+        "title": 1,
+        "company": 1,
+        "location": 1,
+        "url": 1,
+        "published_at": 1,
+        "remote_mode": 1,
+        "daily_salary": 1,
+        "department": 1,
+        "city": 1,
+    }
+    total_jobs_task = freework_collection.count_documents(query)
+    filters_task = get_freework_filter_options()
+    total_jobs, filters = await asyncio.gather(total_jobs_task, filters_task)
+    total_pages = max((total_jobs + per_page - 1) // per_page, 1)
+    page = min(page, total_pages)
 
-    jobs = [doc async for doc in freework_collection.aggregate(pipeline)]
-    total_jobs = await freework_collection.count_documents(query)
-    total_pages = (total_jobs + per_page - 1) // per_page
-
-    unique_remote_modes = sorted(
-        {
-            doc["remote_mode"]
-            async for doc in freework_collection.find({"remote_mode": {"$ne": None}})
-        },
-        key=lambda x: x or "",
+    jobs = await (
+        freework_collection.find(query, projection)
+        .sort("published_at", -1)
+        .skip((page - 1) * per_page)
+        .limit(per_page)
+        .to_list(length=per_page)
     )
-    unique_dates = sorted(
-        {
-            doc["published_at"][:10]
-            async for doc in freework_collection.find({"published_at": {"$ne": None}})
-        },
-        reverse=True,
-    )
+    for job in jobs:
+        city_from_location, department_from_location = extract_city_department_from_location(
+            job.get("location")
+        )
+        job["city"] = normalize_location_value(job.get("city")) or city_from_location
+        job["department"] = normalize_location_value(job.get("department")) or department_from_location
 
     return templates.TemplateResponse(
         "jobs/freework.html",
         {
             "request": request,
             "jobs": jobs,
-            "unique_remote_modes": unique_remote_modes,
-            "unique_dates": unique_dates,
+            "unique_remote_modes": filters["unique_remote_modes"],
+            "unique_dates": filters["unique_dates"],
+            "unique_departments": filters["unique_departments"],
+            "unique_cities": filters["unique_cities"],
             "selected_remote_mode": remote_mode or "all",
             "selected_date": date or "all",
             "selected_type": type or "all",
+            "selected_department": normalize_location_value(department) if department else "all",
+            "selected_city": normalize_location_value(city) if city else "all",
             "total_jobs": total_jobs,
-            "filtered_jobs_count": len(jobs),
+            "filtered_jobs_count": total_jobs,
             "page": page,
             "per_page": per_page,
             "total_pages": total_pages,
@@ -391,6 +519,13 @@ async def read_freework_job_detail(request: Request, job_id: str, return_page: i
 
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
+    return templates.TemplateResponse(
+        "index.html", {"request": request, "current_year": datetime.now().year}
+    )
+
+
+@app.get("/intro", response_class=HTMLResponse)
+async def intro(request: Request):
     return templates.TemplateResponse("intro.html", {"request": request})
 
 

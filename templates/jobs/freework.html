@@ -6,99 +6,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Freework Job Listings | Hocine ABED</title>
 
-  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <!-- Font Awesome -->
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['Sora', 'sans-serif'],
+            body: ['Plus Jakarta Sans', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
   <style>
     body {
-      font-family: 'Inter', sans-serif;
-      background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background:
+        radial-gradient(circle at 15% 0%, rgba(14, 165, 233, 0.12), transparent 38%),
+        radial-gradient(circle at 90% 20%, rgba(16, 185, 129, 0.1), transparent 36%),
+        #f8fafc;
     }
 
-    .badge {
-      font-size: 0.75rem;
-      font-weight: 500;
-      border-radius: 0.25rem;
-      padding: 0.25rem 0.5rem;
-    }
-
-    .badge-remote {
-      background-color: #e0f2fe;
-      color: #0369a1;
-    }
-
-    .badge-salary {
-      background-color: #dcfce7;
-      color: #166534;
-    }
-
-    .btn-primary {
-      background-color: #2563eb;
-      color: white;
-      transition: all 0.2s ease;
-    }
-
-    .btn-primary:hover {
-      background-color: #1d4ed8;
-      transform: translateY(-1px);
-    }
-
-    .table-container {
-      background: white;
-      border: 1px solid #e2e8f0;
-      border-radius: 0.75rem;
-      max-height: 70vh;
-      overflow-y: auto;
-    }
-
-    .table-row:hover {
-      background-color: #f1f5f9;
-      transform: translateY(-1px);
-      transition: all 0.2s ease;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-    }
-
-    .loading-spinner {
-      border: 4px solid rgba(37, 99, 235, 0.1);
-      border-top: 4px solid #2563eb;
-      border-radius: 50%;
-      width: 2.5rem;
-      height: 2.5rem;
-      animation: spin 0.8s linear infinite;
-      margin: 0 auto;
-    }
-
-    @keyframes spin {
-      0% {
-        transform: rotate(0deg);
-      }
-
-      100% {
-        transform: rotate(360deg);
-      }
-    }
-
-    @media (max-width: 768px) {
-
-      th,
-      td {
-        white-space: nowrap;
-        min-width: 120px;
-      }
-
-      .table-container {
-        overflow-x: auto;
-        max-height: none;
-      }
-    }
-
-    /* Modal Styles */
     .modal {
-      transition: opacity 0.3s ease-in-out;
+      transition: opacity .2s ease-in-out;
     }
 
     .modal-hidden {
@@ -113,83 +48,63 @@
   </style>
 </head>
 
-<body>
-
-  <!-- Navbar -->
+<body class="text-slate-800">
   {% include "partials/navbar.html" %}
 
-  <div class="container mx-auto px-4 py-12">
-
-    <!-- Header -->
-    <header class="text-center mb-10">
-      <h1 class="text-4xl font-bold text-gray-900 mb-2">Freework Remote Jobs</h1>
-      <p class="text-gray-600 max-w-xl mx-auto">
-        Find the best remote job opportunities for freelancers, filtered by rate, date, type, and remote mode.
+  <main class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+    <header class="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
+      <p class="text-xs font-semibold uppercase tracking-[0.24em] text-emerald-700">Freework Source</p>
+      <h1 class="mt-3 font-display text-3xl font-extrabold text-slate-900 sm:text-4xl">Freework Remote Jobs</h1>
+      <p class="mt-3 max-w-3xl text-sm leading-relaxed text-slate-600 sm:text-base">
+        Browse freelance opportunities by remote mode, publication date, and scraping category.
       </p>
+
+      <div class="mt-6 flex flex-wrap gap-3">
+        <a href="/jobs/linkedin" class="inline-flex items-center rounded-xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-700">
+          <i class="fas fa-briefcase mr-2"></i> View LinkedIn Jobs
+        </a>
+        <a href="https://github.com/housine35/freework-job-scraper" target="_blank" rel="noopener noreferrer" class="inline-flex items-center rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition hover:border-emerald-500 hover:text-emerald-700">
+          <i class="fab fa-github mr-2"></i> Freework Scraper Repo
+        </a>
+        <button id="download-btn" class="inline-flex items-center rounded-xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-emerald-700">
+          <i class="fas fa-download mr-2"></i> Download Today's CSV
+        </button>
+      </div>
     </header>
 
-    <!-- Buttons -->
-    <div class="text-center mb-10 flex flex-col md:flex-row justify-center gap-4">
-      <a href="/jobs/linkedin" class="inline-flex items-center btn-primary px-6 py-3 rounded-lg font-medium">
-        <i class="fas fa-briefcase mr-2"></i> View LinkedIn Jobs
-      </a>
-      <a href="https://github.com/housine35/freework-job-scraper"
-        class="inline-flex items-center btn-primary px-6 py-3 rounded-lg font-medium">
-        <i class="fab fa-github mr-2"></i> View Freework Scraper on GitHub
-      </a>
-      <button id="download-btn" class="inline-flex items-center btn-primary px-6 py-3 rounded-lg font-medium">
-        <i class="fas fa-download mr-2"></i> Download Today's Jobs (CSV)
-      </button>
-    </div>
+    <div id="email-modal" class="modal modal-hidden fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
+      <div class="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 shadow-xl">
+        <h2 class="font-display text-xl font-bold text-slate-900">Email Confirmation</h2>
+        <p class="mt-2 text-sm text-slate-600">Enter your email to download today's CSV snapshot.</p>
 
-    <!-- Email Modal -->
-    <div id="email-modal"
-      class="modal modal-hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div class="bg-white rounded-lg p-6 w-full max-w-md">
-        <h2 class="text-xl font-bold mb-4">Enter Your Email</h2>
-        <p class="text-gray-600 mb-4">Please put your email address to download the CSV file.</p>
-        <form id="email-form" action="/jobs/freework/download-today-with-email" method="post">
-          <div class="mb-4">
-            <label for="email-input" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
-            <input type="email" id="email-input" name="email" required
-              class="w-full rounded-lg border-gray-200 py-2.5 px-3 focus:ring-blue-200 focus:border-blue-500"
-              placeholder="your.email@example.com">
-            <p id="email-error" class="text-red-500 text-sm mt-1 hidden">Please enter a valid email address.</p>
-          </div>
-          <div class="flex justify-end gap-2">
-            <button type="button" id="cancel-btn" class="px-4 py-2 border rounded-lg text-gray-600 hover:bg-gray-100">
-              Cancel
-            </button>
-            <button type="submit" id="submit-email-btn" class="btn-primary px-4 py-2 rounded-lg">
-              Download
-            </button>
+        <form id="email-form" action="/jobs/freework/download-today-with-email" method="post" class="mt-5">
+          <label for="email-input" class="mb-2 block text-sm font-medium text-slate-700">Email Address</label>
+          <input type="email" id="email-input" name="email" required placeholder="your.email@example.com" class="w-full rounded-xl border border-slate-300 px-3 py-2.5 text-sm focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-100" />
+          <p id="email-error" class="mt-1 hidden text-sm text-red-600">Please enter a valid email address.</p>
+
+          <div class="mt-5 flex justify-end gap-2">
+            <button type="button" id="cancel-btn" class="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">Cancel</button>
+            <button type="submit" id="submit-email-btn" class="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700">Download</button>
           </div>
         </form>
       </div>
     </div>
 
-    <!-- Filters -->
-    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100 mb-10 max-w-5xl mx-auto">
-      <form method="get" action="/jobs/freework" id="filter-form" class="grid md:grid-cols-4 gap-4">
-        <!-- Remote Mode -->
+    <section class="mt-8 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+      <form method="get" action="/jobs/freework" id="filter-form" class="grid gap-4 md:grid-cols-6">
         <div>
-          <label for="remote-mode-filter" class="block text-sm font-medium text-gray-700 mb-1">Remote Mode</label>
-          <select id="remote-mode-filter" name="remote_mode"
-            class="w-full rounded-lg border-gray-200 py-2.5 px-3 focus:ring-blue-200 focus:border-blue-500">
+          <label for="remote-mode-filter" class="mb-2 block text-sm font-medium text-slate-700">Remote Mode</label>
+          <select id="remote-mode-filter" name="remote_mode" class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-100">
             <option value="all">All</option>
             {% for mode in unique_remote_modes %}
-            <option value="{{ mode }}" {% if mode==selected_remote_mode %}selected{% endif %}>
-              {{ mode | capitalize }}
-            </option>
+            <option value="{{ mode }}" {% if mode==selected_remote_mode %}selected{% endif %}>{{ mode | capitalize }}</option>
             {% endfor %}
           </select>
         </div>
 
-        <!-- Date -->
         <div>
-          <label for="date-filter" class="block text-sm font-medium text-gray-700 mb-1">Date Posted</label>
-          <select id="date-filter" name="date"
-            class="w-full rounded-lg border-gray-200 py-2.5 px-3 focus:ring-blue-200 focus:border-blue-500">
+          <label for="date-filter" class="mb-2 block text-sm font-medium text-slate-700">Date</label>
+          <select id="date-filter" name="date" class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-100">
             <option value="all">All Dates</option>
             {% for date in unique_dates %}
             <option value="{{ date }}" {% if date==selected_date %}selected{% endif %}>{{ date }}</option>
@@ -197,21 +112,37 @@
           </select>
         </div>
 
-        <!-- Type -->
         <div>
-          <label for="type-filter" class="block text-sm font-medium text-gray-700 mb-1">Type</label>
-          <select id="type-filter" name="type"
-            class="w-full rounded-lg border-gray-200 py-2.5 px-3 focus:ring-blue-200 focus:border-blue-500">
+          <label for="type-filter" class="mb-2 block text-sm font-medium text-slate-700">Type</label>
+          <select id="type-filter" name="type" class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-100">
             <option value="all" {% if selected_type=="all" %}selected{% endif %}>All</option>
             <option value="scraping" {% if selected_type=="scraping" %}selected{% endif %}>Scraping</option>
           </select>
         </div>
 
-        <!-- Per Page -->
         <div>
-          <label for="per-page" class="block text-sm font-medium text-gray-700 mb-1">Results Per Page</label>
-          <select id="per-page" name="per_page"
-            class="w-full rounded-lg border-gray-200 py-2.5 px-3 focus:ring-blue-200 focus:border-blue-500">
+          <label for="department-filter" class="mb-2 block text-sm font-medium text-slate-700">Department</label>
+          <select id="department-filter" name="department" class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-100">
+            <option value="all">All Departments</option>
+            {% for department in unique_departments %}
+            <option value="{{ department }}" {% if department==selected_department %}selected{% endif %}>{{ department }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div>
+          <label for="city-filter" class="mb-2 block text-sm font-medium text-slate-700">City</label>
+          <select id="city-filter" name="city" class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-100">
+            <option value="all">All Cities</option>
+            {% for city in unique_cities %}
+            <option value="{{ city }}" {% if city==selected_city %}selected{% endif %}>{{ city }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div>
+          <label for="per-page" class="mb-2 block text-sm font-medium text-slate-700">Per Page</label>
+          <select id="per-page" name="per_page" class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-100">
             <option value="10" {% if per_page==10 %}selected{% endif %}>10</option>
             <option value="20" {% if per_page==20 %}selected{% endif %}>20</option>
             <option value="50" {% if per_page==50 %}selected{% endif %}>50</option>
@@ -219,102 +150,99 @@
           </select>
         </div>
 
-        <input type="hidden" name="page" value="{{ page }}">
+        <input type="hidden" name="page" value="{{ page }}" />
       </form>
-    </div>
+    </section>
 
-    <!-- Job Count -->
-    <div class="mb-4 text-gray-800 font-medium">
-      {% if selected_remote_mode != "all" or selected_date != "all" or selected_type != "all" %}
-      <span class="text-blue-600">{{ filtered_jobs_count }}</span> filtered jobs
-      {% else %}
-      Showing <span class="text-blue-600">{{ filtered_jobs_count }}</span> jobs
-      {% endif %}
-      <span class="text-gray-500 text-sm">(of {{ total_jobs }} total)</span>
-    </div>
+    <section class="mt-6 flex items-center justify-between gap-4 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm shadow-sm">
+      <p class="text-slate-700">
+        {% if selected_remote_mode != "all" or selected_date != "all" or selected_type != "all" or selected_department != "all" or selected_city != "all" %}
+        <span class="font-semibold text-emerald-700">{{ filtered_jobs_count }}</span> filtered jobs
+        {% else %}
+        Showing <span class="font-semibold text-emerald-700">{{ filtered_jobs_count }}</span> jobs
+        {% endif %}
+        <span class="text-slate-500">(of {{ total_jobs }} total)</span>
+      </p>
+    </section>
 
-    <!-- Job Listings -->
-    <div class="table-container" id="job-table">
+    <section class="mt-6 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
       {% if jobs|length > 0 %}
-      <table class="min-w-full text-sm">
-        <thead>
-          <tr>
-            <th class="px-6 py-4 text-left">Job Title</th>
-            <th class="px-6 py-4 text-left">Company</th>
-            <th class="px-6 py-4 text-left">Info</th>
-            <th class="px-6 py-4 text-right">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for job in jobs %}
-          <tr class="table-row">
-            <td class="px-6 py-4">
-              <div class="font-semibold">{{ job.title }}</div>
-              <div class="flex gap-2 mt-2">
-                <span class="badge badge-remote">{{ job.remote_mode | capitalize }}</span>
-                {% if job.daily_salary %}
-                <span class="badge badge-salary">{{ job.daily_salary }}/day</span>
+      <div class="overflow-x-auto">
+        <table class="min-w-full text-sm">
+          <thead class="bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
+            <tr>
+              <th class="px-5 py-4 text-left">Job</th>
+              <th class="px-5 py-4 text-left">Company</th>
+              <th class="px-5 py-4 text-left">Info</th>
+              <th class="px-5 py-4 text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-200">
+            {% for job in jobs %}
+            <tr class="transition hover:bg-slate-50">
+              <td class="px-5 py-4">
+                <p class="font-semibold text-slate-900">{{ job.title }}</p>
+                <div class="mt-2 flex flex-wrap gap-2">
+                  <span class="rounded-full bg-cyan-100 px-2.5 py-1 text-xs font-medium text-cyan-800">{{ job.remote_mode | capitalize }}</span>
+                  {% if job.daily_salary %}
+                  <span class="rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-medium text-emerald-800">{{ job.daily_salary }}/day</span>
+                  {% endif %}
+                </div>
+              </td>
+              <td class="px-5 py-4">
+                <p class="font-medium text-slate-800">{{ job.company }}</p>
+                <p class="text-sm text-slate-500">{{ job.location }}</p>
+                {% if job.department or job.city %}
+                <div class="mt-2 flex flex-wrap gap-2">
+                  {% if job.department %}<span class="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-700">{{ job.department }}</span>{% endif %}
+                  {% if job.city %}<span class="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-700">{{ job.city }}</span>{% endif %}
+                </div>
                 {% endif %}
-              </div>
-            </td>
-            <td class="px-6 py-4">
-              <div class="text-gray-800 font-medium">{{ job.company }}</div>
-              <div class="text-gray-500 text-sm">{{ job.location }}</div>
-            </td>
-            <td class="px-6 py-4 text-gray-600">
-              <div>Published: {{ job.published_at | relative_time }}</div>
-              {% if job.daily_salary %}
-              <div>Rate: <span class="font-semibold text-green-600">{{ job.daily_salary }}</span></div>
-              {% endif %}
-            </td>
-            <td class="px-6 py-4 text-right space-y-2">
-              <a href="/jobs/freework/{{ job.id }}"
-                class="btn-primary px-4 py-2 rounded-lg text-sm inline-flex items-center">
-                <i class="fas fa-info-circle mr-2"></i> Details
-              </a>
-              <a href="{{ job.url }}" target="_blank"
-                class="text-sm inline-flex items-center border border-gray-300 px-4 py-2 rounded-lg hover:bg-gray-100">
-                <i class="fas fa-external-link-alt mr-2"></i> Apply
-              </a>
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+              </td>
+              <td class="px-5 py-4 text-slate-600">
+                <p>Published: {{ job.published_at | relative_time }}</p>
+                {% if job.daily_salary %}<p>Rate: <span class="font-semibold text-emerald-700">{{ job.daily_salary }}</span></p>{% endif %}
+              </td>
+              <td class="px-5 py-4 text-right">
+                <div class="flex flex-col items-end gap-2">
+                  <a href="/jobs/freework/{{ job.id }}?return_page={{ page }}&per_page={{ per_page }}" class="inline-flex items-center rounded-lg bg-emerald-600 px-4 py-2 text-xs font-semibold text-white transition hover:bg-emerald-700">
+                    <i class="fas fa-info-circle mr-2"></i> Details
+                  </a>
+                  <a href="{{ job.url }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center rounded-lg border border-slate-300 bg-white px-4 py-2 text-xs font-semibold text-slate-700 transition hover:bg-slate-50">
+                    <i class="fas fa-external-link-alt mr-2"></i> Apply
+                  </a>
+                </div>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
       {% else %}
-      <div class="text-center py-12 text-gray-500">
-        <p class="text-xl font-semibold mb-2">No jobs found</p>
-        <p>Try changing the filters to see results.</p>
+      <div class="px-6 py-16 text-center text-slate-500">
+        <p class="text-lg font-semibold text-slate-700">No jobs found</p>
+        <p class="mt-1 text-sm">Try changing your filters to see results.</p>
       </div>
       {% endif %}
-    </div>
+    </section>
 
-    <!-- Pagination -->
     {% if jobs|length > 0 %}
-    <div class="mt-6 flex justify-between items-center bg-white p-4 border border-gray-200 rounded-lg">
-      <p class="text-sm text-gray-600">
-        Showing <span class="font-medium">{{ ((page - 1) * per_page) + 1 }}</span> to
-        <span class="font-medium">{{ [page * per_page, filtered_jobs_count]|min }}</span> of
-        <span class="font-medium">{{ filtered_jobs_count }}</span> results
+    <section class="mt-6 flex flex-col justify-between gap-4 rounded-2xl border border-slate-200 bg-white p-4 text-sm shadow-sm sm:flex-row sm:items-center">
+      <p class="text-slate-600">
+        Showing <span class="font-semibold">{{ ((page - 1) * per_page) + 1 }}</span> to
+        <span class="font-semibold">{{ [page * per_page, filtered_jobs_count]|min }}</span> of
+        <span class="font-semibold">{{ filtered_jobs_count }}</span> results
       </p>
       <div class="flex gap-2">
-        <a href="?remote_mode={{ selected_remote_mode }}&date={{ selected_date }}&type={{ selected_type }}&page={{ page - 1 if page > 1 else 1 }}&per_page={{ per_page }}"
-          class="px-4 py-2 border rounded text-sm {% if page <= 1 %}text-gray-400 bg-gray-100 cursor-not-allowed{% else %}hover:bg-gray-50{% endif %}">
-          Previous
-        </a>
-        <a href="?remote_mode={{ selected_remote_mode }}&date={{ selected_date }}&type={{ selected_type }}&page={{ page + 1 if page < total_pages else total_pages }}&per_page={{ per_page }}"
-          class="px-4 py-2 border rounded text-sm {% if page >= total_pages %}text-gray-400 bg-gray-100 cursor-not-allowed{% else %}hover:bg-gray-50{% endif %}">
-          Next
-        </a>
+        <a href="?remote_mode={{ selected_remote_mode }}&date={{ selected_date }}&type={{ selected_type }}&department={{ selected_department }}&city={{ selected_city }}&page={{ page - 1 if page > 1 else 1 }}&per_page={{ per_page }}" class="rounded-lg border px-4 py-2 {% if page <= 1 %}cursor-not-allowed border-slate-200 bg-slate-100 text-slate-400{% else %}border-slate-300 bg-white text-slate-700 hover:bg-slate-50{% endif %}">Previous</a>
+        <a href="?remote_mode={{ selected_remote_mode }}&date={{ selected_date }}&type={{ selected_type }}&department={{ selected_department }}&city={{ selected_city }}&page={{ page + 1 if page < total_pages else total_pages }}&per_page={{ per_page }}" class="rounded-lg border px-4 py-2 {% if page >= total_pages %}cursor-not-allowed border-slate-200 bg-slate-100 text-slate-400{% else %}border-slate-300 bg-white text-slate-700 hover:bg-slate-50{% endif %}">Next</a>
       </div>
-    </div>
+    </section>
     {% endif %}
-  </div>
+  </main>
 
-  <!-- Footer -->
   {% include "partials/footer.html" %}
 
-  <!-- JS for dynamic filter submission and modal handling -->
   <script>
     const debounce = (fn, delay) => {
       let timeout;
@@ -324,12 +252,11 @@
       };
     };
 
-    // Filter form submission
     const submitForm = debounce(() => {
       document.getElementById('filter-form').submit();
     }, 300);
 
-    ["remote-mode-filter", "date-filter", "type-filter", "per-page"].forEach(id => {
+    ["remote-mode-filter", "date-filter", "type-filter", "department-filter", "city-filter", "per-page"].forEach(id => {
       const el = document.getElementById(id);
       if (el) {
         el.addEventListener('change', () => {
@@ -339,7 +266,6 @@
       }
     });
 
-    // Modal handling
     const downloadBtn = document.getElementById('download-btn');
     const emailModal = document.getElementById('email-modal');
     const cancelBtn = document.getElementById('cancel-btn');
@@ -398,7 +324,6 @@
         a.remove();
         window.URL.revokeObjectURL(url);
 
-        // Close modal
         emailModal.classList.remove('modal-visible');
         emailModal.classList.add('modal-hidden');
         emailInput.value = '';
@@ -408,7 +333,6 @@
       }
     });
   </script>
-
 </body>
 
 </html>

@@ -1,186 +1,69 @@
-<nav class="bg-white/90 backdrop-blur-md shadow-sm sticky top-0 z-50 border-b border-gray-100">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex justify-between items-center h-16">
-      <!-- Logo/Brand -->
-      <div class="flex-shrink-0 flex items-center">
-        <a href="/" class="flex items-center group">
-          <div
-            class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center mr-2 group-hover:rotate-12 transition-transform duration-300">
-            <i class="fas fa-code text-white text-sm"></i>
-          </div>
-          <span
-            class="text-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent font-heading">Hocine
-            ABED</span>
-        </a>
-      </div>
+<nav class="sticky top-0 z-50 border-b border-white/40 bg-white/80 backdrop-blur-xl">
+  <div class="mx-auto flex h-16 w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+    <a href="/index" class="group inline-flex items-center gap-3">
+      <span class="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-500 to-blue-700 text-white shadow-sm transition-transform duration-300 group-hover:rotate-6 group-hover:scale-105">
+        <i class="fas fa-spider text-sm"></i>
+      </span>
+      <span class="text-base font-semibold tracking-tight text-slate-900 sm:text-lg">Hocine ABED</span>
+    </a>
 
-      <!-- Desktop Navigation -->
-      <div class="hidden md:flex items-center space-x-1">
-        <a href="/index"
-          class="px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors duration-200 relative group">
-          <span>Home</span>
-          <span
-            class="absolute bottom-0 left-1/2 w-0 h-0.5 bg-blue-600 group-hover:w-4/5 group-hover:left-1/10 transition-all duration-300"></span>
-        </a>
-        <a href="/resume"
-          class="px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors duration-200 relative group">
-          <span>Resume</span>
-          <span
-            class="absolute bottom-0 left-1/2 w-0 h-0.5 bg-blue-600 group-hover:w-4/5 group-hover:left-1/10 transition-all duration-300"></span>
-        </a>
-        <!-- Projects Dropdown -->
-        <div class="relative group" id="projects-dropdown">
-          <button
-            class="px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors duration-200 flex items-center focus:outline-none"
-            aria-expanded="false" aria-haspopup="true">
-            <span>Projects</span>
-            <svg class="ml-1 w-4 h-4 text-gray-500 group-hover:text-blue-600 transition-transform duration-200"
-              xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-            </svg>
-          </button>
-          <!-- Dropdown menu -->
-          <div id="projects-menu"
-            class="absolute left-0 hidden mt-2 w-48 bg-white border border-gray-300 rounded-md shadow-lg z-50 group-focus-within:block group-hover:block">
-            <a href="/projects"
-              class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-100 hover:text-blue-700 transition-all duration-150">
-              All Projects
-            </a>
-            <a href="/jobs/linkedin"
-              class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-100 hover:text-blue-700 transition-all duration-150 flex items-center">
-              <img src="https://get-picto.com/wp-content/uploads/2023/02/Linkedin-logo-black.webp" alt="LinkedIn Logo"
-                class="inline-block w-5 h-5 mr-2"> Find Your Job (LinkedIn)
-            </a>
-            <a href="/jobs/freework"
-              class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-100 hover:text-blue-700 transition-all duration-150 flex items-center">
-              <img src="https://www.free-work.com/assets/logos/free-work.png" alt="Freework Logo"
-                class="inline-block w-5 h-5 mr-2"> Find Your Job (Freework)
-            </a>
-            <a href="https://tiktok-scraper-yt8p.onrender.com/"
-              class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-100 hover:text-blue-700 transition-all duration-150 flex items-center">
-              <img src="https://e7.pngegg.com/pngimages/588/462/png-clipart-tiktok-logo-paint-social-media-icons.png"
-                alt="TikTok Logo" class="inline-block w-5 h-5 mr-2"> TikTok Scraper
-            </a>
-            <a href="https://facebook-scraper-q8aa.onrender.com/"
-              class="block px-4 py-2  text-sm text-gray-700 hover:bg-blue-100 hover:text-blue-700 transition-all duration-150 flex items-center">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/c/cd/Facebook_logo_%28square%29.png" alt="Facebook Logo"
-                class="inline-block w-5 h-5 mr-2"> Facebook Scraper
-            </a>
-          </div>
-        </div>
-        <a href="/contact"
-          class="ml-4 px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-blue-500 to-indigo-600 rounded-md hover:from-blue-600 hover:to-indigo-700 transition-all duration-200 shadow-sm hover:shadow-md">
-          Contact
-        </a>
-      </div>
-
-      <!-- Mobile menu button -->
-      <div class="md:hidden flex items-center">
-        <button type="button"
-          class="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-blue-600 hover:bg-gray-100 focus:outline-none transition-colors duration-200"
-          aria-controls="mobile-menu" aria-expanded="false">
-          <span class="sr-only">Open main menu</span>
-          <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-            stroke="currentColor" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-          <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-            stroke="currentColor" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-          </svg>
+    <div class="hidden items-center gap-1 md:flex">
+      <a href="/index" class="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-cyan-50 hover:text-cyan-700">Home</a>
+      <a href="/projects" class="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-cyan-50 hover:text-cyan-700">Projects</a>
+      <a href="/resume" class="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-cyan-50 hover:text-cyan-700">Resume</a>
+      <div class="group relative">
+        <button type="button" class="inline-flex items-center rounded-lg px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-cyan-50 hover:text-cyan-700">
+          Social Media
+          <i class="fas fa-chevron-down ml-2 text-xs"></i>
         </button>
+        <div class="invisible absolute left-0 top-full z-20 mt-1 w-52 rounded-xl border border-slate-200 bg-white p-1 opacity-0 shadow-lg transition-all group-hover:visible group-hover:opacity-100">
+          <a href="https://facebook-scraper-q8aa.onrender.com/" target="_blank" rel="noopener noreferrer" class="flex items-center rounded-lg px-3 py-2 text-sm text-slate-700 transition hover:bg-blue-50 hover:text-blue-700">
+            <i class="fab fa-facebook mr-2"></i> Facebook Scraper
+          </a>
+          <a href="https://tiktok-scraper-yt8p.onrender.com/" target="_blank" rel="noopener noreferrer" class="flex items-center rounded-lg px-3 py-2 text-sm text-slate-700 transition hover:bg-pink-50 hover:text-pink-700">
+            <i class="fab fa-tiktok mr-2"></i> TikTok Scraper
+          </a>
+        </div>
       </div>
+      <a href="/jobs/linkedin" class="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-cyan-50 hover:text-cyan-700">LinkedIn Jobs</a>
+      <a href="/jobs/freework" class="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-cyan-50 hover:text-cyan-700">Freework Jobs</a>
+      <a href="/contact" class="ml-2 inline-flex items-center rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-700">Contact</a>
     </div>
+
+    <button id="mobile-menu-toggle" type="button" class="inline-flex items-center justify-center rounded-lg p-2 text-slate-700 transition hover:bg-slate-100 md:hidden" aria-controls="mobile-menu" aria-expanded="false">
+      <span class="sr-only">Open menu</span>
+      <i class="fas fa-bars"></i>
+    </button>
   </div>
 
-  <!-- Mobile menu -->
-  <div class="md:hidden hidden" id="mobile-menu">
-    <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white">
-      <a href="/index"
-        class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-white hover:bg-blue-600 transition-colors duration-150">Home</a>
-      <a href="/resume"
-        class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-white hover:bg-blue-600 transition-colors duration-150">Resume</a>
-      <!-- Mobile Projects Dropdown -->
-      <div class="relative">
-        <button
-          class="w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-white hover:bg-blue-600 transition-colors duration-150 flex items-center"
-          aria-controls="mobile-projects-menu" aria-expanded="false">
-          <span>Projects</span>
-          <svg class="ml-1 w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-            stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-          </svg>
-        </button>
-        <div class="hidden pl-4" id="mobile-projects-menu">
-          <a href="/projects"
-            class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-white hover:bg-blue-600 transition-colors duration-150">All
-            Projects</a>
-          <a href="/jobs/linkedin"
-            class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-white hover:bg-blue-600 transition-colors duration-150 flex items-center">
-            <img src="https://get-picto.com/wp-content/uploads/2023/02/Linkedin-logo-black.webp" alt="LinkedIn Logo"
-              class="inline-block w-5 h-5 mr-2"> Find Your Job (LinkedIn)
-          </a>
-          <a href="/jobs/freework"
-            class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-white hover:bg-blue-600 transition-colors duration-150 flex items-center">
-            <img src="https://www.free-work.com/assets/logos/free-work.png" alt="Freework Logo"
-              class="inline-block w-5 h-5 mr-2"> Find Your Job (Freework)
-          </a>
-          <a href="https://tiktok-scraper-yt8p.onrender.com/"
-            class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-white hover:bg-blue-600 transition-colors duration-150 flex items-center">
-            <img src="https://e7.pngegg.com/pngimages/588/462/png-clipart-tiktok-logo-paint-social-media-icons.png"
-              alt="TikTok Logo" class="inline-block w-5 h-5 mr-2"> TikTok Scraper
-          </a>
-        </div>
-      </div>
-      <a href="/about"
-        class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-white hover:bg-blue-600 transition-colors duration-150">About</a>
-      <a href="/contact"
-        class="block px-3 py-2 rounded-md text-base font-medium text-white bg-gradient-to-r from-blue-500 to-indigo-600 mt-2">Contact</a>
+  <div id="mobile-menu" class="hidden border-t border-slate-200/70 bg-white/95 px-4 py-3 md:hidden">
+    <div class="flex flex-col gap-1">
+      <a href="/index" class="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:bg-cyan-50">Home</a>
+      <a href="/projects" class="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:bg-cyan-50">Projects</a>
+      <a href="/resume" class="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:bg-cyan-50">Resume</a>
+      <p class="px-3 pt-2 text-xs font-semibold uppercase tracking-wider text-slate-400">Social Media</p>
+      <a href="https://facebook-scraper-q8aa.onrender.com/" target="_blank" rel="noopener noreferrer" class="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:bg-cyan-50">Facebook Scraper</a>
+      <a href="https://tiktok-scraper-yt8p.onrender.com/" target="_blank" rel="noopener noreferrer" class="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:bg-cyan-50">TikTok Scraper</a>
+      <a href="/jobs/linkedin" class="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:bg-cyan-50">LinkedIn Jobs</a>
+      <a href="/jobs/freework" class="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:bg-cyan-50">Freework Jobs</a>
+      <a href="/contact" class="mt-1 rounded-lg bg-slate-900 px-3 py-2 text-center text-sm font-medium text-white">Contact</a>
     </div>
   </div>
 </nav>
 
 <script>
-  // Mobile menu toggle
-  const mobileMenuButton = document.querySelector('[aria-controls="mobile-menu"]');
-  const mobileMenu = document.getElementById('mobile-menu');
-  mobileMenuButton.addEventListener('click', () => {
-    const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
-    mobileMenu.classList.toggle('hidden');
-    mobileMenuButton.querySelectorAll('svg').forEach(svg => svg.classList.toggle('hidden'));
-    mobileMenuButton.setAttribute('aria-expanded', !isExpanded);
-  });
+  (function () {
+    const toggle = document.getElementById('mobile-menu-toggle');
+    const menu = document.getElementById('mobile-menu');
+    if (!toggle || !menu) return;
 
-  // Desktop dropdown toggle
-  const projectsDropdown = document.getElementById('projects-dropdown');
-  const projectsMenu = document.getElementById('projects-menu');
-  projectsDropdown.addEventListener('mouseenter', () => {
-    projectsMenu.classList.remove('hidden');
-    projectsDropdown.querySelector('button').setAttribute('aria-expanded', 'true');
-  });
-  projectsDropdown.addEventListener('mouseleave', () => {
-    projectsMenu.classList.add('hidden');
-    projectsDropdown.querySelector('button').setAttribute('aria-expanded', 'false');
-  });
-
-  // Mobile projects dropdown toggle
-  const mobileProjectsButton = document.querySelector('[aria-controls="mobile-projects-menu"]');
-  const mobileProjectsMenu = document.getElementById('mobile-projects-menu');
-  mobileProjectsButton.addEventListener('click', () => {
-    const isExpanded = mobileProjectsButton.getAttribute('aria-expanded') === 'true';
-    mobileProjectsMenu.classList.toggle('hidden');
-    mobileProjectsButton.setAttribute('aria-expanded', !isExpanded);
-  });
-
-  // Close dropdowns when clicking outside
-  document.addEventListener('click', (e) => {
-    if (!projectsDropdown.contains(e.target)) {
-      projectsMenu.classList.add('hidden');
-      projectsDropdown.querySelector('button').setAttribute('aria-expanded', 'false');
-    }
-    if (!mobileProjectsButton.contains(e.target) && !mobileProjectsMenu.contains(e.target)) {
-      mobileProjectsMenu.classList.add('hidden');
-      mobileProjectsButton.setAttribute('aria-expanded', 'false');
-    }
-  });
+    toggle.addEventListener('click', () => {
+      const expanded = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', String(!expanded));
+      menu.classList.toggle('hidden');
+      toggle.innerHTML = !expanded
+        ? '<span class="sr-only">Close menu</span><i class="fas fa-times"></i>'
+        : '<span class="sr-only">Open menu</span><i class="fas fa-bars"></i>';
+    });
+  })();
 </script>

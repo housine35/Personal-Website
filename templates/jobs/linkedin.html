@@ -6,102 +6,60 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>LinkedIn Job Listings | Hocine ABED</title>
 
-  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <!-- Font Awesome -->
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['Sora', 'sans-serif'],
+            body: ['Plus Jakarta Sans', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
   <style>
     body {
-      background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-      font-family: 'Inter', sans-serif;
-    }
-
-    .table-container {
-      max-height: 70vh;
-      overflow-y: auto;
-      background: white;
-      border-radius: 0.75rem;
-      border: 1px solid #e2e8f0;
-    }
-
-    .table-row:hover {
-      background-color: #f1f5f9;
-      transform: translateY(-1px);
-      transition: all 0.2s ease;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-    }
-
-    .btn-primary {
-      background-color: #2563eb;
-      transition: all 0.2s ease;
-    }
-
-    .btn-primary:hover {
-      background-color: #1d4ed8;
-      transform: translateY(-1px);
-    }
-
-    .badge {
-      background-color: #e0f2fe;
-      color: #0369a1;
-      font-size: 0.75rem;
-      padding: 0.25rem 0.5rem;
-      border-radius: 0.25rem;
-    }
-
-    th {
-      background-color: #f8fafc;
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      color: #475569;
-    }
-
-    td {
-      border-bottom: 1px solid #e2e8f0;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background:
+        radial-gradient(circle at 15% 0%, rgba(14, 165, 233, 0.12), transparent 38%),
+        radial-gradient(circle at 90% 20%, rgba(249, 115, 22, 0.1), transparent 36%),
+        #f8fafc;
     }
   </style>
 </head>
 
-<body>
-
-  <!-- Navbar -->
+<body class="text-slate-800">
   {% include "partials/navbar.html" %}
 
-  <div class="container mx-auto px-4 py-12">
-
-    <!-- Header -->
-    <header class="mb-10 text-center">
-      <h1 class="text-4xl font-bold text-gray-900 mb-3">LinkedIn Job Opportunities</h1>
-      <p class="text-gray-600 max-w-3xl mx-auto">
-        Tired of going to linkedin.com and searching? The LinkedIn algorithm felt limiting and often showed jobs that
-        didn’t match my criteria.
-        So I built this app to search <strong>for me</strong> — and now it can search <strong>for you</strong> too.
+  <main class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+    <header class="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
+      <p class="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-700">LinkedIn Source</p>
+      <h1 class="mt-3 font-display text-3xl font-extrabold text-slate-900 sm:text-4xl">LinkedIn Job Opportunities</h1>
+      <p class="mt-3 max-w-3xl text-sm leading-relaxed text-slate-600 sm:text-base">
+        Filter and browse scraped LinkedIn opportunities by country, continent, source, and posting date.
       </p>
+
+      <div class="mt-6 flex flex-wrap gap-3">
+        <a href="/jobs/freework" class="inline-flex items-center rounded-xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-700">
+          <i class="fas fa-briefcase mr-2"></i> View Freework Jobs
+        </a>
+        <a href="https://github.com/housine35/linkedin-job-scraper" target="_blank" rel="noopener noreferrer" class="inline-flex items-center rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition hover:border-cyan-500 hover:text-cyan-700">
+          <i class="fab fa-github mr-2"></i> LinkedIn Scraper Repo
+        </a>
+      </div>
     </header>
 
-    <!-- Buttons -->
-    <div class="text-center mb-10 flex flex-col md:flex-row justify-center gap-4">
-      <a href="/jobs/freework" class="inline-flex items-center btn-primary px-6 py-3 rounded-lg font-medium text-white">
-        <i class="fas fa-briefcase mr-2"></i> View Freework Jobs
-      </a>
-      <a href="https://github.com/housine35/linkedin-job-scraper"
-        class="inline-flex items-center btn-primary px-6 py-3 rounded-lg font-medium text-white">
-        <i class="fab fa-github mr-2"></i> View LinkedIn Scraper on GitHub
-      </a>
-    </div>
-
-    <!-- Filters -->
-    <div class="filter-container mb-10 bg-white rounded-xl shadow-sm p-6 max-w-6xl mx-auto border border-gray-100">
-      <form method="get" action="/jobs/linkedin" id="filter-form" class="grid md:grid-cols-5 gap-4">
-
-        <!-- Country Filter -->
+    <section class="mt-8 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+      <form method="get" action="/jobs/linkedin" id="filter-form" class="grid gap-4 md:grid-cols-5">
         <div>
-          <label for="country-filter" class="block text-sm font-medium text-gray-700 mb-2">Country</label>
-          <select id="country-filter" name="country"
-            class="w-full border-gray-200 rounded-lg py-2.5 px-3 bg-white focus:ring-2 focus:ring-blue-200">
+          <label for="country-filter" class="mb-2 block text-sm font-medium text-slate-700">Country</label>
+          <select id="country-filter" name="country" class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm focus:border-cyan-500 focus:outline-none focus:ring-2 focus:ring-cyan-100">
             <option value="all">All Countries</option>
             {% for country in unique_countries %}
             <option value="{{ country }}" {% if country==selected_country %}selected{% endif %}>{{ country }}</option>
@@ -109,24 +67,19 @@
           </select>
         </div>
 
-        <!-- Continent Filter -->
         <div>
-          <label for="continent-filter" class="block text-sm font-medium text-gray-700 mb-2">Continent</label>
-          <select id="continent-filter" name="continent"
-            class="w-full border-gray-200 rounded-lg py-2.5 px-3 bg-white focus:ring-2 focus:ring-blue-200">
+          <label for="continent-filter" class="mb-2 block text-sm font-medium text-slate-700">Continent</label>
+          <select id="continent-filter" name="continent" class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm focus:border-cyan-500 focus:outline-none focus:ring-2 focus:ring-cyan-100">
             <option value="all">All Continents</option>
             {% for continent in unique_continents %}
-            <option value="{{ continent }}" {% if continent==selected_continent %}selected{% endif %}>{{ continent }}
-            </option>
+            <option value="{{ continent }}" {% if continent==selected_continent %}selected{% endif %}>{{ continent }}</option>
             {% endfor %}
           </select>
         </div>
 
-        <!-- Date Filter -->
         <div>
-          <label for="date-filter" class="block text-sm font-medium text-gray-700 mb-2">Date Posted</label>
-          <select id="date-filter" name="date"
-            class="w-full border-gray-200 rounded-lg py-2.5 px-3 bg-white focus:ring-2 focus:ring-blue-200">
+          <label for="date-filter" class="mb-2 block text-sm font-medium text-slate-700">Date</label>
+          <select id="date-filter" name="date" class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm focus:border-cyan-500 focus:outline-none focus:ring-2 focus:ring-cyan-100">
             <option value="all">All Dates</option>
             {% for date in unique_dates %}
             <option value="{{ date }}" {% if date==selected_date %}selected{% endif %}>{{ date }}</option>
@@ -134,11 +87,9 @@
           </select>
         </div>
 
-        <!-- Source Filter -->
         <div>
-          <label for="source-filter" class="block text-sm font-medium text-gray-700 mb-2">Source</label>
-          <select id="source-filter" name="source"
-            class="w-full border-gray-200 rounded-lg py-2.5 px-3 bg-white focus:ring-2 focus:ring-blue-200">
+          <label for="source-filter" class="mb-2 block text-sm font-medium text-slate-700">Source</label>
+          <select id="source-filter" name="source" class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm focus:border-cyan-500 focus:outline-none focus:ring-2 focus:ring-cyan-100">
             <option value="all">All Sources</option>
             {% for source in unique_sources %}
             <option value="{{ source }}" {% if source==selected_source %}selected{% endif %}>{{ source }}</option>
@@ -146,11 +97,9 @@
           </select>
         </div>
 
-        <!-- Results Per Page -->
         <div>
-          <label for="per-page" class="block text-sm font-medium text-gray-700 mb-2">Results Per Page</label>
-          <select id="per-page" name="per_page"
-            class="w-full border-gray-200 rounded-lg py-2.5 px-3 bg-white focus:ring-2 focus:ring-blue-200">
+          <label for="per-page" class="mb-2 block text-sm font-medium text-slate-700">Per Page</label>
+          <select id="per-page" name="per_page" class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm focus:border-cyan-500 focus:outline-none focus:ring-2 focus:ring-cyan-100">
             <option value="10" {% if per_page==10 %}selected{% endif %}>10</option>
             <option value="20" {% if per_page==20 %}selected{% endif %}>20</option>
             <option value="50" {% if per_page==50 %}selected{% endif %}>50</option>
@@ -158,99 +107,84 @@
           </select>
         </div>
 
-        <!-- Hidden input for pagination -->
-        <input type="hidden" name="page" value="{{ page }}">
+        <input type="hidden" name="page" value="{{ page }}" />
       </form>
-    </div>
+    </section>
 
-    <!-- Job Count -->
-    <div class="flex justify-between items-center mb-4 flex-wrap gap-4">
-      <div>
-        <h2 class="text-lg font-semibold text-gray-800">
-          {% if selected_country != "all" or selected_continent != "all" or selected_date != "all" or selected_source !=
-          "all" %}
-          <span class="text-blue-600">{{ filtered_jobs_count }}</span> filtered jobs
-          {% else %}
-          Showing <span class="text-blue-600">{{ filtered_jobs_count }}</span> jobs
-          {% endif %}
-          <span class="text-gray-500 font-normal text-sm">(out of {{ total_jobs }} total)</span>
-        </h2>
-      </div>
-    </div>
+    <section class="mt-6 flex items-center justify-between gap-4 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm shadow-sm">
+      <p class="text-slate-700">
+        {% if selected_country != "all" or selected_continent != "all" or selected_date != "all" or selected_source != "all" %}
+        <span class="font-semibold text-cyan-700">{{ filtered_jobs_count }}</span> filtered jobs
+        {% else %}
+        Showing <span class="font-semibold text-cyan-700">{{ filtered_jobs_count }}</span> jobs
+        {% endif %}
+        <span class="text-slate-500">(out of {{ total_jobs }} total)</span>
+      </p>
+    </section>
 
-    <!-- Job Table -->
-    <div class="table-container" id="job-table">
+    <section class="mt-6 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
       {% if jobs|length > 0 %}
-      <table class="min-w-full divide-y divide-gray-200 text-sm">
-        <thead>
-          <tr>
-            <th class="px-6 py-4 text-left">Job Title</th>
-            <th class="px-6 py-4 text-left">Company</th>
-            <th class="px-6 py-4 text-left">Location</th>
-            <th class="px-6 py-4 text-left">Source</th>
-            <th class="px-6 py-4 text-left">Date Posted</th>
-            <th class="px-6 py-4 text-right">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for job in jobs %}
-          <tr class="table-row">
-            <td class="px-6 py-4">
-              <div class="font-semibold">{{ job.title }}</div>
-              <div class="flex flex-wrap gap-1 mt-1">
-                {% if job.country %}<span class="badge">{{ job.country }}</span>{% endif %}
-                {% if job.continent %}<span class="badge">{{ job.continent }}</span>{% endif %}
-              </div>
-            </td>
-            <td class="px-6 py-4">{{ job.company }}</td>
-            <td class="px-6 py-4 text-gray-600">{{ job.location }}</td>
-            <td class="px-6 py-4 text-gray-600">{{ job.source | default('Unknown') }}</td>
-            <td class="px-6 py-4 text-gray-500">{{ job.posting_time | relative_time }}</td>
-            <td class="px-6 py-4 text-right">
-              <a href="{{ job.url }}" target="_blank"
-                class="inline-flex items-center btn-primary text-white px-4 py-2 rounded-lg text-sm">
-                <i class="fas fa-eye mr-2"></i> View
-              </a>
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+      <div class="overflow-x-auto">
+        <table class="min-w-full text-sm">
+          <thead class="bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
+            <tr>
+              <th class="px-5 py-4 text-left">Job</th>
+              <th class="px-5 py-4 text-left">Company</th>
+              <th class="px-5 py-4 text-left">Location</th>
+              <th class="px-5 py-4 text-left">Source</th>
+              <th class="px-5 py-4 text-left">Published</th>
+              <th class="px-5 py-4 text-right">Action</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-200">
+            {% for job in jobs %}
+            <tr class="transition hover:bg-slate-50">
+              <td class="px-5 py-4">
+                <p class="font-semibold text-slate-900">{{ job.title }}</p>
+                <div class="mt-2 flex flex-wrap gap-2">
+                  {% if job.country %}<span class="rounded-full bg-cyan-100 px-2.5 py-1 text-xs font-medium text-cyan-800">{{ job.country }}</span>{% endif %}
+                  {% if job.continent %}<span class="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-700">{{ job.continent }}</span>{% endif %}
+                </div>
+              </td>
+              <td class="px-5 py-4 font-medium text-slate-800">{{ job.company }}</td>
+              <td class="px-5 py-4 text-slate-600">{{ job.location }}</td>
+              <td class="px-5 py-4 text-slate-600">{{ job.source | default('Unknown') }}</td>
+              <td class="px-5 py-4 text-slate-500">{{ job.posting_time | relative_time }}</td>
+              <td class="px-5 py-4 text-right">
+                <a href="{{ job.url }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center rounded-lg bg-cyan-600 px-4 py-2 text-xs font-semibold text-white transition hover:bg-cyan-700">
+                  <i class="fas fa-eye mr-2"></i> View
+                </a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
       {% else %}
-      <div class="text-center py-16 text-gray-500">
-        <p class="text-xl font-semibold mb-2">No jobs found</p>
-        <p>Try adjusting your filters to see more results.</p>
+      <div class="px-6 py-16 text-center text-slate-500">
+        <p class="text-lg font-semibold text-slate-700">No jobs found</p>
+        <p class="mt-1 text-sm">Try adjusting your filters.</p>
       </div>
       {% endif %}
-    </div>
+    </section>
 
-    <!-- Pagination -->
     {% if jobs|length > 0 %}
-    <div class="flex justify-between items-center mt-6 bg-white border border-gray-200 p-4 rounded-lg">
-      <p class="text-sm text-gray-600">
+    <section class="mt-6 flex flex-col justify-between gap-4 rounded-2xl border border-slate-200 bg-white p-4 text-sm shadow-sm sm:flex-row sm:items-center">
+      <p class="text-slate-600">
         Showing <span class="font-semibold">{{ ((page - 1) * per_page) + 1 }}</span> to
         <span class="font-semibold">{{ [page * per_page, filtered_jobs_count]|min }}</span> of
         <span class="font-semibold">{{ filtered_jobs_count }}</span> results
       </p>
       <div class="flex gap-2">
-        <a href="?country={{ selected_country }}&continent={{ selected_continent }}&date={{ selected_date }}&source={{ selected_source }}&page={{ page - 1 if page > 1 else 1 }}&per_page={{ per_page }}"
-          class="px-4 py-2 border rounded-md text-sm {% if page <= 1 %}bg-gray-100 text-gray-400 cursor-not-allowed{% else %}bg-white text-gray-700 hover:bg-gray-50{% endif %}">
-          Previous
-        </a>
-        <a href="?country={{ selected_country }}&continent={{ selected_continent }}&date={{ selected_date }}&source={{ selected_source }}&page={{ page + 1 if page < total_pages else total_pages }}&per_page={{ per_page }}"
-          class="px-4 py-2 border rounded-md text-sm {% if page >= total_pages %}bg-gray-100 text-gray-400 cursor-not-allowed{% else %}bg-white text-gray-700 hover:bg-gray-50{% endif %}">
-          Next
-        </a>
+        <a href="?country={{ selected_country }}&continent={{ selected_continent }}&date={{ selected_date }}&source={{ selected_source }}&page={{ page - 1 if page > 1 else 1 }}&per_page={{ per_page }}" class="rounded-lg border px-4 py-2 {% if page <= 1 %}cursor-not-allowed border-slate-200 bg-slate-100 text-slate-400{% else %}border-slate-300 bg-white text-slate-700 hover:bg-slate-50{% endif %}">Previous</a>
+        <a href="?country={{ selected_country }}&continent={{ selected_continent }}&date={{ selected_date }}&source={{ selected_source }}&page={{ page + 1 if page < total_pages else total_pages }}&per_page={{ per_page }}" class="rounded-lg border px-4 py-2 {% if page >= total_pages %}cursor-not-allowed border-slate-200 bg-slate-100 text-slate-400{% else %}border-slate-300 bg-white text-slate-700 hover:bg-slate-50{% endif %}">Next</a>
       </div>
-    </div>
+    </section>
     {% endif %}
+  </main>
 
-  </div>
-
-  <!-- Footer -->
   {% include "partials/footer.html" %}
 
-  <!-- Script -->
   <script>
     const debounce = (fn, delay) => {
       let timeout;
@@ -273,7 +207,6 @@
       submitForm();
     });
   </script>
-
 </body>
 
 </html>
