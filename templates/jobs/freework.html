@@ -91,7 +91,7 @@
     </div>
 
     <section class="mt-8 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-      <form method="get" action="/jobs/freework" id="filter-form" class="grid gap-4 md:grid-cols-4">
+      <form method="get" action="/jobs/freework" id="filter-form" class="grid gap-4 md:grid-cols-6">
         <div>
           <label for="remote-mode-filter" class="mb-2 block text-sm font-medium text-slate-700">Remote Mode</label>
           <select id="remote-mode-filter" name="remote_mode" class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-100">
@@ -121,6 +121,26 @@
         </div>
 
         <div>
+          <label for="department-filter" class="mb-2 block text-sm font-medium text-slate-700">Department</label>
+          <select id="department-filter" name="department" class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-100">
+            <option value="all">All Departments</option>
+            {% for department in unique_departments %}
+            <option value="{{ department }}" {% if department==selected_department %}selected{% endif %}>{{ department }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div>
+          <label for="city-filter" class="mb-2 block text-sm font-medium text-slate-700">City</label>
+          <select id="city-filter" name="city" class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-100">
+            <option value="all">All Cities</option>
+            {% for city in unique_cities %}
+            <option value="{{ city }}" {% if city==selected_city %}selected{% endif %}>{{ city }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div>
           <label for="per-page" class="mb-2 block text-sm font-medium text-slate-700">Per Page</label>
           <select id="per-page" name="per_page" class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-100">
             <option value="10" {% if per_page==10 %}selected{% endif %}>10</option>
@@ -136,7 +156,7 @@
 
     <section class="mt-6 flex items-center justify-between gap-4 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm shadow-sm">
       <p class="text-slate-700">
-        {% if selected_remote_mode != "all" or selected_date != "all" or selected_type != "all" %}
+        {% if selected_remote_mode != "all" or selected_date != "all" or selected_type != "all" or selected_department != "all" or selected_city != "all" %}
         <span class="font-semibold text-emerald-700">{{ filtered_jobs_count }}</span> filtered jobs
         {% else %}
         Showing <span class="font-semibold text-emerald-700">{{ filtered_jobs_count }}</span> jobs
@@ -172,6 +192,12 @@
               <td class="px-5 py-4">
                 <p class="font-medium text-slate-800">{{ job.company }}</p>
                 <p class="text-sm text-slate-500">{{ job.location }}</p>
+                {% if job.department or job.city %}
+                <div class="mt-2 flex flex-wrap gap-2">
+                  {% if job.department %}<span class="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-700">{{ job.department }}</span>{% endif %}
+                  {% if job.city %}<span class="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-700">{{ job.city }}</span>{% endif %}
+                </div>
+                {% endif %}
               </td>
               <td class="px-5 py-4 text-slate-600">
                 <p>Published: {{ job.published_at | relative_time }}</p>
@@ -208,8 +234,8 @@
         <span class="font-semibold">{{ filtered_jobs_count }}</span> results
       </p>
       <div class="flex gap-2">
-        <a href="?remote_mode={{ selected_remote_mode }}&date={{ selected_date }}&type={{ selected_type }}&page={{ page - 1 if page > 1 else 1 }}&per_page={{ per_page }}" class="rounded-lg border px-4 py-2 {% if page <= 1 %}cursor-not-allowed border-slate-200 bg-slate-100 text-slate-400{% else %}border-slate-300 bg-white text-slate-700 hover:bg-slate-50{% endif %}">Previous</a>
-        <a href="?remote_mode={{ selected_remote_mode }}&date={{ selected_date }}&type={{ selected_type }}&page={{ page + 1 if page < total_pages else total_pages }}&per_page={{ per_page }}" class="rounded-lg border px-4 py-2 {% if page >= total_pages %}cursor-not-allowed border-slate-200 bg-slate-100 text-slate-400{% else %}border-slate-300 bg-white text-slate-700 hover:bg-slate-50{% endif %}">Next</a>
+        <a href="?remote_mode={{ selected_remote_mode }}&date={{ selected_date }}&type={{ selected_type }}&department={{ selected_department }}&city={{ selected_city }}&page={{ page - 1 if page > 1 else 1 }}&per_page={{ per_page }}" class="rounded-lg border px-4 py-2 {% if page <= 1 %}cursor-not-allowed border-slate-200 bg-slate-100 text-slate-400{% else %}border-slate-300 bg-white text-slate-700 hover:bg-slate-50{% endif %}">Previous</a>
+        <a href="?remote_mode={{ selected_remote_mode }}&date={{ selected_date }}&type={{ selected_type }}&department={{ selected_department }}&city={{ selected_city }}&page={{ page + 1 if page < total_pages else total_pages }}&per_page={{ per_page }}" class="rounded-lg border px-4 py-2 {% if page >= total_pages %}cursor-not-allowed border-slate-200 bg-slate-100 text-slate-400{% else %}border-slate-300 bg-white text-slate-700 hover:bg-slate-50{% endif %}">Next</a>
       </div>
     </section>
     {% endif %}
@@ -230,7 +256,7 @@
       document.getElementById('filter-form').submit();
     }, 300);
 
-    ["remote-mode-filter", "date-filter", "type-filter", "per-page"].forEach(id => {
+    ["remote-mode-filter", "date-filter", "type-filter", "department-filter", "city-filter", "per-page"].forEach(id => {
       const el = document.getElementById(id);
       if (el) {
         el.addEventListener('change', () => {

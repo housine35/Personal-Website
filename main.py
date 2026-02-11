@@ -12,6 +12,7 @@ import os
 import re
 import logging
 import time
+import unicodedata
 from dotenv import load_dotenv
 from io import BytesIO
 from utils.utils import generate_jobs_csv
@@ -163,6 +164,24 @@ class EmailSubmission(BaseModel):
     email: EmailStr
 
 
+def normalize_location_value(value: Optional[str]) -> Optional[str]:
+    if not value or not isinstance(value, str):
+        return None
+    normalized = unicodedata.normalize("NFKD", value).encode("ascii", "ignore").decode("ascii")
+    normalized = re.sub(r"\s+", " ", normalized.replace("\n", " ").strip())
+    return normalized if normalized else None
+
+
+def extract_city_department_from_location(location: Optional[str]):
+    normalized = normalize_location_value(location)
+    if not normalized:
+        return None, None
+    parts = [part.strip() for part in normalized.split(",") if part.strip()]
+    if len(parts) >= 2:
+        return parts[0], parts[1]
+    return parts[0], None
+
+
 async def get_linkedin_filter_options():
     now = time.monotonic()
     cached_data = _linkedin_filter_cache["data"]
@@ -212,6 +231,10 @@ async def get_freework_filter_options():
     remote_modes_task = freework_collection.distinct(
         "remote_mode", {"remote_mode": {"$nin": [None, ""]}}
     )
+    departments_task = freework_collection.distinct(
+        "department", {"department": {"$nin": [None, ""]}}
+    )
+    cities_task = freework_collection.distinct("city", {"city": {"$nin": [None, ""]}})
     date_cursor = freework_collection.aggregate(
         [
             {"$match": {"published_at": {"$type": "string", "$nin": [""]}}},
@@ -221,14 +244,35 @@ async def get_freework_filter_options():
             {"$sort": {"_id": -1}},
         ]
     )
-    remote_modes, date_docs = await asyncio.gather(
-        remote_modes_task, date_cursor.to_list(length=None)
+    remote_modes, departments, cities, date_docs = await asyncio.gather(
+        remote_modes_task,
+        departments_task,
+        cities_task,
+        date_cursor.to_list(length=None),
     )
     unique_dates = [doc["_id"] for doc in date_docs if doc.get("_id")]
+    cleaned_departments = sorted(
+        {
+            normalize_location_value(department)
+            for department in departments
+            if normalize_location_value(department)
+        },
+        key=lambda x: x.lower(),
+    )
+    cleaned_cities = sorted(
+        {
+            normalize_location_value(city)
+            for city in cities
+            if normalize_location_value(city)
+        },
+        key=lambda x: x.lower(),
+    )
 
     filter_options = {
         "unique_remote_modes": sorted(remote_modes, key=lambda x: x or ""),
         "unique_dates": unique_dates,
+        "unique_departments": cleaned_departments,
+        "unique_cities": cleaned_cities,
     }
 
     _freework_filter_cache["data"] = filter_options
@@ -323,6 +367,8 @@ async def read_freework_jobs(
     remote_mode: Optional[str] = None,
     date: Optional[str] = None,
     type: Optional[str] = None,
+    department: Optional[str] = None,
+    city: Optional[str] = None,
     page: int = 1,
     per_page: int = 20,
 ):
@@ -336,6 +382,14 @@ async def read_freework_jobs(
         query["published_at"] = {"$regex": f"^{date}"}
     if type == "scraping":
         query["scraping"] = True
+    if department and department != "all":
+        normalized_department = normalize_location_value(department)
+        if normalized_department:
+            query["department"] = {"$regex": f"^{re.escape(normalized_department)}$", "$options": "i"}
+    if city and city != "all":
+        normalized_city = normalize_location_value(city)
+        if normalized_city:
+            query["city"] = {"$regex": f"^{re.escape(normalized_city)}$", "$options": "i"}
 
     projection = {
         "_id": 0,
@@ -347,6 +401,8 @@ async def read_freework_jobs(
         "published_at": 1,
         "remote_mode": 1,
         "daily_salary": 1,
+        "department": 1,
+        "city": 1,
     }
     total_jobs_task = freework_collection.count_documents(query)
     filters_task = get_freework_filter_options()
@@ -361,6 +417,12 @@ async def read_freework_jobs(
         .limit(per_page)
         .to_list(length=per_page)
     )
+    for job in jobs:
+        city_from_location, department_from_location = extract_city_department_from_location(
+            job.get("location")
+        )
+        job["city"] = normalize_location_value(job.get("city")) or city_from_location
+        job["department"] = normalize_location_value(job.get("department")) or department_from_location
 
     return templates.TemplateResponse(
         "jobs/freework.html",
@@ -369,9 +431,13 @@ async def read_freework_jobs(
             "jobs": jobs,
             "unique_remote_modes": filters["unique_remote_modes"],
             "unique_dates": filters["unique_dates"],
+            "unique_departments": filters["unique_departments"],
+            "unique_cities": filters["unique_cities"],
             "selected_remote_mode": remote_mode or "all",
             "selected_date": date or "all",
             "selected_type": type or "all",
+            "selected_department": normalize_location_value(department) if department else "all",
+            "selected_city": normalize_location_value(city) if city else "all",
             "total_jobs": total_jobs,
             "filtered_jobs_count": total_jobs,
             "page": page,
