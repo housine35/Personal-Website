@@ -4,149 +4,80 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CV | Hocine ABED - Web Scraping & Backend Development Expert</title>
+  <title>CV | Hocine ABED — Web Scraping & Anti-Bot Engineer</title>
+  <meta name="description" content="Resume of Hocine ABED — Senior Web Scraping & Anti-Bot Engineer: high-volume crawlers, Cloudflare/DataDome/Akamai bypass, JS reverse engineering, FastAPI, Kubernetes." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🕷️</text></svg>" />
+
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
-    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet">
 
   <script>
     tailwind.config = {
       theme: {
-        fontFamily: {
-          'sans': ['Inter', 'sans-serif'],
-          'heading': ['Space Grotesk', 'sans-serif'],
-        },
         extend: {
-          colors: {
-            primary: {
-              50: '#f0f9ff',
-              100: '#e0f2fe',
-              200: '#bae6fd',
-              300: '#7dd3fc',
-              400: '#38bdf8',
-              500: '#0ea5e9',
-              600: '#0284c7',
-              700: '#0369a1',
-              800: '#075985',
-              900: '#0c4a6e',
-            },
-            slate: {
-              50: '#f8fafc',
-              100: '#f1f5f9',
-              200: '#e2e8f0',
-              300: '#cbd5e1',
-              400: '#94a3b8',
-              500: '#64748b',
-              600: '#475569',
-              700: '#334155',
-              800: '#1e293b',
-              900: '#0f172a',
-            },
-            accent: '#7c3aed',
-          },
-          animation: {
-            'fade-in': 'fadeIn 0.5s ease-in',
+          fontFamily: {
+            display: ['Sora', 'sans-serif'],
+            body: ['Plus Jakarta Sans', 'sans-serif'],
+            code: ['IBM Plex Mono', 'monospace']
           }
         }
       }
     }
   </script>
 
+  <link rel="stylesheet" href="/static/css/style.css" />
+
   <style>
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(10px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .gradient-text {
-      background: linear-gradient(90deg, #0891b2, #2563eb);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-
-    .timeline-item:not(:last-child)::after {
-      content: '';
-      position: absolute;
-      left: 24px;
-      top: 44px;
-      bottom: -32px;
-      width: 2px;
-      background: #e2e8f0;
-      z-index: 1;
-    }
-
-    .skill-pill {
-      transition: all 0.3s ease;
-    }
-
-    .skill-pill:hover {
-      transform: translateY(-2px);
-    }
-
-    .project-card {
-      transition: all 0.3s ease;
-      background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.95));
-    }
-
-    .project-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
-    }
-
-    body {
-      background-color: #f8fafc;
-      background-image:
-        radial-gradient(at 10% 20%, rgba(8, 145, 178, 0.07) 0px, transparent 50%),
-        radial-gradient(at 90% 80%, rgba(37, 99, 235, 0.06) 0px, transparent 50%);
-    }
-
-    .glass-panel {
-      background: rgba(255, 255, 255, 0.85);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      border: 1px solid rgba(255, 255, 255, 0.18);
+    /* Print / Save-as-PDF: flatten the dark theme to a clean white CV */
+    @media print {
+      nav, footer, .no-print, .glow { display: none !important; }
+      body { background: #fff !important; }
+      .glass, .glass-strong { background: #fff !important; border-color: #e2e8f0 !important; backdrop-filter: none !important; box-shadow: none !important; }
+      main { max-width: 100% !important; padding: 0 !important; }
+      * { color: #0f172a !important; }
+      .gradient-text { -webkit-text-fill-color: #0369a1 !important; color: #0369a1 !important; }
+      a { color: #0369a1 !important; text-decoration: none !important; }
+      section, .timeline-item { break-inside: avoid; }
     }
   </style>
 </head>
 
-<body class="min-h-screen">
+<body class="min-h-screen font-body">
   {% include "partials/navbar.html" %}
 
-  <main class="max-w-6xl mx-auto px-4 py-12">
+  <main class="relative max-w-6xl mx-auto px-4 py-12">
+    <div class="glow -left-20 top-10 h-64 w-64 bg-cyan-500/20"></div>
+    <div class="glow right-0 top-40 h-72 w-72 bg-orange-500/15"></div>
+
     <!-- Header -->
-    <div class="glass-panel rounded-2xl shadow-xl overflow-hidden mb-12 animate__animated animate__fade-in">
+    <div class="glass relative rounded-2xl shadow-xl overflow-hidden mb-12">
       <div class="p-8 md:p-12">
-        <div class="flex flex-col md:flex-row items-center">
+        <div class="flex flex-col md:flex-row items-center gap-8">
           <div class="md:w-2/3">
-            <h1 class="text-4xl md:text-5xl font-bold mb-2 font-heading text-slate-800">Hocine ABED</h1>
-            <h2 class="text-2xl md:text-3xl font-medium text-primary-600 mb-4">Web Scraping & Backend Development Expert
-            </h2>
-            <p class="text-lg text-slate-600 max-w-2xl">
-              Specialist in data extraction, high-performance API design, and cloud infrastructure management for
-              large-scale data processing.
+            <h1 class="text-4xl md:text-5xl font-extrabold mb-2 font-display text-white">Hocine ABED</h1>
+            <h2 class="text-xl md:text-2xl font-semibold gradient-text mb-4">Senior Web Scraping &amp; Anti-Bot Engineer</h2>
+            <p class="text-lg text-slate-300 max-w-2xl">
+              5+ years building high-volume crawlers (5–10M+ req/day) that bypass Cloudflare, DataDome, Akamai,
+              PerimeterX &amp; Imperva on Kubernetes. Expert in Playwright/Puppeteer (Python/Node/TS), fingerprint
+              spoofing, CAPTCHA solving and JS reverse engineering — delivering FastAPI BI endpoints (P95 &lt; 200 ms).
             </p>
             <div class="mt-6 flex flex-wrap gap-3">
-              <span class="px-3 py-1 bg-primary-100 text-primary-800 text-sm rounded-full">Python Expert</span>
-              <span class="px-3 py-1 bg-primary-100 text-primary-800 text-sm rounded-full">Web Scraping</span>
-              <span class="px-3 py-1 bg-primary-100 text-primary-800 text-sm rounded-full">Cloud Architecture</span>
+              <span class="px-3 py-1 border border-cyan-400/30 bg-cyan-400/10 text-cyan-200 text-sm rounded-full">Anti-Bot Bypass</span>
+              <span class="px-3 py-1 border border-cyan-400/30 bg-cyan-400/10 text-cyan-200 text-sm rounded-full">Reverse Engineering</span>
+              <span class="px-3 py-1 border border-cyan-400/30 bg-cyan-400/10 text-cyan-200 text-sm rounded-full">Python Expert</span>
+              <span class="px-3 py-1 border border-cyan-400/30 bg-cyan-400/10 text-cyan-200 text-sm rounded-full">Kubernetes</span>
             </div>
+            <button type="button" onclick="window.print()" class="no-print mt-6 inline-flex items-center rounded-xl bg-gradient-to-r from-cyan-400 to-blue-600 px-5 py-2.5 text-sm font-semibold text-slate-950 transition hover:brightness-110">
+              <i class="fas fa-file-arrow-down mr-2"></i> Télécharger en PDF
+            </button>
           </div>
-          <div class="mt-8 md:mt-0 md:w-1/3 flex justify-center">
-            <div
-              class="w-40 h-40 rounded-full bg-gradient-to-br from-primary-400 to-accent shadow-lg flex items-center justify-center overflow-hidden">
+          <div class="md:w-1/3 flex justify-center">
+            <div class="w-40 h-40 rounded-full bg-gradient-to-br from-cyan-400 to-blue-600 p-[3px] shadow-lg shadow-cyan-500/20">
               <img
-                src="https://media.licdn.com/dms/image/v2/D4E03AQF3y-mQnpF4AQ/profile-displayphoto-scale_200_200/B4EZniGEFOHgAc-/0/1760434868480?e=1772668800&v=beta&t=QFPCx9XBvms2LVCZ0Bq-HydIpX24qUGmfOslKKAk-DI"
-                alt="Profile picture of Hocine ABED">
+                src="https://media.licdn.com/dms/image/v2/D4E03AQHsoy8Ka5YIng/profile-displayphoto-shrink_200_200/B4EZWjkFfyGgAY-/0/1742205901350?e=2147483647&v=beta&t=gpD57rl_Im2DnjGSpE7SzdLxwTa3pDU6zmBXE9WYhmA"
+                alt="Profile picture of Hocine ABED"
+                class="h-full w-full rounded-full object-cover">
             </div>
           </div>
         </div>
@@ -157,159 +88,151 @@
       <!-- Left Column -->
       <div class="lg:w-2/3">
         <!-- Experience -->
-        <section class="glass-panel rounded-2xl shadow-md p-8 mb-8 animate__animated animate__fade-in">
-          <h2 class="text-3xl font-bold mb-6 font-heading flex items-center">
+        <section class="glass rounded-2xl shadow-md p-8 mb-8">
+          <h2 class="text-2xl md:text-3xl font-bold mb-6 font-display flex items-center text-white">
             <span class="gradient-text">Professional Experience</span>
-            <span class="ml-auto text-sm font-normal text-slate-500">7+ years of experience</span>
+            <span class="ml-auto text-sm font-normal text-slate-400">5+ years</span>
           </h2>
 
           <div class="space-y-10">
-            <!-- Saper Vedere -->
+            <!-- SaperVedere -->
             <div class="timeline-item relative pl-14">
-              <div
-                class="absolute left-0 top-0 w-12 h-12 rounded-full bg-gradient-to-br from-primary-400 to-accent text-white flex items-center justify-center shadow-md z-10">
+              <div class="absolute left-0 top-0 w-12 h-12 rounded-full bg-gradient-to-br from-cyan-400 to-blue-600 text-slate-950 flex items-center justify-center shadow-md z-10">
                 <i class="fas fa-briefcase text-lg"></i>
               </div>
               <div class="ml-4">
                 <div class="flex flex-col md:flex-row md:justify-between">
-                  <h3 class="text-xl font-bold text-slate-800">Backend Developer</h3>
-                  <span class="text-primary-600 font-medium">July 2024 - Present</span>
+                  <h3 class="text-xl font-bold text-white">Senior Back-End Engineer (Scraping)</h3>
+                  <span class="text-cyan-300 font-medium">Jul 2024 - Present</span>
                 </div>
-                <div class="flex items-center text-slate-600 mb-4">
+                <div class="flex items-center text-slate-400 mb-4">
                   <i class="fas fa-building mr-2 text-sm opacity-70"></i>
-                  <span>Saper Vedere · Remote (Brussels Area)</span>
+                  <span>SaperVedere · Remote</span>
                 </div>
 
-                <div class="bg-primary-50/50 border-l-4 border-primary-500 p-5 rounded-r-lg mb-4">
-                  <ul class="list-disc list-inside space-y-2.5 text-slate-700">
-                    <li>Developed web scraping solutions for social media platforms (Facebook, Twitter, Instagram,
-                      TikTok) and various websites</li>
-                    <li>Managed proxy services to optimize scraping performance and ensure reliable data collection</li>
-                    <li>Designed and managed cloud infrastructure using Kubernetes, Docker, K9s, and cron jobs</li>
-                    <li>Built and deployed high-performance APIs using FastAPI</li>
-                    <li>Utilized Elasticsearch and MongoDB for advanced data indexing and storage</li>
-                    <li>Proficient in reverse engineering using tools like <strong>Proxyman</strong> and <strong>Charles Proxy</strong> to analyze and debug network traffic, optimize API interactions, and ensure robust data collection from various sources
-                    </li>
+                <div class="bg-white/5 border-l-4 border-cyan-400/60 p-5 rounded-r-lg mb-4">
+                  <ul class="list-disc list-inside space-y-2.5 text-slate-300">
+                    <li>Built near-real-time social-media collectors (Meta / TikTok / Instagram) processing millions of interactions daily (&lt; 5 min freshness)</li>
+                    <li>Reverse-engineered private APIs/endpoints (HTTP / TLS / WebSocket) and de-obfuscated JavaScript</li>
+                    <li>Designed anti-bot bypass (Cloudflare / DataDome / Akamai / PerimeterX / Imperva) with stealth fingerprinting &amp; CAPTCHA handling → <strong class="text-white">&gt;98% success rate</strong></li>
+                    <li>Owned the Kubernetes platform: orchestration, HPA, observability, cost-optimized proxy routing (<strong class="text-white">−35% proxy cost</strong>)</li>
+                    <li>Developed FastAPI BI services (P95 &lt; 200 ms, 99.9% SLO) + an LLM/RAG PoC for structured extraction (<strong class="text-white">+40% accuracy</strong>)</li>
                   </ul>
                 </div>
 
                 <div class="flex flex-wrap gap-2 mt-5">
-                  <span
-                    class="skill-pill px-3 py-1.5 bg-primary-100 text-primary-800 text-xs font-medium rounded-full shadow-sm">Python</span>
-                  <span
-                    class="skill-pill px-3 py-1.5 bg-primary-100 text-primary-800 text-xs font-medium rounded-full shadow-sm">FastAPI</span>
-                  <span
-                    class="skill-pill px-3 py-1.5 bg-primary-100 text-primary-800 text-xs font-medium rounded-full shadow-sm">Kubernetes</span>
-                  <span
-                    class="skill-pill px-3 py-1.5 bg-primary-100 text-primary-800 text-xs font-medium rounded-full shadow-sm">Docker</span>
-                  <span
-                    class="skill-pill px-3 py-1.5 bg-primary-100 text-primary-800 text-xs font-medium rounded-full shadow-sm">Elasticsearch</span>
-                  <span
-                    class="skill-pill px-3 py-1.5 bg-primary-100 text-primary-800 text-xs font-medium rounded-full shadow-sm">MongoDB</span>
+                  {% for t in ["Python", "Playwright", "Reverse Engineering", "Kubernetes", "FastAPI", "MongoDB", "LLM/RAG"] %}
+                  <span class="px-3 py-1.5 border border-white/10 bg-white/5 text-slate-300 text-xs font-medium rounded-full">{{ t }}</span>
+                  {% endfor %}
                 </div>
               </div>
             </div>
 
-            <!-- PAARLY -->
+            <!-- Paarly Senior -->
             <div class="timeline-item relative pl-14">
-              <div
-                class="absolute left-0 top-0 w-12 h-12 rounded-full bg-gradient-to-br from-primary-400 to-accent text-white flex items-center justify-center shadow-md z-10">
+              <div class="absolute left-0 top-0 w-12 h-12 rounded-full bg-gradient-to-br from-cyan-400 to-blue-600 text-slate-950 flex items-center justify-center shadow-md z-10">
                 <i class="fas fa-briefcase text-lg"></i>
               </div>
               <div class="ml-4">
                 <div class="flex flex-col md:flex-row md:justify-between">
-                  <h3 class="text-xl font-bold text-slate-800">Lead Technical Developer</h3>
-                  <span class="text-primary-600 font-medium">Sept 2021 - Aug 2024</span>
+                  <h3 class="text-xl font-bold text-white">Senior Backend Developer — Web Scraping</h3>
+                  <span class="text-cyan-300 font-medium">Sep 2021 - Jun 2024</span>
                 </div>
-                <div class="flex items-center text-slate-600 mb-4">
+                <div class="flex items-center text-slate-400 mb-4">
                   <i class="fas fa-building mr-2 text-sm opacity-70"></i>
-                  <span>PAARLY · Hybrid (Toulouse, France)</span>
+                  <span>Paarly · Toulouse, France</span>
                 </div>
 
-                <div class="bg-primary-50/50 border-l-4 border-primary-500 p-5 rounded-r-lg mb-4">
-                  <ul class="list-disc list-inside space-y-2.5 text-slate-700">
-                    <li>Designed and implemented ETL pipelines using Scrapy, Puppeteer, and Selenium</li>
-                    <li>Integrated cloud solutions with Azure and AWS S3</li>
-                    <li>Created data visualizations with Power BI</li>
-                    <li>Managed proxies (brightdata) for performance optimization</li>
-                    <li>Prepared technical reports and project documentation</li>
-                    <li>Participated in client meetings and onboarded new team members</li>
+                <div class="bg-white/5 border-l-4 border-cyan-400/60 p-5 rounded-r-lg mb-4">
+                  <ul class="list-disc list-inside space-y-2.5 text-slate-300">
+                    <li>Architected price-intelligence pipelines scraping <strong class="text-white">100+ e-commerce sites</strong> (5M+ daily records, &lt;1% loss)</li>
+                    <li>Led a 5-engineer team: hiring, mentoring, planning, stakeholder alignment (95% on-time delivery)</li>
+                    <li>Built resilient crawlers (Playwright / Puppeteer / Scrapy) with retries, backoff and idempotency</li>
+                    <li>Implemented anti-blocking: residential proxies, custom fingerprints, TLS/JA3 spoofing, CAPTCHA solvers → <strong class="text-white">&gt;95% uptime</strong></li>
+                    <li>Delivered low-latency FastAPI endpoints (P95 &lt; 200 ms) feeding BI tools (Metabase / Power BI)</li>
                   </ul>
                 </div>
 
                 <div class="flex flex-wrap gap-2 mt-5">
-                  <span
-                    class="skill-pill px-3 py-1.5 bg-primary-100 text-primary-800 text-xs font-medium rounded-full shadow-sm">Scrapy</span>
-                  <span
-                    class="skill-pill px-3 py-1.5 bg-primary-100 text-primary-800 text-xs font-medium rounded-full shadow-sm">Puppeteer</span>
-                  <span
-                    class="skill-pill px-3 py-1.5 bg-primary-100 text-primary-800 text-xs font-medium rounded-full shadow-sm">Selenium</span>
-                  <span
-                    class="skill-pill px-3 py-1.5 bg-primary-100 text-primary-800 text-xs font-medium rounded-full shadow-sm">Azure</span>
-                  <span
-                    class="skill-pill px-3 py-1.5 bg-primary-100 text-primary-800 text-xs font-medium rounded-full shadow-sm">AWS
-                    S3</span>
-                  <span
-                    class="skill-pill px-3 py-1.5 bg-primary-100 text-primary-800 text-xs font-medium rounded-full shadow-sm">Power
-                    BI</span>
+                  {% for t in ["Playwright", "Puppeteer", "Scrapy", "TLS/JA3", "Residential Proxies", "FastAPI", "Azure"] %}
+                  <span class="px-3 py-1.5 border border-white/10 bg-white/5 text-slate-300 text-xs font-medium rounded-full">{{ t }}</span>
+                  {% endfor %}
                 </div>
+              </div>
+            </div>
+
+            <!-- Paarly Intern -->
+            <div class="timeline-item relative pl-14">
+              <div class="absolute left-0 top-0 w-12 h-12 rounded-full bg-white/5 text-cyan-300 flex items-center justify-center shadow-md z-10">
+                <i class="fas fa-seedling text-lg"></i>
+              </div>
+              <div class="ml-4">
+                <div class="flex flex-col md:flex-row md:justify-between">
+                  <h3 class="text-lg font-bold text-white">Software Engineering Intern</h3>
+                  <span class="text-cyan-300 font-medium">Feb 2021 - Aug 2021</span>
+                </div>
+                <div class="flex items-center text-slate-400 mb-3">
+                  <i class="fas fa-building mr-2 text-sm opacity-70"></i>
+                  <span>Paarly · Toulouse, France</span>
+                </div>
+                <ul class="list-disc list-inside space-y-2 text-slate-300 text-sm">
+                  <li>Improved scraping reliability, monitoring &amp; alerting (−60% false positives)</li>
+                  <li>Supported Azure CI/CD and deployments</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- CDTA Intern -->
+            <div class="timeline-item relative pl-14">
+              <div class="absolute left-0 top-0 w-12 h-12 rounded-full bg-white/5 text-cyan-300 flex items-center justify-center shadow-md z-10">
+                <i class="fas fa-seedling text-lg"></i>
+              </div>
+              <div class="ml-4">
+                <div class="flex flex-col md:flex-row md:justify-between">
+                  <h3 class="text-lg font-bold text-white">Software Engineering Intern</h3>
+                  <span class="text-cyan-300 font-medium">Jan 2019 - Jul 2019</span>
+                </div>
+                <div class="flex items-center text-slate-400 mb-3">
+                  <i class="fas fa-building mr-2 text-sm opacity-70"></i>
+                  <span>CDTA · Algiers, Algeria</span>
+                </div>
+                <ul class="list-disc list-inside space-y-2 text-slate-300 text-sm">
+                  <li>Developed CNN object-detection models (TensorFlow / Keras) for autonomous driving</li>
+                </ul>
               </div>
             </div>
           </div>
         </section>
 
         <!-- Projects Showcase -->
-        <section class="glass-panel rounded-2xl shadow-md p-8 mb-8 animate__animated animate__fade-in">
-          <h2 class="text-3xl font-bold mb-6 font-heading">
+        <section class="glass rounded-2xl shadow-md p-8 mb-8">
+          <h2 class="text-2xl md:text-3xl font-bold mb-6 font-display">
             <span class="gradient-text">Notable Projects</span>
           </h2>
 
           <div class="grid md:grid-cols-2 gap-6">
-            <div class="project-card border border-slate-200 rounded-xl p-6">
-              <div class="flex items-center mb-4">
-                <div
-                  class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center text-indigo-600 mr-4 shadow-sm">
-                  <i class="fas fa-cloud text-xl"></i>
+            {% set cv_projects = [
+              {"title": "RAG Job Chatbot", "desc": "Semantic search over job posts using embeddings.", "icon": "fas fa-robot", "color": "violet", "tag": "Private", "url": null},
+              {"title": "Facebook Collector", "desc": "Posts & profiles → MongoDB / CSV via reverse-engineered endpoints.", "icon": "fab fa-facebook-f", "color": "blue", "tag": "GitHub", "url": "https://github.com/housine35/facebook-scraper"},
+              {"title": "TikTok Scraper API", "desc": "FastAPI + reverse engineering + Playwright.", "icon": "fab fa-tiktok", "color": "amber", "tag": "GitHub", "url": "https://github.com/housine35/tiktok-scraper"},
+              {"title": "LinkedIn Job Scraper", "desc": "Filtered postings with export, refreshed every 30 min.", "icon": "fab fa-linkedin-in", "color": "cyan", "tag": "GitHub", "url": "https://github.com/housine35/linkedin-job-scraper"}
+            ] %}
+            {% for p in cv_projects %}
+            <div class="card-hover rounded-xl border border-white/10 bg-white/5 p-6">
+              <div class="flex items-center justify-between mb-3">
+                <div class="w-11 h-11 bg-{{ p.color }}-400/15 rounded-lg flex items-center justify-center text-{{ p.color }}-300">
+                  <i class="{{ p.icon }} text-lg"></i>
                 </div>
-                <h3 class="text-lg font-bold text-slate-800">Social Media Data Extraction</h3>
+                {% if p.url %}
+                <a href="{{ p.url }}" target="_blank" rel="noopener noreferrer" class="text-xs font-medium text-{{ p.color }}-300 hover:text-{{ p.color }}-200"><i class="fab fa-github mr-1"></i>{{ p.tag }}</a>
+                {% else %}
+                <span class="text-xs font-medium text-slate-500"><i class="fas fa-lock mr-1"></i>{{ p.tag }}</span>
+                {% endif %}
               </div>
-              <div class="flex items-center mb-4">
-                <p class="text-slate-600 mr-3">App to extract data from:</p>
-                <div class="flex space-x-2">
-                  <img src="https://upload.wikimedia.org/wikipedia/commons/5/58/Instagram-Icon.png" alt="Instagram"
-                    class="w-5 h-5 object-contain">
-                  <img src="https://upload.wikimedia.org/wikipedia/commons/3/34/Ionicons_logo-tiktok.svg" alt="TikTok"
-                    class="w-5 h-5 object-contain">
-                  <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg"
-                    alt="Facebook" class="w-5 h-5 object-contain">
-                </div>
-              </div>
-              <div class="flex flex-wrap gap-2">
-                <span class="px-2.5 py-1 bg-indigo-50 text-indigo-700 text-xs rounded-full shadow-sm">Python</span>
-                <span class="px-2.5 py-1 bg-indigo-50 text-indigo-700 text-xs rounded-full shadow-sm">FastAPI</span>
-                <span class="px-2.5 py-1 bg-indigo-50 text-indigo-700 text-xs rounded-full shadow-sm">playwright</span>
-                <span class="px-2.5 py-1 bg-indigo-50 text-indigo-700 text-xs rounded-full shadow-sm">K8s</span>
-                <span class="px-2.5 py-1 bg-indigo-50 text-indigo-700 text-xs rounded-full shadow-sm">Docker</span>
-                <span class="px-2.5 py-1 bg-indigo-50 text-indigo-700 text-xs rounded-full shadow-sm">AWS</span>
-              </div>
+              <h3 class="text-base font-bold text-white">{{ p.title }}</h3>
+              <p class="mt-1 text-sm text-slate-400">{{ p.desc }}</p>
             </div>
-
-            <div class="project-card border border-slate-200 rounded-xl p-6">
-              <div class="flex items-center mb-4">
-                <div
-                  class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center text-green-600 mr-4 shadow-sm">
-                  <i class="fas fa-database text-xl"></i>
-                </div>
-                <h3 class="text-lg font-bold text-slate-800">Jobs Plateforme scraper and ETL Pipeline</h3>
-              </div>
-              <p class="text-slate-600 mb-4">Complete solution for extracting, transforming and loading data from major
-                jobs platforms.</p>
-              <div class="flex flex-wrap gap-2">
-                <span class="px-2.5 py-1 bg-green-50 text-green-700 text-xs rounded-full shadow-sm">Python</span>
-                <span class="px-2.5 py-1 bg-green-50 text-green-700 text-xs rounded-full shadow-sm">FastAPI</span>
-                <span class="px-2.5 py-1 bg-green-50 text-green-700 text-xs rounded-full shadow-sm">Elasticsearch</span>
-              </div>
-            </div>
+            {% endfor %}
           </div>
         </section>
       </div>
@@ -317,166 +240,171 @@
       <!-- Right Column -->
       <div class="lg:w-1/3">
         <!-- Contact -->
-        <section class="glass-panel rounded-2xl shadow-md p-8 mb-8 animate__animated animate__fade-in">
-          <h2 class="text-2xl font-bold mb-6 font-heading">
+        <section class="glass rounded-2xl shadow-md p-8 mb-8">
+          <h2 class="text-2xl font-bold mb-6 font-display">
             <span class="gradient-text">Contact</span>
           </h2>
 
-          <div class="space-y-5">
-            <div class="flex items-center">
-              <div
-                class="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center text-primary-600 mr-4 shadow-sm">
+          <div class="space-y-5 text-sm">
+            <a href="mailto:abed.hocine@hotmail.com" class="flex items-center group">
+              <div class="w-10 h-10 bg-cyan-400/15 rounded-full flex items-center justify-center text-cyan-300 mr-4">
                 <i class="fas fa-envelope"></i>
               </div>
-              <a href="mailto:abed.hocine@hotmail.com"
-                class="hover:text-primary-600 transition text-slate-700">abed.hocine@hotmail.com</a>
-            </div>
+              <span class="text-slate-300 group-hover:text-cyan-300 transition">abed.hocine@hotmail.com</span>
+            </a>
 
-            <div class="flex items-center">
-              <div
-                class="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center text-primary-600 mr-4 shadow-sm">
+            <a href="tel:+33662404764" class="flex items-center group">
+              <div class="w-10 h-10 bg-cyan-400/15 rounded-full flex items-center justify-center text-cyan-300 mr-4">
                 <i class="fas fa-phone"></i>
               </div>
-              <a href="tel:+33612345678" class="hover:text-primary-600 transition text-slate-700">+33 6 12 34 56 78</a>
-            </div>
+              <span class="text-slate-300 group-hover:text-cyan-300 transition">+33 6 62 40 47 64</span>
+            </a>
 
-            <div class="flex items-center">
-              <div
-                class="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center text-primary-600 mr-4 shadow-sm">
+            <a href="https://www.linkedin.com/in/hocine-abed-33979a27/" target="_blank" rel="noopener noreferrer" class="flex items-center group">
+              <div class="w-10 h-10 bg-cyan-400/15 rounded-full flex items-center justify-center text-cyan-300 mr-4">
                 <i class="fab fa-linkedin-in"></i>
               </div>
-              <a href="#" target="_blank"
-                class="hover:text-primary-600 transition text-slate-700">linkedin.com/in/hocine-abed</a>
-            </div>
+              <span class="text-slate-300 group-hover:text-cyan-300 transition">linkedin.com/in/hocine-abed</span>
+            </a>
 
-            <div class="flex items-center">
-              <div
-                class="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center text-primary-600 mr-4 shadow-sm">
+            <a href="https://github.com/housine35" target="_blank" rel="noopener noreferrer" class="flex items-center group">
+              <div class="w-10 h-10 bg-cyan-400/15 rounded-full flex items-center justify-center text-cyan-300 mr-4">
                 <i class="fab fa-github"></i>
               </div>
-              <a href="#" target="_blank"
-                class="hover:text-primary-600 transition text-slate-700">github.com/hocine-abed</a>
-            </div>
+              <span class="text-slate-300 group-hover:text-cyan-300 transition">github.com/housine35</span>
+            </a>
           </div>
         </section>
 
         <!-- Skills -->
-        <section class="glass-panel rounded-2xl shadow-md p-8 mb-8 animate__animated animate__fade-in">
-          <h2 class="text-2xl font-bold mb-6 font-heading">
+        <section class="glass rounded-2xl shadow-md p-8 mb-8">
+          <h2 class="text-2xl font-bold mb-6 font-display">
             <span class="gradient-text">Technical Skills</span>
           </h2>
 
           <div class="space-y-6">
             <div>
-              <h3 class="text-lg font-semibold mb-3 flex items-center text-slate-700">
-                <i class="fas fa-code mr-2 text-primary-500"></i>
-                Languages
+              <h3 class="text-base font-semibold mb-3 flex items-center text-slate-200">
+                <i class="fas fa-shield-halved mr-2 text-cyan-300"></i> Anti-Bot
               </h3>
               <div class="flex flex-wrap gap-2">
-                <span
-                  class="skill-pill px-3 py-1.5 bg-green-100 text-green-800 rounded-full text-xs shadow-sm">Python</span>
-                <span
-                  class="skill-pill px-3 py-1.5 bg-green-100 text-green-800 rounded-full text-xs shadow-sm">JavaScript</span>
-                <span
-                  class="skill-pill px-3 py-1.5 bg-green-100 text-green-800 rounded-full text-xs shadow-sm">SQL</span>
-                <span
-                  class="skill-pill px-3 py-1.5 bg-green-100 text-green-800 rounded-full text-xs shadow-sm">Shell</span>
-                <span
-                  class="skill-pill px-3 py-1.5 bg-green-100 text-green-800 rounded-full text-xs shadow-sm">PHP</span>
+                {% for t in ["Cloudflare", "DataDome", "Akamai", "PerimeterX", "Imperva", "CAPTCHA solvers", "Bright Data", "Oxylabs"] %}
+                <span class="px-3 py-1.5 border border-cyan-400/25 bg-cyan-400/10 text-cyan-200 rounded-full text-xs">{{ t }}</span>
+                {% endfor %}
               </div>
             </div>
 
             <div>
-              <h3 class="text-lg font-semibold mb-3 flex items-center text-slate-700">
-                <i class="fas fa-cogs mr-2 text-primary-500"></i>
-                Frameworks & Tools
+              <h3 class="text-base font-semibold mb-3 flex items-center text-slate-200">
+                <i class="fas fa-spider mr-2 text-cyan-300"></i> Scraping &amp; Reverse Eng.
               </h3>
               <div class="flex flex-wrap gap-2">
-                <span
-                  class="skill-pill px-3 py-1.5 bg-purple-100 text-purple-800 rounded-full text-xs shadow-sm">FastAPI</span>
-                <span
-                  class="skill-pill px-3 py-1.5 bg-purple-100 text-purple-800 rounded-full text-xs shadow-sm">Flask</span>
-                <span
-                  class="skill-pill px-3 py-1.5 bg-purple-100 text-purple-800 rounded-full text-xs shadow-sm">Scrapy</span>
-                <span
-                  class="skill-pill px-3 py-1.5 bg-purple-100 text-purple-800 rounded-full text-xs shadow-sm">Selenium</span>
-                <span
-                  class="skill-pill px-3 py-1.5 bg-purple-100 text-purple-800 rounded-full text-xs shadow-sm">Puppeteer</span>
+                {% for t in ["Playwright", "Puppeteer", "Scrapy", "Selenium", "JS reverse-eng", "Fingerprint spoofing", "TLS/JA3"] %}
+                <span class="px-3 py-1.5 border border-white/10 bg-white/5 text-slate-300 rounded-full text-xs">{{ t }}</span>
+                {% endfor %}
               </div>
             </div>
 
             <div>
-              <h3 class="text-lg font-semibold mb-3 flex items-center text-slate-700">
-                <i class="fas fa-database mr-2 text-primary-500"></i>
-                Databases
+              <h3 class="text-base font-semibold mb-3 flex items-center text-slate-200">
+                <i class="fas fa-code mr-2 text-cyan-300"></i> Languages
               </h3>
               <div class="flex flex-wrap gap-2">
-                <span
-                  class="skill-pill px-3 py-1.5 bg-amber-100 text-amber-800 rounded-full text-xs shadow-sm">MongoDB</span>
-                <span
-                  class="skill-pill px-3 py-1.5 bg-amber-100 text-amber-800 rounded-full text-xs shadow-sm">Elasticsearch</span>
-                <span
-                  class="skill-pill px-3 py-1.5 bg-amber-100 text-amber-800 rounded-full text-xs shadow-sm">PostgreSQL</span>
-                <span
-                  class="skill-pill px-3 py-1.5 bg-amber-100 text-amber-800 rounded-full text-xs shadow-sm">Redis</span>
+                {% for t in ["Python", "JavaScript", "TypeScript", "Node.js"] %}
+                <span class="px-3 py-1.5 border border-white/10 bg-white/5 text-slate-300 rounded-full text-xs">{{ t }}</span>
+                {% endfor %}
               </div>
             </div>
 
             <div>
-              <h3 class="text-lg font-semibold mb-3 flex items-center text-slate-700">
-                <i class="fas fa-cloud mr-2 text-primary-500"></i>
-                Cloud & DevOps
+              <h3 class="text-base font-semibold mb-3 flex items-center text-slate-200">
+                <i class="fas fa-brain mr-2 text-cyan-300"></i> AI / LLM
               </h3>
               <div class="flex flex-wrap gap-2">
-                <span
-                  class="skill-pill px-3 py-1.5 bg-blue-100 text-blue-800 rounded-full text-xs shadow-sm">Kubernetes</span>
-                <span
-                  class="skill-pill px-3 py-1.5 bg-blue-100 text-blue-800 rounded-full text-xs shadow-sm">Docker</span>
-                <span class="skill-pill px-3 py-1.5 bg-blue-100 text-blue-800 rounded-full text-xs shadow-sm">AWS</span>
-                <span
-                  class="skill-pill px-3 py-1.5 bg-blue-100 text-blue-800 rounded-full text-xs shadow-sm">Azure</span>
-                <span
-                  class="skill-pill px-3 py-1.5 bg-blue-100 text-blue-800 rounded-full text-xs shadow-sm">CI/CD</span>
+                {% for t in ["RAG", "Embeddings", "Prompt engineering", "Function calling", "Vector stores"] %}
+                <span class="px-3 py-1.5 border border-white/10 bg-white/5 text-slate-300 rounded-full text-xs">{{ t }}</span>
+                {% endfor %}
+              </div>
+            </div>
+
+            <div>
+              <h3 class="text-base font-semibold mb-3 flex items-center text-slate-200">
+                <i class="fas fa-server mr-2 text-cyan-300"></i> Infra
+              </h3>
+              <div class="flex flex-wrap gap-2">
+                {% for t in ["Docker", "Kubernetes", "Airflow", "Celery", "FastAPI", "WebSockets"] %}
+                <span class="px-3 py-1.5 border border-white/10 bg-white/5 text-slate-300 rounded-full text-xs">{{ t }}</span>
+                {% endfor %}
+              </div>
+            </div>
+
+            <div>
+              <h3 class="text-base font-semibold mb-3 flex items-center text-slate-200">
+                <i class="fas fa-database mr-2 text-cyan-300"></i> Data &amp; Cloud
+              </h3>
+              <div class="flex flex-wrap gap-2">
+                {% for t in ["MongoDB", "Elasticsearch", "PostgreSQL", "Azure", "GCP", "Prometheus/Grafana"] %}
+                <span class="px-3 py-1.5 border border-white/10 bg-white/5 text-slate-300 rounded-full text-xs">{{ t }}</span>
+                {% endfor %}
               </div>
             </div>
           </div>
         </section>
 
         <!-- Education -->
-        <section class="glass-panel rounded-2xl shadow-md p-8 animate__animated animate__fade-in">
-          <h2 class="text-2xl font-bold mb-6 font-heading">
+        <section class="glass rounded-2xl shadow-md p-8 mb-8">
+          <h2 class="text-2xl font-bold mb-6 font-display">
             <span class="gradient-text">Education</span>
           </h2>
 
           <div class="space-y-5">
             <div class="flex">
               <div class="mr-4">
-                <div
-                  class="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center text-primary-600 shadow-sm">
+                <div class="w-10 h-10 bg-cyan-400/15 rounded-full flex items-center justify-center text-cyan-300">
                   <i class="fas fa-graduation-cap"></i>
                 </div>
               </div>
               <div>
-                <h3 class="font-bold text-slate-800">Master's in Computer Science</h3>
-                <p class="text-slate-600">Haute Asace University</p>
-                <p class="text-sm text-slate-500">2018 - 2020</p>
+                <h3 class="font-bold text-white">MSc Computer Science (Data Eng.)</h3>
+                <p class="text-slate-400">Université de Haute-Alsace, France</p>
+                <p class="text-sm text-slate-500">2021</p>
               </div>
             </div>
 
             <div class="flex">
               <div class="mr-4">
-                <div
-                  class="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center text-primary-600 shadow-sm">
-                  <i class="fas fa-certificate"></i>
+                <div class="w-10 h-10 bg-cyan-400/15 rounded-full flex items-center justify-center text-cyan-300">
+                  <i class="fas fa-graduation-cap"></i>
                 </div>
               </div>
               <div>
-                <h3 class="font-bold text-slate-800">Kubernetes Certification</h3>
-                <p class="text-slate-600">CNCF</p>
-                <p class="text-sm text-slate-500">2023</p>
+                <h3 class="font-bold text-white">MSc Computer Vision</h3>
+                <p class="text-slate-400">Univ. M'hamed Bougara, Algeria</p>
+                <p class="text-sm text-slate-500">2019</p>
               </div>
             </div>
           </div>
+        </section>
+
+        <!-- Languages -->
+        <section class="glass rounded-2xl shadow-md p-8">
+          <h2 class="text-2xl font-bold mb-6 font-display">
+            <span class="gradient-text">Languages</span>
+          </h2>
+          <ul class="space-y-3 text-sm">
+            <li class="flex items-center justify-between">
+              <span class="text-slate-300">English</span>
+              <span class="text-slate-500">Professional fluency</span>
+            </li>
+            <li class="flex items-center justify-between">
+              <span class="text-slate-300">French</span>
+              <span class="text-slate-500">Native</span>
+            </li>
+            <li class="flex items-center justify-between">
+              <span class="text-slate-300">Arabic</span>
+              <span class="text-slate-500">Native</span>
+            </li>
+          </ul>
         </section>
       </div>
     </div>

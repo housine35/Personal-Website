@@ -4,7 +4,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Projects | Hocine ABED</title>
+  <title>Projects | Hocine ABED — Scraping & Reverse Engineering</title>
+  <meta name="description" content="Selected web scraping and reverse-engineering projects: social media extraction, jobs ETL pipelines, API analysis, and public data normalization." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🕷️</text></svg>" />
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -13,132 +15,67 @@
         extend: {
           fontFamily: {
             display: ['Sora', 'sans-serif'],
-            body: ['Plus Jakarta Sans', 'sans-serif']
-          },
-          keyframes: {
-            reveal: {
-              '0%': { opacity: 0, transform: 'translateY(16px)' },
-              '100%': { opacity: 1, transform: 'translateY(0)' }
-            }
-          },
-          animation: {
-            reveal: 'reveal .65s ease forwards'
+            body: ['Plus Jakarta Sans', 'sans-serif'],
+            code: ['IBM Plex Mono', 'monospace']
           }
         }
       }
     }
   </script>
 
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-
-  <style>
-    body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      background:
-        radial-gradient(circle at 20% 0%, rgba(14, 165, 233, 0.12), transparent 40%),
-        radial-gradient(circle at 100% 20%, rgba(249, 115, 22, 0.1), transparent 35%),
-        #f8fafc;
-    }
-
-    .fade-step {
-      animation: reveal .65s ease forwards;
-    }
-  </style>
+  <link rel="stylesheet" href="/static/css/style.css" />
 </head>
 
-<body class="text-slate-800">
+<body>
   {% include "partials/navbar.html" %}
 
-  <section class="border-b border-slate-200 bg-white/80">
-    <div class="mx-auto max-w-7xl px-6 py-16 sm:py-20">
-      <p class="fade-step text-xs font-semibold uppercase tracking-[0.24em] text-cyan-700" style="animation-delay:.05s">Selected Work</p>
-      <h1 class="fade-step mt-4 max-w-3xl font-display text-4xl font-extrabold leading-tight text-slate-900 sm:text-5xl" style="animation-delay:.15s">Scraping projects built for speed, resilience, and clean output.</h1>
-      <p class="fade-step mt-5 max-w-2xl text-slate-600" style="animation-delay:.3s">From jobs platforms to social networks, each project is designed to survive layout changes and deliver consistent structured data.</p>
+  <section class="relative overflow-hidden border-b border-white/10">
+    <div class="tech-grid tech-grid--masked absolute inset-0 opacity-50"></div>
+    <div class="glow -left-20 top-0 h-64 w-64 bg-cyan-500/20"></div>
+    <div class="relative mx-auto max-w-7xl px-6 py-16 sm:py-20">
+      <p class="fade-step font-code text-xs uppercase tracking-[0.2em] text-cyan-300" style="animation-delay:.05s">// selected work</p>
+      <h1 class="fade-step mt-4 max-w-3xl font-display text-4xl font-extrabold leading-tight text-white sm:text-5xl" style="animation-delay:.15s">Scraping &amp; reverse-engineering projects built to survive.</h1>
+      <p class="fade-step mt-5 max-w-2xl text-slate-300" style="animation-delay:.3s">From social platforms to jobs boards, each system is designed to defeat anti-bot defenses, absorb layout changes, and deliver consistent structured data.</p>
     </div>
   </section>
 
   <main class="mx-auto max-w-7xl px-6 py-14">
-    {% set projects = [
-      {
-        "title": "LinkedIn Job Scraper",
-        "desc": "Extracts tech jobs with filters by source, country, and date, then serves them through a searchable interface.",
-        "tech": ["Python", "Playwright", "FastAPI", "MongoDB"],
-        "icon": "fab fa-linkedin-in",
-        "color": "cyan",
-        "url": "/jobs/linkedin",
-        "date": "2025-06-15"
-      },
-      {
-        "title": "Freework Freelance Scraper",
-        "desc": "Collects freelance opportunities, remote modes, and daily rates for real-time job exploration.",
-        "tech": ["Scrapy", "FastAPI", "ETL"],
-        "icon": "fas fa-briefcase",
-        "color": "emerald",
-        "url": "/jobs/freework",
-        "date": "2025-07-01"
-      },
-      {
-        "title": "Facebook Data Extractor",
-        "desc": "Captures post details and comments using authenticated browser automation and robust parsers.",
-        "tech": ["Playwright", "Reverse Engineering", "API Analysis"],
-        "icon": "fab fa-facebook-f",
-        "color": "blue",
-        "url": "https://facebook-scraper-q8aa.onrender.com/",
-        "date": "2025-01-10"
-      },
-      {
-        "title": "TikTok Extraction Engine",
-        "desc": "Retrieves post metadata and user graph data with anti-rate-limit handling and custom request signatures.",
-        "tech": ["Automation", "Signature Logic", "Data Pipelines"],
-        "icon": "fab fa-tiktok",
-        "color": "amber",
-        "url": "https://tiktok-scraper-yt8p.onrender.com/",
-        "date": "2025-04-22"
-      },
-      {
-        "title": "French Assembly and Senate Data",
-        "desc": "Scrapes legislative records including bills, votes, and profiles from parliamentary sources.",
-        "tech": ["Public Data", "Parsing", "Normalization"],
-        "icon": "fas fa-landmark",
-        "color": "violet",
-        "url": "/projects/gov",
-        "date": "2024-03-12"
-      },
-      {
-        "title": "Live Subtitle Capture",
-        "desc": "Captures live subtitles from video streams with OCR and near real-time text processing.",
-        "tech": ["OCR", "Streaming", "Speech Processing"],
-        "icon": "fas fa-video",
-        "color": "rose",
-        "url": "https://github.com/housine35/Aws_Puppeteer",
-        "date": "2025-02-18"
-      }
-    ] %}
-
     <section class="grid gap-6 md:grid-cols-2">
       {% for project in projects %}
-      <article class="fade-step group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md" style="animation-delay: {{ 0.05 + (loop.index0 * 0.06) }}s;">
+      <article class="fade-step glass card-hover group rounded-2xl p-6" style="animation-delay: {{ 0.05 + (loop.index0 * 0.06) }}s;">
         <div class="flex items-start justify-between gap-4">
-          <div class="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-{{ project.color }}-100 text-{{ project.color }}-700">
+          <div class="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-{{ project.color }}-400/15 text-{{ project.color }}-300">
             <i class="{{ project.icon }}"></i>
           </div>
-          <p class="text-xs font-medium text-slate-500">Updated {{ project.date }}</p>
+          <p class="font-code text-xs text-slate-500">Updated {{ project.date }}</p>
         </div>
 
-        <h2 class="mt-4 font-display text-xl font-bold text-slate-900">{{ project.title }}</h2>
-        <p class="mt-2 text-sm leading-relaxed text-slate-600">{{ project.desc }}</p>
+        <h2 class="mt-4 font-display text-xl font-bold text-white">{{ project.title }}</h2>
+        <p class="mt-2 text-sm leading-relaxed text-slate-400">{{ project.desc }}</p>
 
         <div class="mt-4 flex flex-wrap gap-2">
           {% for tech in project.tech %}
-          <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700">{{ tech }}</span>
+          <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-medium text-slate-300">{{ tech }}</span>
           {% endfor %}
         </div>
 
-        <a href="{{ project.url }}" class="mt-6 inline-flex items-center text-sm font-semibold text-cyan-700 transition hover:text-cyan-900">
-          View Project
-          <i class="fas fa-arrow-right ml-2 text-xs"></i>
-        </a>
+        <div class="mt-6 flex flex-wrap items-center gap-4">
+          <a href="/projects/{{ project.slug }}" class="inline-flex items-center text-sm font-semibold text-{{ project.color }}-300 transition hover:text-{{ project.color }}-200">
+            Read case study
+            <i class="fas fa-arrow-right ml-2 text-xs"></i>
+          </a>
+          {% if project.url and project.url.startswith('http') %}
+          <a href="{{ project.url }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-sm font-medium text-slate-400 transition hover:text-slate-200">
+            <i class="fas fa-arrow-up-right-from-square mr-1.5 text-xs"></i> Live
+          </a>
+          {% elif project.url %}
+          <a href="{{ project.url }}" class="inline-flex items-center text-sm font-medium text-slate-400 transition hover:text-slate-200">
+            <i class="fas fa-table-list mr-1.5 text-xs"></i> Explore data
+          </a>
+          {% endif %}
+        </div>
       </article>
       {% endfor %}
     </section>

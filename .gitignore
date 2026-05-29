@@ -7,3 +7,6 @@ static/image/*
 .DS_Store
 venv/
 .venv/
+
+# logs
+*.log

@@ -5,6 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Freework Job Listings | Hocine ABED</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🕷️</text></svg>" />
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -13,140 +14,126 @@
         extend: {
           fontFamily: {
             display: ['Sora', 'sans-serif'],
-            body: ['Plus Jakarta Sans', 'sans-serif']
+            body: ['Plus Jakarta Sans', 'sans-serif'],
+            code: ['IBM Plex Mono', 'monospace']
           }
         }
       }
     }
   </script>
 
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="/static/css/style.css" />
 
   <style>
-    body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      background:
-        radial-gradient(circle at 15% 0%, rgba(14, 165, 233, 0.12), transparent 38%),
-        radial-gradient(circle at 90% 20%, rgba(16, 185, 129, 0.1), transparent 36%),
-        #f8fafc;
-    }
-
-    .modal {
-      transition: opacity .2s ease-in-out;
-    }
-
-    .modal-hidden {
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    .modal-visible {
-      opacity: 1;
-      pointer-events: auto;
-    }
+    .modal { transition: opacity .2s ease-in-out; }
+    .modal-hidden { opacity: 0; pointer-events: none; }
+    .modal-visible { opacity: 1; pointer-events: auto; }
   </style>
 </head>
 
-<body class="text-slate-800">
+<body>
   {% include "partials/navbar.html" %}
 
-  <main class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-    <header class="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
-      <p class="text-xs font-semibold uppercase tracking-[0.24em] text-emerald-700">Freework Source</p>
-      <h1 class="mt-3 font-display text-3xl font-extrabold text-slate-900 sm:text-4xl">Freework Remote Jobs</h1>
-      <p class="mt-3 max-w-3xl text-sm leading-relaxed text-slate-600 sm:text-base">
-        Browse freelance opportunities by remote mode, publication date, and scraping category.
+  <main class="relative mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+    <div class="glow -left-20 top-0 h-64 w-64 bg-emerald-500/20"></div>
+
+    <header class="glass relative rounded-3xl p-8 shadow-sm">
+      <p class="font-code text-xs uppercase tracking-[0.2em] text-emerald-300">// freework source</p>
+      <h1 class="mt-3 font-display text-3xl font-extrabold text-white sm:text-4xl">Freework Remote Jobs</h1>
+      <p class="mt-3 max-w-3xl text-sm leading-relaxed text-slate-300 sm:text-base">
+        Browse freelance opportunities by remote mode, publication date, location, and scraping category.
       </p>
 
       <div class="mt-6 flex flex-wrap gap-3">
-        <a href="/jobs/linkedin" class="inline-flex items-center rounded-xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-700">
+        <a href="/jobs/linkedin" class="inline-flex items-center rounded-xl bg-gradient-to-r from-cyan-400 to-blue-600 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:brightness-110">
           <i class="fas fa-briefcase mr-2"></i> View LinkedIn Jobs
         </a>
-        <a href="https://github.com/housine35/freework-job-scraper" target="_blank" rel="noopener noreferrer" class="inline-flex items-center rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition hover:border-emerald-500 hover:text-emerald-700">
+        <a href="https://github.com/housine35/freework-job-scraper" target="_blank" rel="noopener noreferrer" class="inline-flex items-center rounded-xl border border-white/15 bg-white/5 px-5 py-3 text-sm font-semibold text-slate-200 transition hover:border-emerald-400/50 hover:text-emerald-300">
           <i class="fab fa-github mr-2"></i> Freework Scraper Repo
         </a>
-        <button id="download-btn" class="inline-flex items-center rounded-xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-emerald-700">
+        <button id="download-btn" class="inline-flex items-center rounded-xl bg-emerald-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400">
           <i class="fas fa-download mr-2"></i> Download Today's CSV
         </button>
       </div>
     </header>
 
-    <div id="email-modal" class="modal modal-hidden fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
-      <div class="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 shadow-xl">
-        <h2 class="font-display text-xl font-bold text-slate-900">Email Confirmation</h2>
-        <p class="mt-2 text-sm text-slate-600">Enter your email to download today's CSV snapshot.</p>
+    <div id="email-modal" class="modal modal-hidden fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
+      <div class="glass-strong w-full max-w-md rounded-2xl p-6 shadow-xl">
+        <h2 class="font-display text-xl font-bold text-white">Email Confirmation</h2>
+        <p class="mt-2 text-sm text-slate-300">Enter your email to download today's CSV snapshot.</p>
 
         <form id="email-form" action="/jobs/freework/download-today-with-email" method="post" class="mt-5">
-          <label for="email-input" class="mb-2 block text-sm font-medium text-slate-700">Email Address</label>
-          <input type="email" id="email-input" name="email" required placeholder="your.email@example.com" class="w-full rounded-xl border border-slate-300 px-3 py-2.5 text-sm focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-100" />
-          <p id="email-error" class="mt-1 hidden text-sm text-red-600">Please enter a valid email address.</p>
+          <label for="email-input" class="mb-2 block text-sm font-medium text-slate-300">Email Address</label>
+          <input type="email" id="email-input" name="email" required placeholder="your.email@example.com" class="w-full rounded-xl border border-white/15 bg-white/5 px-3 py-2.5 text-sm text-slate-100 placeholder-slate-500 focus:border-emerald-400/60 focus:outline-none focus:ring-2 focus:ring-emerald-500/20" />
+          <p id="email-error" class="mt-1 hidden text-sm text-red-400">Please enter a valid email address.</p>
 
           <div class="mt-5 flex justify-end gap-2">
-            <button type="button" id="cancel-btn" class="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">Cancel</button>
-            <button type="submit" id="submit-email-btn" class="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700">Download</button>
+            <button type="button" id="cancel-btn" class="rounded-lg border border-white/15 bg-white/5 px-4 py-2 text-sm font-medium text-slate-300 hover:text-white">Cancel</button>
+            <button type="submit" id="submit-email-btn" class="rounded-lg bg-emerald-500 px-4 py-2 text-sm font-semibold text-slate-950 hover:bg-emerald-400">Download</button>
           </div>
         </form>
       </div>
     </div>
 
-    <section class="mt-8 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+    <section class="mt-8 glass rounded-2xl p-6 shadow-sm">
       <form method="get" action="/jobs/freework" id="filter-form" class="grid gap-4 md:grid-cols-6">
         <div>
-          <label for="remote-mode-filter" class="mb-2 block text-sm font-medium text-slate-700">Remote Mode</label>
-          <select id="remote-mode-filter" name="remote_mode" class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-100">
-            <option value="all">All</option>
+          <label for="remote-mode-filter" class="mb-2 block text-sm font-medium text-slate-300">Remote Mode</label>
+          <select id="remote-mode-filter" name="remote_mode" class="w-full rounded-xl border border-white/15 bg-white/5 px-3 py-2.5 text-sm text-slate-100 focus:border-emerald-400/60 focus:outline-none focus:ring-2 focus:ring-emerald-500/20">
+            <option value="all" class="bg-slate-900">All</option>
             {% for mode in unique_remote_modes %}
-            <option value="{{ mode }}" {% if mode==selected_remote_mode %}selected{% endif %}>{{ mode | capitalize }}</option>
+            <option value="{{ mode }}" class="bg-slate-900" {% if mode==selected_remote_mode %}selected{% endif %}>{{ mode | capitalize }}</option>
             {% endfor %}
           </select>
         </div>
 
         <div>
-          <label for="date-filter" class="mb-2 block text-sm font-medium text-slate-700">Date</label>
-          <select id="date-filter" name="date" class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-100">
-            <option value="all">All Dates</option>
+          <label for="date-filter" class="mb-2 block text-sm font-medium text-slate-300">Date</label>
+          <select id="date-filter" name="date" class="w-full rounded-xl border border-white/15 bg-white/5 px-3 py-2.5 text-sm text-slate-100 focus:border-emerald-400/60 focus:outline-none focus:ring-2 focus:ring-emerald-500/20">
+            <option value="all" class="bg-slate-900">All Dates</option>
             {% for date in unique_dates %}
-            <option value="{{ date }}" {% if date==selected_date %}selected{% endif %}>{{ date }}</option>
+            <option value="{{ date }}" class="bg-slate-900" {% if date==selected_date %}selected{% endif %}>{{ date }}</option>
             {% endfor %}
           </select>
         </div>
 
         <div>
-          <label for="type-filter" class="mb-2 block text-sm font-medium text-slate-700">Type</label>
-          <select id="type-filter" name="type" class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-100">
-            <option value="all" {% if selected_type=="all" %}selected{% endif %}>All</option>
-            <option value="scraping" {% if selected_type=="scraping" %}selected{% endif %}>Scraping</option>
+          <label for="type-filter" class="mb-2 block text-sm font-medium text-slate-300">Type</label>
+          <select id="type-filter" name="type" class="w-full rounded-xl border border-white/15 bg-white/5 px-3 py-2.5 text-sm text-slate-100 focus:border-emerald-400/60 focus:outline-none focus:ring-2 focus:ring-emerald-500/20">
+            <option value="all" class="bg-slate-900" {% if selected_type=="all" %}selected{% endif %}>All</option>
+            <option value="scraping" class="bg-slate-900" {% if selected_type=="scraping" %}selected{% endif %}>Scraping</option>
           </select>
         </div>
 
         <div>
-          <label for="department-filter" class="mb-2 block text-sm font-medium text-slate-700">Department</label>
-          <select id="department-filter" name="department" class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-100">
-            <option value="all">All Departments</option>
+          <label for="department-filter" class="mb-2 block text-sm font-medium text-slate-300">Department</label>
+          <select id="department-filter" name="department" class="w-full rounded-xl border border-white/15 bg-white/5 px-3 py-2.5 text-sm text-slate-100 focus:border-emerald-400/60 focus:outline-none focus:ring-2 focus:ring-emerald-500/20">
+            <option value="all" class="bg-slate-900">All Departments</option>
             {% for department in unique_departments %}
-            <option value="{{ department }}" {% if department==selected_department %}selected{% endif %}>{{ department }}</option>
+            <option value="{{ department }}" class="bg-slate-900" {% if department==selected_department %}selected{% endif %}>{{ department }}</option>
             {% endfor %}
           </select>
         </div>
 
         <div>
-          <label for="city-filter" class="mb-2 block text-sm font-medium text-slate-700">City</label>
-          <select id="city-filter" name="city" class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-100">
-            <option value="all">All Cities</option>
+          <label for="city-filter" class="mb-2 block text-sm font-medium text-slate-300">City</label>
+          <select id="city-filter" name="city" class="w-full rounded-xl border border-white/15 bg-white/5 px-3 py-2.5 text-sm text-slate-100 focus:border-emerald-400/60 focus:outline-none focus:ring-2 focus:ring-emerald-500/20">
+            <option value="all" class="bg-slate-900">All Cities</option>
             {% for city in unique_cities %}
-            <option value="{{ city }}" {% if city==selected_city %}selected{% endif %}>{{ city }}</option>
+            <option value="{{ city }}" class="bg-slate-900" {% if city==selected_city %}selected{% endif %}>{{ city }}</option>
             {% endfor %}
           </select>
         </div>
 
         <div>
-          <label for="per-page" class="mb-2 block text-sm font-medium text-slate-700">Per Page</label>
-          <select id="per-page" name="per_page" class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-100">
-            <option value="10" {% if per_page==10 %}selected{% endif %}>10</option>
-            <option value="20" {% if per_page==20 %}selected{% endif %}>20</option>
-            <option value="50" {% if per_page==50 %}selected{% endif %}>50</option>
-            <option value="100" {% if per_page==100 %}selected{% endif %}>100</option>
+          <label for="per-page" class="mb-2 block text-sm font-medium text-slate-300">Per Page</label>
+          <select id="per-page" name="per_page" class="w-full rounded-xl border border-white/15 bg-white/5 px-3 py-2.5 text-sm text-slate-100 focus:border-emerald-400/60 focus:outline-none focus:ring-2 focus:ring-emerald-500/20">
+            <option value="10" class="bg-slate-900" {% if per_page==10 %}selected{% endif %}>10</option>
+            <option value="20" class="bg-slate-900" {% if per_page==20 %}selected{% endif %}>20</option>
+            <option value="50" class="bg-slate-900" {% if per_page==50 %}selected{% endif %}>50</option>
+            <option value="100" class="bg-slate-900" {% if per_page==100 %}selected{% endif %}>100</option>
           </select>
         </div>
 
@@ -154,22 +141,22 @@
       </form>
     </section>
 
-    <section class="mt-6 flex items-center justify-between gap-4 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm shadow-sm">
-      <p class="text-slate-700">
+    <section class="mt-6 flex items-center justify-between gap-4 rounded-2xl glass px-4 py-3 text-sm shadow-sm">
+      <p class="text-slate-300">
         {% if selected_remote_mode != "all" or selected_date != "all" or selected_type != "all" or selected_department != "all" or selected_city != "all" %}
-        <span class="font-semibold text-emerald-700">{{ filtered_jobs_count }}</span> filtered jobs
+        <span class="font-semibold text-emerald-300">{{ filtered_jobs_count }}</span> filtered jobs
         {% else %}
-        Showing <span class="font-semibold text-emerald-700">{{ filtered_jobs_count }}</span> jobs
+        Showing <span class="font-semibold text-emerald-300">{{ filtered_jobs_count }}</span> jobs
         {% endif %}
         <span class="text-slate-500">(of {{ total_jobs }} total)</span>
       </p>
     </section>
 
-    <section class="mt-6 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <section class="mt-6 overflow-hidden rounded-2xl glass shadow-sm">
       {% if jobs|length > 0 %}
       <div class="overflow-x-auto">
         <table class="min-w-full text-sm">
-          <thead class="bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
+          <thead class="bg-white/5 text-xs uppercase tracking-wide text-slate-400">
             <tr>
               <th class="px-5 py-4 text-left">Job</th>
               <th class="px-5 py-4 text-left">Company</th>
@@ -177,38 +164,38 @@
               <th class="px-5 py-4 text-right">Actions</th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-slate-200">
+          <tbody class="divide-y divide-white/5">
             {% for job in jobs %}
-            <tr class="transition hover:bg-slate-50">
+            <tr class="transition hover:bg-white/5">
               <td class="px-5 py-4">
-                <p class="font-semibold text-slate-900">{{ job.title }}</p>
+                <p class="font-semibold text-white">{{ job.title }}</p>
                 <div class="mt-2 flex flex-wrap gap-2">
-                  <span class="rounded-full bg-cyan-100 px-2.5 py-1 text-xs font-medium text-cyan-800">{{ job.remote_mode | capitalize }}</span>
+                  <span class="rounded-full bg-cyan-400/15 px-2.5 py-1 text-xs font-medium text-cyan-200">{{ job.remote_mode | capitalize }}</span>
                   {% if job.daily_salary %}
-                  <span class="rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-medium text-emerald-800">{{ job.daily_salary }}/day</span>
+                  <span class="rounded-full bg-emerald-400/15 px-2.5 py-1 text-xs font-medium text-emerald-200">{{ job.daily_salary }}/day</span>
                   {% endif %}
                 </div>
               </td>
               <td class="px-5 py-4">
-                <p class="font-medium text-slate-800">{{ job.company }}</p>
+                <p class="font-medium text-slate-200">{{ job.company }}</p>
                 <p class="text-sm text-slate-500">{{ job.location }}</p>
                 {% if job.department or job.city %}
                 <div class="mt-2 flex flex-wrap gap-2">
-                  {% if job.department %}<span class="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-700">{{ job.department }}</span>{% endif %}
-                  {% if job.city %}<span class="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-700">{{ job.city }}</span>{% endif %}
+                  {% if job.department %}<span class="rounded-full bg-white/5 px-2.5 py-1 text-xs font-medium text-slate-300">{{ job.department }}</span>{% endif %}
+                  {% if job.city %}<span class="rounded-full bg-white/5 px-2.5 py-1 text-xs font-medium text-slate-300">{{ job.city }}</span>{% endif %}
                 </div>
                 {% endif %}
               </td>
-              <td class="px-5 py-4 text-slate-600">
+              <td class="px-5 py-4 text-slate-400">
                 <p>Published: {{ job.published_at | relative_time }}</p>
-                {% if job.daily_salary %}<p>Rate: <span class="font-semibold text-emerald-700">{{ job.daily_salary }}</span></p>{% endif %}
+                {% if job.daily_salary %}<p>Rate: <span class="font-semibold text-emerald-300">{{ job.daily_salary }}</span></p>{% endif %}
               </td>
               <td class="px-5 py-4 text-right">
                 <div class="flex flex-col items-end gap-2">
-                  <a href="/jobs/freework/{{ job.id }}?return_page={{ page }}&per_page={{ per_page }}" class="inline-flex items-center rounded-lg bg-emerald-600 px-4 py-2 text-xs font-semibold text-white transition hover:bg-emerald-700">
+                  <a href="/jobs/freework/{{ job.id }}?return_page={{ page }}&per_page={{ per_page }}" class="inline-flex items-center rounded-lg bg-emerald-500 px-4 py-2 text-xs font-semibold text-slate-950 transition hover:bg-emerald-400">
                     <i class="fas fa-info-circle mr-2"></i> Details
                   </a>
-                  <a href="{{ job.url }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center rounded-lg border border-slate-300 bg-white px-4 py-2 text-xs font-semibold text-slate-700 transition hover:bg-slate-50">
+                  <a href="{{ job.url }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center rounded-lg border border-white/15 bg-white/5 px-4 py-2 text-xs font-semibold text-slate-200 transition hover:border-emerald-400/50 hover:text-emerald-300">
                     <i class="fas fa-external-link-alt mr-2"></i> Apply
                   </a>
                 </div>
@@ -219,23 +206,23 @@
         </table>
       </div>
       {% else %}
-      <div class="px-6 py-16 text-center text-slate-500">
-        <p class="text-lg font-semibold text-slate-700">No jobs found</p>
+      <div class="px-6 py-16 text-center text-slate-400">
+        <p class="text-lg font-semibold text-slate-200">No jobs found</p>
         <p class="mt-1 text-sm">Try changing your filters to see results.</p>
       </div>
       {% endif %}
     </section>
 
     {% if jobs|length > 0 %}
-    <section class="mt-6 flex flex-col justify-between gap-4 rounded-2xl border border-slate-200 bg-white p-4 text-sm shadow-sm sm:flex-row sm:items-center">
-      <p class="text-slate-600">
-        Showing <span class="font-semibold">{{ ((page - 1) * per_page) + 1 }}</span> to
-        <span class="font-semibold">{{ [page * per_page, filtered_jobs_count]|min }}</span> of
-        <span class="font-semibold">{{ filtered_jobs_count }}</span> results
+    <section class="mt-6 flex flex-col justify-between gap-4 rounded-2xl glass p-4 text-sm shadow-sm sm:flex-row sm:items-center">
+      <p class="text-slate-400">
+        Showing <span class="font-semibold text-slate-200">{{ ((page - 1) * per_page) + 1 }}</span> to
+        <span class="font-semibold text-slate-200">{{ [page * per_page, filtered_jobs_count]|min }}</span> of
+        <span class="font-semibold text-slate-200">{{ filtered_jobs_count }}</span> results
       </p>
       <div class="flex gap-2">
-        <a href="?remote_mode={{ selected_remote_mode }}&date={{ selected_date }}&type={{ selected_type }}&department={{ selected_department }}&city={{ selected_city }}&page={{ page - 1 if page > 1 else 1 }}&per_page={{ per_page }}" class="rounded-lg border px-4 py-2 {% if page <= 1 %}cursor-not-allowed border-slate-200 bg-slate-100 text-slate-400{% else %}border-slate-300 bg-white text-slate-700 hover:bg-slate-50{% endif %}">Previous</a>
-        <a href="?remote_mode={{ selected_remote_mode }}&date={{ selected_date }}&type={{ selected_type }}&department={{ selected_department }}&city={{ selected_city }}&page={{ page + 1 if page < total_pages else total_pages }}&per_page={{ per_page }}" class="rounded-lg border px-4 py-2 {% if page >= total_pages %}cursor-not-allowed border-slate-200 bg-slate-100 text-slate-400{% else %}border-slate-300 bg-white text-slate-700 hover:bg-slate-50{% endif %}">Next</a>
+        <a href="?remote_mode={{ selected_remote_mode }}&date={{ selected_date }}&type={{ selected_type }}&department={{ selected_department }}&city={{ selected_city }}&page={{ page - 1 if page > 1 else 1 }}&per_page={{ per_page }}" class="rounded-lg border px-4 py-2 {% if page <= 1 %}cursor-not-allowed border-white/5 bg-white/5 text-slate-600{% else %}border-white/15 bg-white/5 text-slate-200 hover:border-emerald-400/50 hover:text-emerald-300{% endif %}">Previous</a>
+        <a href="?remote_mode={{ selected_remote_mode }}&date={{ selected_date }}&type={{ selected_type }}&department={{ selected_department }}&city={{ selected_city }}&page={{ page + 1 if page < total_pages else total_pages }}&per_page={{ per_page }}" class="rounded-lg border px-4 py-2 {% if page >= total_pages %}cursor-not-allowed border-white/5 bg-white/5 text-slate-600{% else %}border-white/15 bg-white/5 text-slate-200 hover:border-emerald-400/50 hover:text-emerald-300{% endif %}">Next</a>
       </div>
     </section>
     {% endif %}

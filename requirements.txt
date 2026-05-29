@@ -1,5 +1,6 @@
-fastapi==0.115.14 
-uvicorn==0.34.3 
+fastapi==0.115.14
+starlette==0.46.2
+uvicorn==0.34.3
 motor==3.7.1 
 python-dotenv==1.1.1 
 jinja2==3.1.6

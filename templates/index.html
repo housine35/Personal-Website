@@ -4,7 +4,35 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Portfolio | Hocine ABED</title>
+  <title>Hocine ABED | Web Scraping & Reverse Engineering Engineer</title>
+  <meta name="description" content="Software engineer specialized in large-scale web scraping and reverse engineering: anti-bot bypass, mobile/web API analysis, request signing, and resilient data pipelines." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🕷️</text></svg>" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Hocine ABED | Web Scraping & Reverse Engineering Engineer" />
+  <meta property="og:description" content="Anti-bot bypass, API reverse engineering, request signing, and resilient data pipelines at scale." />
+  <meta property="og:image" content="https://media.licdn.com/dms/image/v2/D4E03AQHsoy8Ka5YIng/profile-displayphoto-shrink_200_200/B4EZWjkFfyGgAY-/0/1742205901350?e=2147483647&v=beta&t=gpD57rl_Im2DnjGSpE7SzdLxwTa3pDU6zmBXE9WYhmA" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Hocine ABED | Web Scraping & Reverse Engineering Engineer" />
+  <meta name="twitter:description" content="Anti-bot bypass, API reverse engineering, request signing, and resilient data pipelines at scale." />
+
+  <!-- Structured data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Hocine ABED",
+    "jobTitle": "Web Scraping & Reverse Engineering Engineer",
+    "email": "mailto:abed.hocine@hotmail.com",
+    "url": "https://www.linkedin.com/in/hocine-abed-33979a27/",
+    "sameAs": [
+      "https://www.linkedin.com/in/hocine-abed-33979a27/",
+      "https://github.com/housine35"
+    ],
+    "knowsAbout": ["Web Scraping", "Reverse Engineering", "Anti-bot Evasion", "Python", "FastAPI", "MongoDB", "Data Pipelines"]
+  }
+  </script>
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -13,124 +41,156 @@
         extend: {
           fontFamily: {
             display: ['Sora', 'sans-serif'],
-            body: ['Plus Jakarta Sans', 'sans-serif']
-          },
-          keyframes: {
-            reveal: {
-              '0%': { opacity: 0, transform: 'translateY(18px)' },
-              '100%': { opacity: 1, transform: 'translateY(0)' }
-            }
-          },
-          animation: {
-            reveal: 'reveal .7s ease forwards'
+            body: ['Plus Jakarta Sans', 'sans-serif'],
+            code: ['IBM Plex Mono', 'monospace']
           }
         }
       }
     }
   </script>
 
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-
-  <style>
-    body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      background:
-        radial-gradient(circle at 15% 0%, rgba(14, 165, 233, 0.12), transparent 38%),
-        radial-gradient(circle at 90% 20%, rgba(249, 115, 22, 0.1), transparent 36%),
-        #f8fafc;
-    }
-
-    .hero-mesh {
-      background-image: linear-gradient(rgba(15, 23, 42, 0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(15, 23, 42, 0.06) 1px, transparent 1px);
-      background-size: 42px 42px;
-    }
-
-    .fade-step {
-      animation: reveal .7s ease forwards;
-    }
-  </style>
+  <link rel="stylesheet" href="/static/css/style.css" />
 </head>
 
-<body class="text-slate-800">
+<body>
   {% include "partials/navbar.html" %}
 
-  <section class="relative overflow-hidden border-b border-slate-200 bg-white/70">
-    <div class="hero-mesh absolute inset-0 opacity-30"></div>
+  <!-- Hero -->
+  <section class="relative overflow-hidden border-b border-white/10">
+    <div class="tech-grid tech-grid--masked absolute inset-0 opacity-60"></div>
+    <div class="glow -left-24 top-10 h-72 w-72 bg-cyan-500/20"></div>
+    <div class="glow -right-24 top-24 h-80 w-80 bg-orange-500/20"></div>
+
     <div class="relative mx-auto max-w-7xl px-6 py-20 sm:py-24">
-      <div class="grid items-center gap-10 lg:grid-cols-[1.3fr_1fr]">
+      <div class="grid items-center gap-12 lg:grid-cols-[1.25fr_1fr]">
         <div>
-          <p class="fade-step text-xs font-semibold uppercase tracking-[0.24em] text-cyan-700" style="animation-delay:.05s">Data Extraction Specialist</p>
-          <h1 class="fade-step mt-4 max-w-3xl font-display text-4xl font-extrabold leading-tight text-slate-900 sm:text-6xl" style="animation-delay:.15s">
-            Building resilient web scrapers and automation systems.
+          <p class="fade-step inline-flex items-center gap-2 rounded-full border border-cyan-400/30 bg-cyan-400/10 px-3 py-1 font-code text-xs uppercase tracking-[0.2em] text-cyan-300" style="animation-delay:.05s">
+            <span class="inline-block h-1.5 w-1.5 rounded-full bg-cyan-400"></span>
+            Scraping &amp; Reverse Engineering
+          </p>
+          <h1 class="fade-step mt-5 max-w-3xl font-display text-4xl font-extrabold leading-tight text-white sm:text-6xl" style="animation-delay:.15s">
+            I make closed systems <span class="gradient-text">give up their data</span>.
           </h1>
-          <p class="fade-step mt-6 max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg" style="animation-delay:.3s">
-            I design pipelines that collect data from complex websites, normalize it, and deliver business-ready output through APIs and dashboards.
+          <p class="fade-step mt-6 max-w-2xl text-base leading-relaxed text-slate-300 sm:text-lg" style="animation-delay:.3s">
+            I reverse-engineer web &amp; mobile APIs, defeat anti-bot defenses, and build resilient pipelines that turn protected, fast-changing sources into clean, business-ready data.
           </p>
 
           <div class="fade-step mt-8 flex flex-wrap gap-3" style="animation-delay:.45s">
-            <a href="/projects" class="inline-flex items-center rounded-xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-700">
+            <a href="/projects" class="inline-flex items-center rounded-xl bg-gradient-to-r from-cyan-400 to-blue-600 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:brightness-110">
               Explore Projects
               <i class="fas fa-arrow-right ml-2"></i>
             </a>
-            <a href="/resume" class="inline-flex items-center rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition hover:border-cyan-500 hover:text-cyan-700">
+            <a href="/resume" class="inline-flex items-center rounded-xl border border-white/15 bg-white/5 px-5 py-3 text-sm font-semibold text-slate-200 transition hover:border-cyan-400/50 hover:text-cyan-300">
               View Resume
             </a>
           </div>
         </div>
 
-        <aside class="fade-step rounded-2xl border border-slate-200 bg-white p-6 shadow-sm" style="animation-delay:.55s">
-          <p class="text-sm font-semibold uppercase tracking-wider text-slate-500">Core Stack</p>
-          <div class="mt-4 grid grid-cols-2 gap-3 text-sm">
-            <div class="rounded-lg bg-slate-50 px-3 py-2">Python</div>
-            <div class="rounded-lg bg-slate-50 px-3 py-2">Playwright</div>
-            <div class="rounded-lg bg-slate-50 px-3 py-2">Scrapy</div>
-            <div class="rounded-lg bg-slate-50 px-3 py-2">FastAPI</div>
-            <div class="rounded-lg bg-slate-50 px-3 py-2">MongoDB</div>
-            <div class="rounded-lg bg-slate-50 px-3 py-2">Docker</div>
+        <!-- Terminal capture window -->
+        <aside class="fade-step terminal overflow-hidden" style="animation-delay:.55s">
+          <div class="flex items-center gap-2 border-b border-white/10 px-4 py-3">
+            <span class="terminal-dot bg-red-400/80"></span>
+            <span class="terminal-dot bg-amber-400/80"></span>
+            <span class="terminal-dot bg-emerald-400/80"></span>
+            <span class="ml-2 font-code text-xs text-slate-400">capture — api.target.com</span>
           </div>
-          <div class="mt-6 rounded-xl border border-cyan-100 bg-cyan-50 p-4">
-            <p class="text-sm text-cyan-900">
-              Focus areas: anti-bot handling, pagination at scale, change-tolerant parsers, scheduled ETL jobs.
-            </p>
+          <div class="space-y-1.5 px-4 py-4 font-code text-[12.5px] leading-relaxed">
+            <p class="text-slate-500"># intercept + replay signed request</p>
+            <p class="text-cyan-300">POST <span class="text-slate-200">/v2/feed</span> <span class="text-slate-500">HTTP/2</span></p>
+            <p class="text-slate-300">x-signature: <span class="text-orange-300">a3f9…c1b2</span></p>
+            <p class="text-slate-300">x-device-id: <span class="text-orange-300">reversed ✓</span></p>
+            <p class="text-emerald-300">← 200 OK <span class="text-slate-400">· 1,284 records</span></p>
+            <p class="text-slate-300">parsing<span class="text-slate-500">…</span> normalized → mongo</p>
+            <p class="text-slate-200">$ <span class="cursor-blink">▋</span></p>
           </div>
         </aside>
+      </div>
+
+      <!-- Metrics strip -->
+      <div class="fade-step mt-16 grid grid-cols-2 gap-4 sm:grid-cols-4" style="animation-delay:.65s">
+        <!-- Live counter pulled from the real scraping database -->
+        <div class="glass rounded-2xl px-5 py-5 text-center ring-1 ring-cyan-400/30">
+          <p class="font-display text-2xl font-extrabold text-white sm:text-3xl">
+            {% if job_stats and job_stats.total %}{{ "{:,}".format(job_stats.total) }}{% else %}70k+{% endif %}
+          </p>
+          <p class="mt-1 flex items-center justify-center gap-1.5 text-xs uppercase tracking-wider text-slate-400">
+            <span class="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400"></span>
+            jobs indexed · live
+          </p>
+        </div>
+        {% set stats = [
+          {"value": "30 min", "label": "refresh cadence"},
+          {"value": ">98%", "label": "anti-bot success rate"},
+          {"value": "5+ yrs", "label": "in data extraction"}
+        ] %}
+        {% for s in stats %}
+        <div class="glass rounded-2xl px-5 py-5 text-center">
+          <p class="font-display text-2xl font-extrabold text-white sm:text-3xl">{{ s.value }}</p>
+          <p class="mt-1 text-xs uppercase tracking-wider text-slate-400">{{ s.label }}</p>
+        </div>
+        {% endfor %}
       </div>
     </div>
   </section>
 
   <main class="mx-auto max-w-7xl px-6 py-16">
-    <section class="grid gap-5 md:grid-cols-3">
-      <a href="/jobs/linkedin" class="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md">
-        <div class="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-cyan-100 text-cyan-700"><i class="fab fa-linkedin-in"></i></div>
-        <h2 class="mt-4 font-display text-xl font-bold text-slate-900">LinkedIn Job Finder</h2>
-        <p class="mt-2 text-sm leading-relaxed text-slate-600">Filter jobs by country, date, and source with fast lookup and pagination.</p>
-        <span class="mt-4 inline-flex items-center text-sm font-semibold text-cyan-700">Open <i class="fas fa-arrow-right ml-2 text-xs"></i></span>
+    <!-- What I do -->
+    <section>
+      <p class="font-code text-xs uppercase tracking-[0.2em] text-cyan-300">// capabilities</p>
+      <h2 class="mt-3 font-display text-2xl font-bold text-white sm:text-3xl">From locked-down source to clean dataset</h2>
+      <div class="mt-8 grid gap-5 md:grid-cols-3">
+        {% set caps = [
+          {"icon": "fas fa-fingerprint", "color": "cyan", "title": "Reverse Engineering", "desc": "Web & mobile API analysis, request signing, token/cookie flows, payload decryption with Proxyman, Charles & Frida."},
+          {"icon": "fas fa-shield-halved", "color": "orange", "title": "Anti-Bot Evasion", "desc": "TLS/JA3 fingerprinting, headless detection bypass, proxy rotation, and human-like automation at scale."},
+          {"icon": "fas fa-diagram-project", "color": "blue", "title": "Resilient Pipelines", "desc": "Change-tolerant parsers, scheduled ETL, normalization, and API-ready output backed by MongoDB & Elasticsearch."}
+        ] %}
+        {% for c in caps %}
+        <article class="glass card-hover rounded-2xl p-6">
+          <div class="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-{{ c.color }}-400/15 text-{{ c.color }}-300">
+            <i class="{{ c.icon }}"></i>
+          </div>
+          <h3 class="mt-4 font-display text-lg font-bold text-white">{{ c.title }}</h3>
+          <p class="mt-2 text-sm leading-relaxed text-slate-400">{{ c.desc }}</p>
+        </article>
+        {% endfor %}
+      </div>
+    </section>
+
+    <!-- Quick links -->
+    <section class="mt-16 grid gap-5 md:grid-cols-3">
+      <a href="/jobs/linkedin" class="glass card-hover group rounded-2xl p-6">
+        <div class="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-cyan-400/15 text-cyan-300"><i class="fab fa-linkedin-in"></i></div>
+        <h2 class="mt-4 font-display text-xl font-bold text-white">LinkedIn Job Finder</h2>
+        <p class="mt-2 text-sm leading-relaxed text-slate-400">Filter jobs by country, date, and source with fast lookup and pagination.</p>
+        <span class="mt-4 inline-flex items-center text-sm font-semibold text-cyan-300">Open <i class="fas fa-arrow-right ml-2 text-xs"></i></span>
       </a>
 
-      <a href="/jobs/freework" class="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md">
-        <div class="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700"><i class="fas fa-briefcase"></i></div>
-        <h2 class="mt-4 font-display text-xl font-bold text-slate-900">Freework Explorer</h2>
-        <p class="mt-2 text-sm leading-relaxed text-slate-600">Track freelance opportunities and download daily snapshots as CSV.</p>
-        <span class="mt-4 inline-flex items-center text-sm font-semibold text-emerald-700">Open <i class="fas fa-arrow-right ml-2 text-xs"></i></span>
+      <a href="/jobs/freework" class="glass card-hover group rounded-2xl p-6">
+        <div class="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-400/15 text-emerald-300"><i class="fas fa-briefcase"></i></div>
+        <h2 class="mt-4 font-display text-xl font-bold text-white">Freework Explorer</h2>
+        <p class="mt-2 text-sm leading-relaxed text-slate-400">Track freelance opportunities and download daily snapshots as CSV.</p>
+        <span class="mt-4 inline-flex items-center text-sm font-semibold text-emerald-300">Open <i class="fas fa-arrow-right ml-2 text-xs"></i></span>
       </a>
 
-      <a href="/projects" class="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md">
-        <div class="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-amber-100 text-amber-700"><i class="fas fa-layer-group"></i></div>
-        <h2 class="mt-4 font-display text-xl font-bold text-slate-900">Project Collection</h2>
-        <p class="mt-2 text-sm leading-relaxed text-slate-600">Review scraping systems across social platforms, jobs, and public data sources.</p>
-        <span class="mt-4 inline-flex items-center text-sm font-semibold text-amber-700">Open <i class="fas fa-arrow-right ml-2 text-xs"></i></span>
+      <a href="/projects" class="glass card-hover group rounded-2xl p-6">
+        <div class="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-amber-400/15 text-amber-300"><i class="fas fa-layer-group"></i></div>
+        <h2 class="mt-4 font-display text-xl font-bold text-white">Project Collection</h2>
+        <p class="mt-2 text-sm leading-relaxed text-slate-400">Review scraping & reverse-engineering systems across social, jobs, and public data.</p>
+        <span class="mt-4 inline-flex items-center text-sm font-semibold text-amber-300">Open <i class="fas fa-arrow-right ml-2 text-xs"></i></span>
       </a>
     </section>
 
-    <section class="mt-16 rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
+    <!-- CTA -->
+    <section class="mt-16 overflow-hidden rounded-2xl border border-cyan-400/20 bg-gradient-to-r from-cyan-500/10 via-blue-500/10 to-transparent p-8">
       <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <p class="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">Contact</p>
-          <h3 class="mt-2 font-display text-2xl font-bold text-slate-900">Need data from a hard-to-scrape website?</h3>
-          <p class="mt-2 text-sm text-slate-600">I can help you architect and ship stable scraping pipelines quickly.</p>
+          <p class="font-code text-xs uppercase tracking-[0.2em] text-cyan-300">// contact</p>
+          <h3 class="mt-2 font-display text-2xl font-bold text-white">Need data from a site that fights back?</h3>
+          <p class="mt-2 text-sm text-slate-300">I architect and ship stable scraping &amp; reverse-engineering pipelines, fast.</p>
         </div>
-        <a href="/contact" class="inline-flex items-center rounded-xl bg-gradient-to-r from-cyan-500 to-blue-700 px-5 py-3 text-sm font-semibold text-white transition hover:brightness-110">
+        <a href="/contact" class="inline-flex shrink-0 items-center rounded-xl bg-gradient-to-r from-cyan-400 to-blue-600 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:brightness-110">
           Start a conversation
           <i class="fas fa-paper-plane ml-2"></i>
         </a>
