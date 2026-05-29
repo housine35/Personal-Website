@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Request, HTTPException, Form
-from fastapi.responses import HTMLResponse, StreamingResponse
+from fastapi.responses import HTMLResponse, StreamingResponse, PlainTextResponse, Response
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -287,6 +287,8 @@ async def read_linkedin_jobs(
     continent: Optional[str] = None,
     date: Optional[str] = None,
     source: Optional[str] = None,  # Added source parameter
+    q: Optional[str] = None,  # Free-text keyword (title + company)
+    it_only: Optional[str] = None,  # Keep only IT-relevant jobs (relevant flag)
     page: int = 1,
     per_page: int = 20,
 ):
@@ -294,6 +296,16 @@ async def read_linkedin_jobs(
     per_page = max(min(per_page, 100), 1)
 
     query = {}
+    it_only_on = str(it_only).lower() in ("1", "true", "on", "yes")
+    if it_only_on:
+        query["relevant"] = True
+    keyword = (q or "").strip()
+    if keyword:
+        safe = re.escape(keyword)
+        query["$or"] = [
+            {"title": {"$regex": safe, "$options": "i"}},
+            {"company": {"$regex": safe, "$options": "i"}},
+        ]
     if country and country != "all":
         query["country"] = country
     if continent and continent != "all":
@@ -350,6 +362,8 @@ async def read_linkedin_jobs(
             "selected_continent": continent or "all",
             "selected_date": date or "all",
             "selected_source": source or "all",  # Pass selected source
+            "selected_q": keyword,  # Pass keyword back to the search box
+            "selected_it_only": it_only_on,  # Pass IT-only toggle state
             "total_jobs": total_jobs,
             "filtered_jobs_count": total_jobs,
             "page": page,
@@ -517,10 +531,168 @@ async def read_freework_job_detail(request: Request, job_id: str, return_page: i
     )
 
 
+# ---------------------------------------------------------------------------
+# Projects (single source of truth for the listing + case-study detail pages)
+# ---------------------------------------------------------------------------
+PROJECTS = [
+    {
+        "slug": "linkedin-job-scraper",
+        "title": "LinkedIn Job Scraper",
+        "desc": "Extracts tech jobs with filters by source, country, and date, then serves them through a searchable interface.",
+        "tech": ["Python", "Requests", "BeautifulSoup", "MongoDB", "GitHub Actions"],
+        "icon": "fab fa-linkedin-in",
+        "color": "cyan",
+        "url": "/jobs/linkedin",
+        "repo": "https://github.com/housine35/linkedin-job-scraper",
+        "date": "2025-06-15",
+        "tagline": "A self-hosted job radar that refreshes itself every 30 minutes.",
+        "problem": "LinkedIn has no public jobs API and aggressively rate-limits guests. I wanted a continuously updated, queryable database of tech roles without a paid data provider.",
+        "approach": [
+            "Reverse-engineered LinkedIn's guest `seeMoreJobPostings` endpoint and replicated its query parameters (time filter, work type, pagination).",
+            "Built a resilient fetch layer: rotating proxy with local-IP fallback, retries with backoff, and CAPTCHA/empty-response detection.",
+            "Normalized postings (URL-based dedup as `_id`) and enriched each with country/continent + an IT-relevance tag.",
+            "Scheduled the whole pipeline on GitHub Actions (cron every 30 min) writing into MongoDB Atlas.",
+        ],
+        "results": [
+            "70k+ postings indexed and kept fresh automatically",
+            "Country/continent enrichment with a memoized geocoder",
+            "Zero-cost hosting: GitHub Actions + Atlas free tier",
+        ],
+    },
+    {
+        "slug": "freework-scraper",
+        "title": "Freework Freelance Scraper",
+        "desc": "Collects freelance opportunities, remote modes, and daily rates for real-time job exploration.",
+        "tech": ["Scrapy", "FastAPI", "ETL", "MongoDB"],
+        "icon": "fas fa-briefcase",
+        "color": "emerald",
+        "url": "/jobs/freework",
+        "repo": "https://github.com/housine35/freework-job-scraper",
+        "date": "2025-07-01",
+        "tagline": "Freelance market intelligence with daily CSV snapshots.",
+        "problem": "Freelance platforms surface daily rates and remote modes that are hard to track over time for rate benchmarking.",
+        "approach": [
+            "Crawled listings with Scrapy, normalizing city/department and remote mode.",
+            "Exposed the data through a FastAPI UI with filters and a daily CSV export gated by email.",
+            "Added a migration to backfill normalized location fields on historical data.",
+        ],
+        "results": [
+            "Filterable explorer by remote mode, location, and date",
+            "One-click daily CSV snapshot for offline analysis",
+        ],
+    },
+    {
+        "slug": "facebook-extractor",
+        "title": "Facebook Data Extractor",
+        "desc": "Captures post details and comments using authenticated browser automation and reverse-engineered internal endpoints.",
+        "tech": ["Playwright", "Reverse Engineering", "API Analysis"],
+        "icon": "fab fa-facebook-f",
+        "color": "blue",
+        "url": "https://facebook-scraper-q8aa.onrender.com/",
+        "repo": None,
+        "date": "2025-01-10",
+        "tagline": "Turning a hostile, JS-heavy UI into structured post + comment data.",
+        "problem": "Facebook renders content through obfuscated, frequently-changing internal GraphQL calls behind authentication and anti-automation defenses.",
+        "approach": [
+            "Analyzed network traffic with Proxyman/Charles to map the internal endpoints and required tokens.",
+            "Drove authenticated sessions with Playwright, replaying signed requests for stable extraction.",
+            "Wrote change-tolerant parsers that degrade gracefully when the markup shifts.",
+        ],
+        "results": [
+            "Structured posts + comments from a JS-only UI",
+            "Resilient to layout changes via fallback parsers",
+        ],
+    },
+    {
+        "slug": "tiktok-engine",
+        "title": "TikTok Extraction Engine",
+        "desc": "Retrieves post metadata and user graph data with anti-rate-limit handling and reverse-engineered request signatures.",
+        "tech": ["Automation", "Signature Reversing", "Data Pipelines"],
+        "icon": "fab fa-tiktok",
+        "color": "amber",
+        "url": "https://tiktok-scraper-yt8p.onrender.com/",
+        "repo": None,
+        "date": "2025-04-22",
+        "tagline": "Defeating request signing to read the public graph at scale.",
+        "problem": "TikTok signs its API requests (device/signature params) and rate-limits aggressively, blocking naive scrapers.",
+        "approach": [
+            "Reverse-engineered the request-signing scheme to forge valid signatures.",
+            "Implemented rotation and pacing to stay under rate limits.",
+            "Built pipelines to collect post metadata and user-graph relationships.",
+        ],
+        "results": [
+            "Stable access to post metadata + user graph",
+            "Custom request-signature generation",
+        ],
+    },
+    {
+        "slug": "assembly-senate-data",
+        "title": "French Assembly & Senate Data",
+        "desc": "Scrapes legislative records including bills, votes, and profiles from parliamentary sources.",
+        "tech": ["Public Data", "Parsing", "Normalization"],
+        "icon": "fas fa-landmark",
+        "color": "violet",
+        "url": None,
+        "repo": None,
+        "date": "2024-03-12",
+        "tagline": "Structured open-government data from messy official sources.",
+        "problem": "Parliamentary records are spread across inconsistent pages and formats, making analysis painful.",
+        "approach": [
+            "Parsed bills, votes, and member profiles from official parliamentary sources.",
+            "Normalized entities and relationships into a consistent schema.",
+        ],
+        "results": [
+            "Unified dataset of bills, votes, and profiles",
+        ],
+    },
+    {
+        "slug": "live-subtitle-capture",
+        "title": "Live Subtitle Capture",
+        "desc": "Captures live subtitles from video streams with OCR and near real-time text processing.",
+        "tech": ["OCR", "Streaming", "Puppeteer"],
+        "icon": "fas fa-video",
+        "color": "rose",
+        "url": "https://github.com/housine35/Aws_Puppeteer",
+        "repo": "https://github.com/housine35/Aws_Puppeteer",
+        "date": "2025-02-18",
+        "tagline": "Real-time subtitle extraction from live video.",
+        "problem": "Subtitles burned into or streamed over live video aren't available as text for downstream processing.",
+        "approach": [
+            "Captured frames from live streams with headless Puppeteer.",
+            "Applied OCR and near real-time text processing to recover subtitle text.",
+        ],
+        "results": [
+            "Near real-time subtitle text from live streams",
+        ],
+    },
+]
+PROJECTS_BY_SLUG = {p["slug"]: p for p in PROJECTS}
+
+# Cache for the homepage live job counter
+_job_stats_cache = {"expires_at": 0.0, "data": None}
+JOB_STATS_CACHE_TTL_SECONDS = int(os.getenv("JOB_STATS_CACHE_TTL_SECONDS", "300"))
+
+
+async def get_job_stats():
+    now = time.monotonic()
+    if _job_stats_cache["data"] and now < _job_stats_cache["expires_at"]:
+        return _job_stats_cache["data"]
+    stats = {"total": None, "relevant": None}
+    try:
+        stats["total"] = await linkedin_collection.estimated_document_count()
+    except Exception as e:
+        logger.warning(f"Could not fetch job stats: {e}")
+    _job_stats_cache["data"] = stats
+    _job_stats_cache["expires_at"] = now + JOB_STATS_CACHE_TTL_SECONDS
+    return stats
+
+
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
+    stats = await get_job_stats()
     return templates.TemplateResponse(
-        "index.html", {"request": request, "current_year": datetime.now().year}
+        "index.html",
+        {"request": request, "current_year": datetime.now().year, "job_stats": stats},
     )
 
 
@@ -531,8 +703,10 @@ async def intro(request: Request):
 
 @app.get("/index", response_class=HTMLResponse)
 async def index(request: Request):
+    stats = await get_job_stats()
     return templates.TemplateResponse(
-        "index.html", {"request": request, "current_year": datetime.now().year}
+        "index.html",
+        {"request": request, "current_year": datetime.now().year, "job_stats": stats},
     )
 
 
@@ -548,4 +722,35 @@ async def contact(request: Request):
 
 @app.get("/projects", response_class=HTMLResponse)
 async def projects(request: Request):
-    return templates.TemplateResponse("projects.html", {"request": request})
+    return templates.TemplateResponse(
+        "projects.html", {"request": request, "projects": PROJECTS}
+    )
+
+
+@app.get("/projects/{slug}", response_class=HTMLResponse)
+async def project_detail(request: Request, slug: str):
+    project = PROJECTS_BY_SLUG.get(slug)
+    if not project:
+        raise HTTPException(status_code=404, detail="Project not found")
+    # Suggest a couple of other projects to explore
+    others = [p for p in PROJECTS if p["slug"] != slug][:3]
+    return templates.TemplateResponse(
+        "projects_detail.html",
+        {"request": request, "project": project, "others": others},
+    )
+
+
+@app.get("/robots.txt", response_class=PlainTextResponse)
+async def robots_txt(request: Request):
+    base = str(request.base_url).rstrip("/")
+    return f"User-agent: *\nAllow: /\nSitemap: {base}/sitemap.xml\n"
+
+
+@app.get("/sitemap.xml")
+async def sitemap_xml(request: Request):
+    base = str(request.base_url).rstrip("/")
+    paths = ["/index", "/projects", "/resume", "/contact", "/jobs/linkedin", "/jobs/freework"]
+    paths += [f"/projects/{p['slug']}" for p in PROJECTS]
+    urls = "".join(f"<url><loc>{base}{p}</loc></url>" for p in paths)
+    xml = f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{urls}</urlset>'
+    return Response(content=xml, media_type="application/xml")
