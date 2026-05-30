@@ -6,16 +6,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Hocine ABED | Web Scraping & Reverse Engineering Engineer</title>
   <meta name="description" content="Software engineer specialized in large-scale web scraping and reverse engineering: anti-bot bypass, mobile/web API analysis, request signing, and resilient data pipelines." />
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🕷️</text></svg>" />
+  <link rel="icon" type="image/svg+xml" href="/static/favicon.svg" />
 
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Hocine ABED | Web Scraping & Reverse Engineering Engineer" />
   <meta property="og:description" content="Anti-bot bypass, API reverse engineering, request signing, and resilient data pipelines at scale." />
-  <meta property="og:image" content="https://media.licdn.com/dms/image/v2/D4E03AQHsoy8Ka5YIng/profile-displayphoto-shrink_200_200/B4EZWjkFfyGgAY-/0/1742205901350?e=2147483647&v=beta&t=gpD57rl_Im2DnjGSpE7SzdLxwTa3pDU6zmBXE9WYhmA" />
-  <meta name="twitter:card" content="summary" />
+  <meta property="og:image" content="{{ request.base_url }}static/og.png" />
+  <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Hocine ABED | Web Scraping & Reverse Engineering Engineer" />
   <meta name="twitter:description" content="Anti-bot bypass, API reverse engineering, request signing, and resilient data pipelines at scale." />
+  <meta name="twitter:image" content="{{ request.base_url }}static/og.png" />
 
   <!-- Structured data -->
   <script type="application/ld+json">
@@ -86,6 +87,14 @@
               View Resume
             </a>
           </div>
+
+          <p class="fade-step mt-6 flex items-center gap-2 font-code text-xs text-slate-400" style="animation-delay:.55s">
+            <span class="relative inline-flex h-2 w-2">
+              <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60"></span>
+              <span class="relative inline-flex h-2 w-2 rounded-full bg-emerald-400"></span>
+            </span>
+            pipelines online · scraping every 30&nbsp;min
+          </p>
         </div>
 
         <!-- Terminal capture window -->
@@ -100,7 +109,7 @@
             <p class="text-slate-500"># intercept + replay signed request</p>
             <p class="text-cyan-300">POST <span class="text-slate-200">/v2/feed</span> <span class="text-slate-500">HTTP/2</span></p>
             <p class="text-slate-300">x-signature: <span class="text-orange-300">a3f9…c1b2</span></p>
-            <p class="text-slate-300">x-device-id: <span class="text-orange-300">reversed ✓</span></p>
+            <p class="text-slate-300">x-device-id: <span class="text-emerald-300">reversed ✓</span></p>
             <p class="text-emerald-300">← 200 OK <span class="text-slate-400">· 1,284 records</span></p>
             <p class="text-slate-300">parsing<span class="text-slate-500">…</span> normalized → mongo</p>
             <p class="text-slate-200">$ <span class="cursor-blink">▋</span></p>
@@ -115,7 +124,7 @@
           <p class="font-display text-2xl font-extrabold text-white sm:text-3xl">
             {% if job_stats and job_stats.total %}{{ "{:,}".format(job_stats.total) }}{% else %}70k+{% endif %}
           </p>
-          <p class="mt-1 flex items-center justify-center gap-1.5 text-xs uppercase tracking-wider text-slate-400">
+          <p class="mt-1 flex items-center justify-center gap-1.5 font-code text-xs uppercase tracking-wider text-slate-400">
             <span class="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400"></span>
             jobs indexed · live
           </p>
@@ -128,14 +137,14 @@
         {% for s in stats %}
         <div class="glass rounded-2xl px-5 py-5 text-center">
           <p class="font-display text-2xl font-extrabold text-white sm:text-3xl">{{ s.value }}</p>
-          <p class="mt-1 text-xs uppercase tracking-wider text-slate-400">{{ s.label }}</p>
+          <p class="mt-1 font-code text-xs uppercase tracking-wider text-slate-400">{{ s.label }}</p>
         </div>
         {% endfor %}
       </div>
     </div>
   </section>
 
-  <main class="mx-auto max-w-7xl px-6 py-16">
+  <main id="main" class="mx-auto max-w-7xl px-6 py-16">
     <!-- What I do -->
     <section>
       <p class="font-code text-xs uppercase tracking-[0.2em] text-cyan-300">// capabilities</p>

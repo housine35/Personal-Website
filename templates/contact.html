@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Contact | Hocine ABED — Scraping & Reverse Engineering</title>
   <meta name="description" content="Get in touch with Hocine ABED — web scraping and reverse-engineering engineer. Available for projects and remote work." />
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🕷️</text></svg>" />
+  <link rel="icon" type="image/svg+xml" href="/static/favicon.svg" />
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -31,7 +31,7 @@
 <body>
   {% include "partials/navbar.html" %}
 
-  <main class="relative mx-auto max-w-5xl px-6 py-16">
+  <main id="main" class="relative mx-auto max-w-5xl px-6 py-16">
     <div class="glow -left-20 top-0 h-64 w-64 bg-cyan-500/20"></div>
     <div class="glow right-0 bottom-0 h-64 w-64 bg-orange-500/15"></div>
 
@@ -83,6 +83,40 @@
         </article>
       </div>
 
+      <form id="contact-form" class="mt-6 rounded-2xl border border-white/10 bg-white/5 p-6" novalidate>
+        <h2 class="font-display text-xl font-bold text-white">Send a message</h2>
+        <p class="mt-1 text-sm text-slate-400">Tell me about your data extraction or reverse-engineering project.</p>
+
+        <div class="mt-5 grid gap-4 sm:grid-cols-2">
+          <div>
+            <label for="cf-name" class="mb-2 block text-sm font-medium text-slate-300">Name</label>
+            <input id="cf-name" name="name" type="text" required autocomplete="name"
+              class="w-full rounded-xl border border-white/15 bg-white/5 px-3 py-2.5 text-sm text-slate-100 placeholder-slate-500 focus:border-cyan-400/60 focus:outline-none focus:ring-2 focus:ring-cyan-500/20"
+              placeholder="Your name" />
+          </div>
+          <div>
+            <label for="cf-email" class="mb-2 block text-sm font-medium text-slate-300">Email</label>
+            <input id="cf-email" name="email" type="email" required autocomplete="email"
+              class="w-full rounded-xl border border-white/15 bg-white/5 px-3 py-2.5 text-sm text-slate-100 placeholder-slate-500 focus:border-cyan-400/60 focus:outline-none focus:ring-2 focus:ring-cyan-500/20"
+              placeholder="you@example.com" />
+          </div>
+        </div>
+
+        <div class="mt-4">
+          <label for="cf-message" class="mb-2 block text-sm font-medium text-slate-300">Message</label>
+          <textarea id="cf-message" name="message" rows="4" required minlength="10"
+            class="w-full rounded-xl border border-white/15 bg-white/5 px-3 py-2.5 text-sm text-slate-100 placeholder-slate-500 focus:border-cyan-400/60 focus:outline-none focus:ring-2 focus:ring-cyan-500/20"
+            placeholder="What do you need scraped or reverse-engineered?"></textarea>
+        </div>
+
+        <div class="mt-5 flex flex-wrap items-center gap-4">
+          <button type="submit" id="cf-submit" class="inline-flex cursor-pointer items-center rounded-xl bg-gradient-to-r from-cyan-400 to-blue-600 px-5 py-2.5 text-sm font-semibold text-slate-950 transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60">
+            <i class="fas fa-paper-plane mr-2" aria-hidden="true"></i> Send message
+          </button>
+          <p id="cf-status" class="text-sm" role="status" aria-live="polite"></p>
+        </div>
+      </form>
+
       <section class="mt-6 rounded-2xl border border-cyan-400/20 bg-cyan-400/10 p-6">
         <h2 class="font-display text-xl font-bold text-cyan-200">Direct Contact</h2>
         <ul class="mt-4 space-y-3 text-sm text-slate-200">
@@ -95,6 +129,53 @@
   </main>
 
   {% include "partials/footer.html" %}
+
+  <script>
+    (function () {
+      const form = document.getElementById('contact-form');
+      if (!form) return;
+      const btn = document.getElementById('cf-submit');
+      const status = document.getElementById('cf-status');
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        status.textContent = '';
+        status.className = 'text-sm';
+
+        const name = form.name.value.trim();
+        const email = form.email.value.trim();
+        const message = form.message.value.trim();
+        const emailRe = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        if (!name) return fail('Please enter your name.');
+        if (!emailRe.test(email)) return fail('Please enter a valid email address.');
+        if (message.length < 10) return fail('Message must be at least 10 characters.');
+
+        btn.disabled = true;
+        const original = btn.innerHTML;
+        btn.innerHTML = '<i class="fas fa-circle-notch fa-spin mr-2" aria-hidden="true"></i> Sending…';
+        try {
+          const fd = new FormData();
+          fd.append('name', name); fd.append('email', email); fd.append('message', message);
+          const res = await fetch('/contact/submit', { method: 'POST', body: fd });
+          const data = await res.json().catch(() => ({}));
+          if (!res.ok) return fail(data.detail || 'Something went wrong. Please try again.');
+          status.textContent = data.message || 'Message sent!';
+          status.className = 'text-sm text-emerald-300';
+          form.reset();
+        } catch (err) {
+          fail('Network error. Please try again.');
+        } finally {
+          btn.disabled = false;
+          btn.innerHTML = original;
+        }
+      });
+
+      function fail(msg) {
+        status.textContent = msg;
+        status.className = 'text-sm text-red-400';
+      }
+    })();
+  </script>
 </body>
 
 </html>

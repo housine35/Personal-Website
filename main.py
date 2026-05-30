@@ -133,6 +133,8 @@ db = client[MONGO_DB]
 linkedin_collection = db[MONGO_COLLECTION_LINKEDIN]
 freework_collection = db[MONGO_COLLECTION_FREEWORK]
 email_collection = db[MONGO_COLLECTION_EMAIL]
+MONGO_COLLECTION_CONTACT = os.getenv("MONGO_COLLECTION_CONTACT", "contact_messages")
+contact_collection = db[MONGO_COLLECTION_CONTACT]
 
 # Small in-memory cache for LinkedIn filter dropdowns.
 LINKEDIN_FILTER_CACHE_TTL_SECONDS = int(
@@ -718,6 +720,40 @@ async def resume(request: Request):
 @app.get("/contact", response_class=HTMLResponse)
 async def contact(request: Request):
     return templates.TemplateResponse("contact.html", {"request": request})
+
+
+@app.post("/contact/submit")
+async def contact_submit(
+    name: str = Form(...),
+    email: str = Form(...),
+    message: str = Form(...),
+):
+    name = (name or "").strip()
+    message = (message or "").strip()
+    email = (email or "").strip()
+
+    email_regex = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+    if not name or len(name) > 120:
+        raise HTTPException(status_code=400, detail="Please enter your name.")
+    if not re.match(email_regex, email):
+        raise HTTPException(status_code=400, detail="Please enter a valid email address.")
+    if len(message) < 10 or len(message) > 4000:
+        raise HTTPException(status_code=400, detail="Message must be between 10 and 4000 characters.")
+
+    try:
+        await contact_collection.insert_one(
+            {
+                "name": name,
+                "email": email,
+                "message": message,
+                "created_at": datetime.now(),
+            }
+        )
+    except Exception as e:
+        logger.error(f"Failed to save contact message: {e}")
+        raise HTTPException(status_code=500, detail="Could not send your message. Please try again later.")
+
+    return {"ok": True, "message": "Thanks! Your message has been received — I'll get back to you soon."}
 
 
 @app.get("/projects", response_class=HTMLResponse)
