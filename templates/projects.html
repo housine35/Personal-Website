@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Projects | Hocine ABED — Scraping & Reverse Engineering</title>
   <meta name="description" content="Selected web scraping and reverse-engineering projects: social media extraction, jobs ETL pipelines, API analysis, and public data normalization." />
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🕷️</text></svg>" />
+  <link rel="icon" type="image/svg+xml" href="/static/favicon.svg" />
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -41,7 +41,7 @@
     </div>
   </section>
 
-  <main class="mx-auto max-w-7xl px-6 py-14">
+  <main id="main" class="mx-auto max-w-7xl px-6 py-14">
     <section class="grid gap-6 md:grid-cols-2">
       {% for project in projects %}
       <article class="fade-step glass card-hover group rounded-2xl p-6" style="animation-delay: {{ 0.05 + (loop.index0 * 0.06) }}s;">

@@ -10,3 +10,6 @@ venv/
 
 # logs
 *.log
+
+# local dev tools / installed skills (not part of the deployed app)
+.claude/
