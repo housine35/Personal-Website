@@ -112,6 +112,18 @@ def relative_time(value):
 templates.env.filters["datetimeformat"] = datetimeformat
 templates.env.filters["relative_time"] = relative_time
 
+
+from starlette.exceptions import HTTPException as StarletteHTTPException
+
+
+@app.exception_handler(StarletteHTTPException)
+async def custom_http_exception_handler(request: Request, exc: StarletteHTTPException):
+    if exc.status_code == 404:
+        return templates.TemplateResponse(
+            "404.html", {"request": request, "path": request.url.path}, status_code=404
+        )
+    return PlainTextResponse(str(exc.detail), status_code=exc.status_code)
+
 # MongoDB connection
 MONGO_URI = os.getenv("MONGO_URI")
 MONGO_DB = os.getenv("MONGO_DB", "scraping")

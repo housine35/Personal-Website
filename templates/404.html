@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>404 — Page not found | Hocine ABED</title>
+  <meta name="robots" content="noindex" />
+  <link rel="icon" type="image/svg+xml" href="/static/favicon.svg" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { theme: { extend: { fontFamily: { display: ['Sora', 'sans-serif'], body: ['Plus Jakarta Sans', 'sans-serif'], code: ['IBM Plex Mono', 'monospace'] } } } }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+
+<body>
+  {% include "partials/navbar.html" %}
+
+  <main id="main" class="relative mx-auto flex min-h-[70vh] max-w-3xl flex-col items-center justify-center px-6 py-20 text-center">
+    <div class="glow -left-20 top-10 h-64 w-64 bg-cyan-500/20"></div>
+    <div class="glow right-0 bottom-0 h-64 w-64 bg-orange-500/15"></div>
+
+    <div class="terminal relative w-full max-w-md overflow-hidden text-left">
+      <div class="flex items-center gap-2 border-b border-white/10 px-4 py-3">
+        <span class="terminal-dot bg-red-400/80"></span>
+        <span class="terminal-dot bg-amber-400/80"></span>
+        <span class="terminal-dot bg-emerald-400/80"></span>
+        <span class="ml-2 font-code text-xs text-slate-400">request</span>
+      </div>
+      <div class="space-y-1.5 px-4 py-4 font-code text-[13px] leading-relaxed">
+        <p class="text-cyan-300">GET <span class="text-slate-200">{{ path | default('/unknown') }}</span></p>
+        <p class="text-red-300">← 404 Not Found</p>
+        <p class="text-slate-400"># this route was never scraped into existence</p>
+        <p class="text-slate-200">$ <span class="cursor-blink">▋</span></p>
+      </div>
+    </div>
+
+    <h1 class="mt-8 font-display text-4xl font-extrabold text-white sm:text-5xl">Page not found</h1>
+    <p class="mt-3 max-w-md text-slate-400">The page you're looking for doesn't exist or has moved.</p>
+
+    <div class="mt-8 flex flex-wrap justify-center gap-3">
+      <a href="/index" class="inline-flex items-center rounded-xl bg-gradient-to-r from-cyan-400 to-blue-600 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:brightness-110">
+        <i class="fas fa-house mr-2" aria-hidden="true"></i> Home
+      </a>
+      <a href="/projects" class="inline-flex items-center rounded-xl border border-white/15 bg-white/5 px-5 py-3 text-sm font-semibold text-slate-200 transition hover:border-cyan-400/50 hover:text-cyan-300">
+        Projects
+      </a>
+    </div>
+  </main>
+
+  {% include "partials/footer.html" %}
+</body>
+
+</html>
